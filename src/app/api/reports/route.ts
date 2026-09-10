@@ -5,6 +5,7 @@ import { randomUUID } from "node:crypto";
 import sql from "@/lib/db";
 import { reportInput } from "@/lib/validation";
 import { cleanPhoto } from "@/lib/image";
+import { listReports } from "@/lib/reports";
 
 export const runtime = "nodejs";
 
@@ -60,12 +61,5 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
-  const rows = await sql`
-    select id, category, description, status,
-           ST_Y(geom) as lat, ST_X(geom) as lng, created_at
-    from reports
-    order by created_at desc
-    limit 100
-  `;
-  return NextResponse.json(rows);
+  return NextResponse.json(await listReports());
 }

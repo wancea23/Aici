@@ -5,3 +5,12 @@
 :root {
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
+
+.leaflet-container {
+  font-family: inherit;
+}
+
+/* Calmer base map so the status pins stand out. */
+.leaflet-tile-pane {
+  filter: grayscale(0.6) brightness(1.04);
+}
