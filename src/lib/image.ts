@@ -14,7 +14,7 @@ export async function cleanPhoto(input: Buffer): Promise<Buffer> {
 
   return image
     .rotate()
-    .resize(2048, 2048, { fit: "inside", withoutEnlargement: true })
-    .webp({ quality: 80 })
+    .resize(1600, 1600, { fit: "inside", withoutEnlargement: true })
+    .webp({ quality: 75 })
     .toBuffer();
 }

@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { mkdir, writeFile, unlink } from "node:fs/promises";
-import { join } from "node:path";
 import { randomUUID } from "node:crypto";
 import sql from "@/lib/db";
 import { reportInput } from "@/lib/validation";
@@ -10,7 +8,6 @@ import { listReports } from "@/lib/reports";
 export const runtime = "nodejs";
 
 const MAX_BYTES = 10 * 1024 * 1024;
-const uploadDir = process.env.UPLOAD_DIR || "./data/uploads";
 
 export async function POST(req: NextRequest) {
   const form = await req.formData();
@@ -42,20 +39,16 @@ export async function POST(req: NextRequest) {
   }
 
   const id = randomUUID();
-  await mkdir(uploadDir, { recursive: true });
-  const file = join(uploadDir, `${id}.webp`);
-  await writeFile(file, clean);
-
   const { category, description, lat, lng } = parsed.data;
-  try {
-    await sql`
+
+  // One transaction, so a report is never saved without its photo.
+  await sql.begin(async (tx) => {
+    await tx`
       insert into reports (id, category, description, geom)
       values (${id}, ${category}, ${description}, ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326))
     `;
-  } catch (err) {
-    await unlink(file).catch(() => {});
-    throw err;
-  }
+    await tx`insert into report_photos (report_id, data) values (${id}, ${clean})`;
+  });
 
   return NextResponse.json({ id }, { status: 201 });
 }
