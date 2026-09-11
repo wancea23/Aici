@@ -32,10 +32,10 @@ export const statusLabels: Record<Status, string> = {
 };
 
 export const statusColors: Record<Status, string> = {
-  nou: "#e11d48",
-  in_lucru: "#d97706",
+  nou: "#c25d59",
+  in_lucru: "#d9ac5e",
   rezolvat: "#0d9488",
-  respins: "#94a3b8",
+  respins: "#515963",
 };
 
 export const reportInput = z.object({

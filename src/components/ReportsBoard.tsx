@@ -14,7 +14,7 @@ import {
 } from "@/lib/validation";
 import { formatDate } from "@/lib/format";
 
-// Leaflet needs the browser, so the map only renders on the client.
+// The map needs the browser, so it only renders on the client.
 const ReportsMap = dynamic(() => import("@/components/ReportsMap"), {
   ssr: false,
   loading: () => <div className="h-full w-full animate-pulse bg-slate-100" />,

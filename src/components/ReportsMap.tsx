@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import * as maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 import type { Report } from "@/lib/reports";
 import {
   categoryLabels,
@@ -21,19 +21,31 @@ type Props = {
   onPick: (id: string) => void;
 };
 
-const chisinau: L.LatLngTuple = [47.0105, 28.8638];
+const chisinau: [number, number] = [28.8638, 47.0105];
+const mapStyle = "https://tiles.openfreemap.org/styles/bright";
+
+// The bundler breaks MapLibre's own worker lookup, see src/app/maplibre.
+maplibregl.setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 
 export default function ReportsMap({ reports, selection, onPick }: Props) {
   const box = useRef<HTMLDivElement>(null);
-  const map = useRef<L.Map | null>(null);
-  const markers = useRef(new Map<string, L.CircleMarker>());
+  const map = useRef<maplibregl.Map | null>(null);
+  const markers = useRef(new Map<string, maplibregl.Marker>());
 
   useEffect(() => {
-    const m = L.map(box.current!).setView(chisinau, 12);
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 19,
-    }).addTo(m);
+    const m = new maplibregl.Map({
+      container: box.current!,
+      style: mapStyle,
+      center: chisinau,
+      zoom: 11,
+      dragRotate: false,
+      pitchWithRotate: false,
+      attributionControl: { compact: true },
+    });
+    m.touchZoomRotate.disableRotation();
+    m.keyboard.disableRotation();
+    m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-left");
+    m.on("load", () => romanianLabels(m));
     map.current = m;
 
     return () => {
@@ -46,30 +58,35 @@ export default function ReportsMap({ reports, selection, onPick }: Props) {
     const m = map.current;
     if (!m) return;
 
-    const layer = L.layerGroup().addTo(m);
+    const added: maplibregl.Marker[] = [];
     markers.current.clear();
 
     for (const r of reports) {
-      const marker = L.circleMarker([r.lat, r.lng], {
-        radius: 8,
-        color: "#fff",
-        weight: 2,
-        fillColor: statusColors[r.status as Status] ?? "#64748b",
-        fillOpacity: 1,
-      })
-        .bindPopup(() => popup(r), { maxWidth: 240 })
-        .on("click", () => onPick(r.id))
-        .addTo(layer);
+      const el = document.createElement("div");
+      el.className = "h-[18px] w-[18px] cursor-pointer rounded-full border-2 border-white";
+      el.style.backgroundColor = statusColors[r.status as Status] ?? "#64748b";
+      el.addEventListener("click", () => onPick(r.id));
+
+      // Filled on first open, so the photos only load when someone looks.
+      const card = new maplibregl.Popup({ offset: 12, maxWidth: "240px", closeButton: false });
+      card.once("open", () => card.setDOMContent(popup(r)));
+
+      const marker = new maplibregl.Marker({ element: el })
+        .setLngLat([r.lng, r.lat])
+        .setPopup(card)
+        .addTo(m);
       markers.current.set(r.id, marker);
+      added.push(marker);
     }
 
     if (reports.length > 0) {
-      const bounds = L.latLngBounds(reports.map((r) => [r.lat, r.lng] as L.LatLngTuple));
-      m.fitBounds(bounds, { padding: [40, 40], maxZoom: 16 });
+      const bounds = new maplibregl.LngLatBounds();
+      for (const r of reports) bounds.extend([r.lng, r.lat]);
+      m.fitBounds(bounds, { padding: 40, maxZoom: 15, animate: false });
     }
 
     return () => {
-      layer.remove();
+      for (const marker of added) marker.remove();
     };
   }, [reports, onPick]);
 
@@ -79,11 +96,27 @@ export default function ReportsMap({ reports, selection, onPick }: Props) {
     const marker = markers.current.get(selection.id);
     if (!m || !marker) return;
 
-    m.flyTo(marker.getLatLng(), Math.max(m.getZoom(), 16), { duration: 0.6 });
-    m.once("moveend", () => marker.openPopup());
+    for (const other of markers.current.values()) {
+      if (other !== marker && other.getPopup()?.isOpen()) other.togglePopup();
+    }
+    m.flyTo({ center: marker.getLngLat(), zoom: Math.max(m.getZoom(), 15), duration: 600 });
+    m.once("moveend", () => {
+      if (!marker.getPopup()?.isOpen()) marker.togglePopup();
+    });
   }, [selection]);
 
   return <div ref={box} className="h-full w-full" />;
+}
+
+// The style prefers English street names. We want the Romanian ones.
+function romanianLabels(m: maplibregl.Map) {
+  for (const layer of m.getStyle().layers) {
+    if (layer.type !== "symbol") continue;
+    const field = m.getLayoutProperty(layer.id, "text-field");
+    if (field && JSON.stringify(field).includes("name")) {
+      m.setLayoutProperty(layer.id, "text-field", ["coalesce", ["get", "name:ro"], ["get", "name"]]);
+    }
+  }
 }
 
 function popup(r: Report) {
