@@ -19,3 +19,10 @@ create table if not exists reports (
 
 create index if not exists reports_geom_idx on reports using gist (geom);
 create index if not exists reports_created_idx on reports (created_at desc);
+
+-- The cleaned webp of each report. In the database for now, object storage later.
+create table if not exists report_photos (
+  report_id uuid primary key references reports (id) on delete cascade,
+  data bytea not null,
+  created_at timestamptz not null default now()
+);
