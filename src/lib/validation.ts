@@ -1,4 +1,13 @@
 import { z } from "zod";
+import {
+  CircleQuestionMark,
+  Construction,
+  LightbulbOff,
+  TrafficCone,
+  Trash,
+  TreeDeciduous,
+  type IconNode,
+} from "lucide";
 
 export const categories = [
   "groapa",
@@ -20,6 +29,15 @@ export const categoryLabels: Record<Category, string> = {
   altul: "Altceva",
 };
 
+export const categoryIcons: Record<Category, IconNode> = {
+  groapa: TrafficCone,
+  iluminat: LightbulbOff,
+  gunoi: Trash,
+  drum: Construction,
+  spatiu_verde: TreeDeciduous,
+  altul: CircleQuestionMark,
+};
+
 export const statuses = ["nou", "in_lucru", "rezolvat", "respins"] as const;
 
 export type Status = (typeof statuses)[number];
@@ -32,10 +50,18 @@ export const statusLabels: Record<Status, string> = {
 };
 
 export const statusColors: Record<Status, string> = {
-  nou: "#c25d59",
-  in_lucru: "#d9ac5e",
-  rezolvat: "#0d9488",
-  respins: "#515963",
+  nou: "#ef4444",
+  in_lucru: "#f59e0b",
+  rezolvat: "#14b8a6",
+  respins: "#64748b",
+};
+
+// Darker shade of each status color, for text on a light tint of it.
+export const statusInk: Record<Status, string> = {
+  nou: "#b91c1c",
+  in_lucru: "#b45309",
+  rezolvat: "#0f766e",
+  respins: "#475569",
 };
 
 export const reportInput = z.object({

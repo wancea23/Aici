@@ -1,19 +1,21 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { createElement, useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Report } from "@/lib/reports";
 import type { Selection } from "@/components/ReportsMap";
 import {
+  categoryIcons,
   categoryLabels,
   statusColors,
+  statusInk,
   statusLabels,
   statuses,
   type Category,
   type Status,
 } from "@/lib/validation";
-import { formatDate } from "@/lib/format";
+import { formatDate, timeAgo } from "@/lib/format";
 
 // The map needs the browser, so it only renders on the client.
 const ReportsMap = dynamic(() => import("@/components/ReportsMap"), {
@@ -70,36 +72,46 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
         {reports.length === 0 ? (
           <p className="text-slate-500 lg:col-span-2">Nicio sesizare încă.</p>
         ) : (
-          <ul className="space-y-3 lg:col-span-2 lg:overflow-y-auto lg:pr-1">
+          <ul className="space-y-3 lg:col-span-2 lg:overflow-y-auto lg:p-1">
             {reports.map((r) => (
               <li key={r.id} id={`r-${r.id}`}>
                 <button
                   type="button"
                   onClick={() => pickFromList(r.id)}
                   className={
-                    "flex w-full gap-3 rounded-xl border bg-white p-3 text-left shadow-sm transition " +
+                    "flex w-full gap-3 rounded-2xl border bg-white p-2.5 text-left transition-[border-color,box-shadow] duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40 " +
                     (selection?.id === r.id
-                      ? "border-brand-500 bg-brand-50"
-                      : "border-slate-200 hover:border-slate-300")
+                      ? "border-brand-500 shadow-md ring-2 ring-brand-500/15"
+                      : "border-slate-200 shadow-sm hover:border-slate-300 hover:shadow-md")
                   }
                 >
                   <img
                     src={`/api/media/${r.id}`}
                     alt=""
                     loading="lazy"
-                    className="h-20 w-20 flex-none rounded-lg bg-slate-100 object-cover"
+                    className="h-[84px] w-[84px] flex-none rounded-xl bg-slate-100 object-cover"
                   />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-start justify-between gap-2">
-                      <span className="text-sm font-medium">
-                        {categoryLabels[r.category as Category] ?? r.category}
+                  <div className="min-w-0 flex-1 py-0.5 pr-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="flex min-w-0 items-center gap-2 font-semibold text-slate-900">
+                        <CategoryBadge category={r.category} status={r.status} />
+                        <span className="truncate">
+                          {categoryLabels[r.category as Category] ?? r.category}
+                        </span>
                       </span>
-                     <StatusBadge id={r.id} status={r.status} />
+                      <time
+                        dateTime={r.created_at}
+                        title={formatDate(r.created_at)}
+                        suppressHydrationWarning
+                        className="flex-none text-xs text-slate-400"
+                      >
+                        {timeAgo(r.created_at)}
+                      </time>
                     </div>
-                    {r.description && (
-                      <p className="mt-1 line-clamp-2 text-sm text-slate-600">{r.description}</p>
-                    )}
-                    <p className="mt-1 text-xs text-slate-400">{formatDate(r.created_at)}</p>
+                    <p className="mt-1.5 line-clamp-2 text-sm leading-snug text-slate-500">
+                      <StatusSelect id={r.id} status={r.status} />{" "}
+                      {r.description}
+                    </p>
                   </div>
                 </button>
               </li>
@@ -111,7 +123,31 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
   );
 }
 
-function StatusBadge({ id, status }: { id: string; status: string }) {
+// Same icon and color as the report's pin on the map.
+function CategoryBadge({ category, status }: { category: string; status: string }) {
+  const node = categoryIcons[category as Category] ?? categoryIcons.altul;
+  return (
+    <span
+      className="grid h-7 w-7 flex-none place-items-center rounded-full text-white shadow-sm"
+      style={{ backgroundColor: statusColors[status as Status] ?? "#64748b" }}
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2.25}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        className="h-4 w-4"
+      >
+        {node.map(([tag, attrs], i) => createElement(tag, { key: i, ...attrs }))}
+      </svg>
+    </span>
+  );
+}
+
+function StatusSelect({ id, status }: { id: string; status: string }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
 
@@ -128,24 +164,19 @@ function StatusBadge({ id, status }: { id: string; status: string }) {
   }
 
   return (
-    <span className="inline-flex flex-none items-center gap-1.5 rounded-full bg-slate-100 px-1 py-0.5 text-xs text-slate-600">
-      <span
-        className="h-1.5 w-1.5 rounded-full"
-        style={{ backgroundColor: statusColors[status as Status] ?? "#64748b" }}
-      />
-      <select
-        value={status}
-        disabled={saving}
-        onClick={(e) => e.stopPropagation()}
-        onChange={onChange}
-        className="bg-transparent text-xs text-slate-600 outline-none"
-      >
-        {statuses.map((s) => (
-          <option key={s} value={s}>
-            {statusLabels[s as Status]}
-          </option>
-        ))}
-      </select>
-    </span>
+    <select
+      value={status}
+      disabled={saving}
+      onClick={(e) => e.stopPropagation()}
+      onChange={onChange}
+      className="rounded border-0 bg-transparent p-0 font-medium outline-none"
+      style={{ color: statusInk[status as Status] ?? "#475569" }}
+    >
+      {statuses.map((s) => (
+        <option key={s} value={s}>
+          {statusLabels[s]}
+        </option>
+      ))}
+    </select>
   );
 }

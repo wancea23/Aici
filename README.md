@@ -33,7 +33,6 @@ You need Node 20 or newer.
    If you prefer, ask a teammate for the connection string and put it in `.env` by hand:
 
    DATABASE_URL=postgresql://user:password@host.neon.tech/dbname?sslmode=require
-   UPLOAD_DIR=./data/uploads
 
 3. Run it:
 

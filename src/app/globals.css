@@ -11,7 +11,39 @@
 }
 
 .maplibregl-popup-content {
-  border-radius: 0.75rem;
-  padding: 0.75rem;
-  box-shadow: 0 4px 16px rgb(15 23 42 / 0.15);
+  padding: 0;
+  overflow: hidden;
+  border-radius: 0.875rem;
+  box-shadow: 0 12px 32px -8px rgb(15 23 42 / 0.3), 0 2px 6px rgb(15 23 42 / 0.08);
+}
+
+.report-pin {
+  cursor: pointer;
+  color: #fbfdfd;
+}
+
+.report-pin > svg {
+  display: block;
+  overflow: visible;
+  transform-origin: 50% 100%;
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  filter: drop-shadow(0 2px 3px rgb(15 23 42 / 0.35));
+}
+
+.report-pin:hover > svg {
+  transform: scale(1.12);
+}
+
+.report-pin.is-selected {
+  z-index: 1;
+}
+
+.report-pin.is-selected > svg {
+  transform: scale(1.25);
+}
+
+.report-pin-shape {
+  fill: var(--pin);
+  stroke: #fbfdfd;
+  stroke-width: 2;
 }
