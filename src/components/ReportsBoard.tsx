@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { Report } from "@/lib/reports";
 import type { Selection } from "@/components/ReportsMap";
 import {
@@ -93,7 +94,7 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
                       <span className="text-sm font-medium">
                         {categoryLabels[r.category as Category] ?? r.category}
                       </span>
-                      <StatusBadge status={r.status} />
+                     <StatusBadge id={r.id} status={r.status} />
                     </div>
                     {r.description && (
                       <p className="mt-1 line-clamp-2 text-sm text-slate-600">{r.description}</p>
@@ -110,14 +111,41 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
   );
 }
 
-function StatusBadge({ status }: { status: string }) {
+function StatusBadge({ id, status }: { id: string; status: string }) {
+  const router = useRouter();
+  const [saving, setSaving] = useState(false);
+
+  async function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const next = e.target.value;
+    setSaving(true);
+    const res = await fetch(`/api/reports/${id}/status`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: next }),
+    });
+    setSaving(false);
+    if (res.ok) router.refresh();
+  }
+
   return (
-    <span className="inline-flex flex-none items-center gap-1.5 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
+    <span className="inline-flex flex-none items-center gap-1.5 rounded-full bg-slate-100 px-1 py-0.5 text-xs text-slate-600">
       <span
         className="h-1.5 w-1.5 rounded-full"
         style={{ backgroundColor: statusColors[status as Status] ?? "#64748b" }}
       />
-      {statusLabels[status as Status] ?? status}
+      <select
+        value={status}
+        disabled={saving}
+        onClick={(e) => e.stopPropagation()}
+        onChange={onChange}
+        className="bg-transparent text-xs text-slate-600 outline-none"
+      >
+        {statuses.map((s) => (
+          <option key={s} value={s}>
+            {statusLabels[s as Status]}
+          </option>
+        ))}
+      </select>
     </span>
   );
 }
