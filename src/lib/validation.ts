@@ -20,6 +20,24 @@ export const categoryLabels: Record<Category, string> = {
   altul: "Altceva",
 };
 
+export const statuses = ["nou", "in_lucru", "rezolvat", "respins"] as const;
+
+export type Status = (typeof statuses)[number];
+
+export const statusLabels: Record<Status, string> = {
+  nou: "Nou",
+  in_lucru: "În lucru",
+  rezolvat: "Rezolvat",
+  respins: "Respins",
+};
+
+export const statusColors: Record<Status, string> = {
+  nou: "#c25d59",
+  in_lucru: "#d9ac5e",
+  rezolvat: "#0d9488",
+  respins: "#515963",
+};
+
 export const reportInput = z.object({
   category: z.enum(categories),
   description: z.string().trim().max(1000).optional().default(""),

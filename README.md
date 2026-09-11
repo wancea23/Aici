@@ -13,6 +13,7 @@ University project for the course Development of Secure Applications.
 - Tailwind for the interface
 - PostgreSQL with PostGIS for the data, hosted on Neon
 - sharp for image handling
+- Leaflet for the map, with OpenStreetMap data
 
 ## Running it
 
@@ -49,7 +50,7 @@ empty database, create them once by running the SQL in `db/init.sql`.
 - `db/init.sql` sets up the tables and PostGIS
 - `src/app` holds the pages and the API routes
 - `src/lib` holds the database connection, input validation, and the image pipeline
-- `src/components` holds the report form
+- `src/components` holds the report form and the city hall map
 - `research/` holds the domain, legal, security, and stack research behind the project
 
 ## Security notes
