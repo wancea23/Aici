@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { createElement, useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { Report } from "@/lib/reports";
 import type { Selection } from "@/components/ReportsMap";
 import {
@@ -108,12 +109,7 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
                       </time>
                     </div>
                     <p className="mt-1.5 line-clamp-2 text-sm leading-snug text-slate-500">
-                      <span
-                        className="mr-1 font-medium"
-                        style={{ color: statusInk[r.status as Status] ?? "#475569" }}
-                      >
-                        {statusLabels[r.status as Status] ?? r.status}
-                      </span>{" "}
+                      <StatusSelect id={r.id} status={r.status} />{" "}
                       {r.description}
                     </p>
                   </div>
@@ -148,5 +144,39 @@ function CategoryBadge({ category, status }: { category: string; status: string 
         {node.map(([tag, attrs], i) => createElement(tag, { key: i, ...attrs }))}
       </svg>
     </span>
+  );
+}
+
+function StatusSelect({ id, status }: { id: string; status: string }) {
+  const router = useRouter();
+  const [saving, setSaving] = useState(false);
+
+  async function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const next = e.target.value;
+    setSaving(true);
+    const res = await fetch(`/api/reports/${id}/status`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: next }),
+    });
+    setSaving(false);
+    if (res.ok) router.refresh();
+  }
+
+  return (
+    <select
+      value={status}
+      disabled={saving}
+      onClick={(e) => e.stopPropagation()}
+      onChange={onChange}
+      className="rounded border-0 bg-transparent p-0 font-medium outline-none"
+      style={{ color: statusInk[status as Status] ?? "#475569" }}
+    >
+      {statuses.map((s) => (
+        <option key={s} value={s}>
+          {statusLabels[s]}
+        </option>
+      ))}
+    </select>
   );
 }
