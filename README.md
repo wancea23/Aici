@@ -9,15 +9,19 @@ University project for the course Development of Secure Applications.
 
 ## Stack
 
-- Next.js with TypeScript for the app
-- Tailwind for the interface
-- PostgreSQL with PostGIS for the data, hosted on Neon
-- sharp for image handling
-- MapLibre for the map, with OpenFreeMap tiles
+- Next.js 16 with React 19 and TypeScript for the app
+- Tailwind for the interface, lucide for the icons
+- PostgreSQL with PostGIS for the data, hosted on Neon. Report photos are stored in the database too
+- postgres.js for parameterized queries, zod for input validation
+- sharp to clean every uploaded photo (EXIF and GPS removed, re encoded to WebP)
+- MapLibre GL for the map, with OpenFreeMap tiles
+- Staff login: Argon2id password hashing (@node-rs/argon2), passkeys (SimpleWebAuthn), authenticator
+  app codes (Oslo OTP) and an ALTCHA proof of work against password guessing
+- node:test with tsx for the tests, ESLint 9 for linting
 
 ## Running it
 
-You need Node 20 or newer.
+You need Node 20.9 or newer.
 
 1. Install dependencies:
 
