@@ -6,13 +6,14 @@ import path from "node:path";
 const files = new Set(["maplibre-gl-worker.mjs", "maplibre-gl-shared.mjs"]);
 const dir = path.join(process.cwd(), "node_modules", "maplibre-gl", "dist");
 
-export async function GET(_req: Request, { params }: { params: { file: string } }) {
+export async function GET(_req: Request, { params }: { params: Promise<{ file: string }> }) {
+  const { file } = await params;
   // Only these two names, the request never picks a path.
-  if (!files.has(params.file)) {
+  if (!files.has(file)) {
     return new Response("Not found", { status: 404 });
   }
 
-  const body = await readFile(path.join(dir, params.file));
+  const body = await readFile(path.join(dir, file));
   return new Response(body, {
     headers: {
       "Content-Type": "text/javascript; charset=utf-8",

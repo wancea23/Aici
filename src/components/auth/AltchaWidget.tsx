@@ -1,0 +1,25 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import type {} from "altcha/types/react";
+
+// Proof of work solved in the browser, shown only after repeated failed logins.
+export default function AltchaWidget({ onPayload }: { onPayload: (payload: string | null) => void }) {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    // the widget registers a custom element, so it only loads in the browser
+    import("altcha").then(() => import("altcha/i18n/ro")).catch(() => {});
+
+    const el = ref.current;
+    if (!el) return;
+    const onState = (e: Event) => {
+      const { state, payload } = (e as CustomEvent<{ state: string; payload?: string }>).detail;
+      onPayload(state === "verified" && payload ? payload : null);
+    };
+    el.addEventListener("statechange", onState);
+    return () => el.removeEventListener("statechange", onState);
+  }, [onPayload]);
+
+  return <altcha-widget ref={ref} challenge="/api/auth/altcha" language="ro" suppressHydrationWarning />;
+}

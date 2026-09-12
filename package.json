@@ -6,31 +6,44 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint .",
+    "test": "tsx --conditions=react-server --test \"tests/**/*.test.ts\"",
+    "staff:create": "tsx --conditions=react-server --env-file=.env scripts/create-staff.ts"
   },
   "dependencies": {
+    "@node-rs/argon2": "2.2.1",
+    "@oslojs/encoding": "1.1.0",
+    "@oslojs/otp": "1.1.0",
+    "@simplewebauthn/browser": "14.0.0",
+    "@simplewebauthn/server": "14.0.1",
+    "altcha": "3.2.2",
+    "altcha-lib": "2.5.0",
     "lucide": "1.44.0",
     "maplibre-gl": "6.9.0",
-    "next": "^14.2.21",
+    "next": "16.3.5",
     "postgres": "3.4.4",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "sharp": "0.33.5",
+    "qrcode": "1.5.4",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1",
+    "sharp": "0.35.4",
     "zod": "3.23.8"
   },
   "devDependencies": {
     "@types/node": "20.16.10",
-    "@types/react": "18.3.11",
-    "@types/react-dom": "18.3.0",
+    "@types/qrcode": "1.5.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "autoprefixer": "10.4.20",
-    "eslint": "8.57.1",
-    "eslint-config-next": "^14.2.21",
-    "postcss": "8.4.47",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.5",
+    "postcss": "8.5.28",
     "tailwindcss": "3.4.13",
+    "tsx": "4.23.13",
     "typescript": "5.6.2"
   },
   "allowScripts": {
-    "sharp@0.33.5": true,
-    "unrs-resolver@1.12.2": true
+    "unrs-resolver@1.12.2": true,
+    "sharp@0.35.4": true
   }
 }

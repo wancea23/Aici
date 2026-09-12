@@ -4,6 +4,7 @@ import sql from "@/lib/db";
 import { reportInput } from "@/lib/validation";
 import { cleanPhoto } from "@/lib/image";
 import { listReports } from "@/lib/reports";
+import { requireStaffApi } from "@/lib/auth/dal";
 
 export const runtime = "nodejs";
 
@@ -53,6 +54,9 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ id }, { status: 201 });
 }
 
+// Submitting stays open to citizens, reading the list is for staff.
 export async function GET() {
-  return NextResponse.json(await listReports());
+  const auth = await requireStaffApi();
+  if (!auth.ok) return auth.response;
+  return NextResponse.json(await listReports(), { headers: { "Cache-Control": "no-store" } });
 }
