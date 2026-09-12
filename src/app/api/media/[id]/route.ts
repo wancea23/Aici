@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import sql from "@/lib/db";
 import { isUuid } from "@/lib/validation";
 import { requireStaffApi } from "@/lib/auth/dal";
+import { decryptBytes } from "@/lib/crypto";
 
 export const runtime = "nodejs";
 
@@ -20,7 +21,15 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     return new NextResponse("not found", { status: 404 });
   }
 
-  return new NextResponse(photo.data, {
+  let data: Buffer;
+  try {
+    data = decryptBytes(photo.data, `report:${id}:photo`);
+  } catch (err) {
+    console.error("could not decrypt photo", id, err);
+    return new NextResponse("photo unavailable", { status: 500 });
+  }
+
+  return new NextResponse(new Uint8Array(data), {
     headers: {
       "Content-Type": "image/webp",
       "Cache-Control": "private, max-age=3600",

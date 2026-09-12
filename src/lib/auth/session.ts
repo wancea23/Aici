@@ -17,7 +17,6 @@ export type StaffUser = {
 
 export type Session = {
   id: string;
-  mfaVerified: boolean;
   expiresAt: Date;
 };
 
@@ -25,30 +24,20 @@ export type SessionResult = { session: Session; user: StaffUser };
 
 type Db = typeof sql;
 
-// A session after the password only reaches the MFA step, and only for 10 minutes.
-const PENDING_SEC = 10 * 60;
 const IDLE_SEC = 30 * 60;
 const ABSOLUTE_SEC = 12 * 60 * 60;
 
 const tokenShape = /^[A-Za-z0-9_-]{43}$/;
 
-async function insertSession(
-  db: Db,
-  userId: string,
-  mfaVerified: boolean,
-  client: ClientInfo,
-  keepExpiresAt?: Date
-) {
+async function insertSession(db: Db, userId: string, client: ClientInfo, keepExpiresAt?: Date) {
   const { token, hash } = newToken();
-  const life = mfaVerified ? ABSOLUTE_SEC : PENDING_SEC;
-  const idle = mfaVerified ? IDLE_SEC : PENDING_SEC;
   const [row] = await db<{ expires_at: Date }[]>`
     with t as (
-      select coalesce(${keepExpiresAt ?? null}::timestamptz, now() + ${life}::int * interval '1 second') as expires_at
+      select coalesce(${keepExpiresAt ?? null}::timestamptz, now() + ${ABSOLUTE_SEC}::int * interval '1 second') as expires_at
     )
-    insert into staff_sessions (user_id, token_hash, mfa_verified, ip, user_agent, idle_expires_at, expires_at)
-    select ${userId}, ${hash}, ${mfaVerified}, ${client.ip}, ${client.userAgent},
-           least(now() + ${idle}::int * interval '1 second', t.expires_at), t.expires_at
+    insert into staff_sessions (user_id, token_hash, ip, user_agent, idle_expires_at, expires_at)
+    select ${userId}, ${hash}, ${client.ip}, ${client.userAgent},
+           least(now() + ${IDLE_SEC}::int * interval '1 second', t.expires_at), t.expires_at
     from t
     returning expires_at
   `;
@@ -78,23 +67,13 @@ export async function clearSessionCookie() {
   });
 }
 
-// Right after a correct password.
-export async function startPendingSession(userId: string, client: ClientInfo) {
+// After a correct password. Old expired rows of the same user are cleared on the way.
+export async function startSession(userId: string, client: ClientInfo) {
   await sql`
     delete from staff_sessions
     where user_id = ${userId} and (expires_at <= now() or idle_expires_at <= now())
   `;
-  const { token, expiresAt } = await insertSession(sql, userId, false, client);
-  await setSessionCookie(token, expiresAt);
-}
-
-// After the second factor: the pending session is thrown away and a new token is issued,
-// so a token seen before login is worth nothing afterwards.
-export async function upgradeSession(pendingId: string, userId: string, client: ClientInfo) {
-  const { token, expiresAt } = await sql.begin(async (tx) => {
-    await tx`delete from staff_sessions where id = ${pendingId}`;
-    return insertSession(tx as unknown as Db, userId, true, client);
-  });
+  const { token, expiresAt } = await insertSession(sql, userId, client);
   await setSessionCookie(token, expiresAt);
 }
 
@@ -103,7 +82,7 @@ export async function upgradeSession(pendingId: string, userId: string, client: 
 export async function replaceAllSessions(userId: string, client: ClientInfo, keepExpiresAt: Date) {
   const { token, expiresAt } = await sql.begin(async (tx) => {
     await tx`delete from staff_sessions where user_id = ${userId}`;
-    return insertSession(tx as unknown as Db, userId, true, client, keepExpiresAt);
+    return insertSession(tx as unknown as Db, userId, client, keepExpiresAt);
   });
   await setSessionCookie(token, expiresAt);
 }
@@ -119,7 +98,7 @@ async function validateSessionToken(token: string): Promise<SessionResult | null
   if (!tokenShape.test(token)) return null;
 
   const [row] = await sql`
-    select s.id, s.mfa_verified, s.expires_at,
+    select s.id, s.expires_at,
            s.last_active_at < now() - interval '5 minutes' as stale,
            u.id as user_id, u.email, u.role, u.force_password_reset
     from staff_sessions s
@@ -132,7 +111,7 @@ async function validateSessionToken(token: string): Promise<SessionResult | null
   if (!row) return null;
 
   // The idle timer slides, but the row is written at most every 5 minutes.
-  if (row.mfa_verified && row.stale) {
+  if (row.stale) {
     await sql`
       update staff_sessions
       set last_active_at = now(),
@@ -142,7 +121,7 @@ async function validateSessionToken(token: string): Promise<SessionResult | null
   }
 
   return {
-    session: { id: row.id, mfaVerified: row.mfa_verified, expiresAt: new Date(row.expires_at) },
+    session: { id: row.id, expiresAt: new Date(row.expires_at) },
     user: {
       id: row.user_id,
       email: row.email,

@@ -109,7 +109,7 @@ export async function acceptInvite(
   });
 }
 
-// A reset signs the person out everywhere. Their MFA stays as it was.
+// A reset signs the person out everywhere.
 export async function redeemReset(tokenId: string, userId: string, passwordHash: string) {
   return sql.begin(async (tx) => {
     const [taken] = await tx`
@@ -138,7 +138,7 @@ export async function changePassword(userId: string, passwordHash: string) {
   `;
 }
 
-export type StaffAction = "deactivate" | "reactivate" | "role" | "force_reset" | "reset_mfa";
+export type StaffAction = "deactivate" | "reactivate" | "role" | "force_reset";
 
 // Admin changes. Anything that changes what a person may do also ends their sessions.
 export async function applyStaffAction(userId: string, action: StaffAction, role?: Role) {
@@ -156,11 +156,6 @@ export async function applyStaffAction(userId: string, action: StaffAction, role
       case "force_reset":
         await tx`update staff_users set force_password_reset = true, updated_at = now() where id = ${userId}`;
         break;
-      case "reset_mfa":
-        // for a lost phone: the next login asks to set up a factor again
-        await tx`delete from staff_mfa_credentials where user_id = ${userId}`;
-        await tx`delete from staff_recovery_codes where user_id = ${userId}`;
-        break;
     }
     if (action !== "reactivate") {
       await tx`delete from staff_sessions where user_id = ${userId}`;
@@ -174,7 +169,6 @@ export type StaffListItem = {
   role: Role;
   isActive: boolean;
   forceReset: boolean;
-  factors: number;
   createdAt: string;
   lastLogin: string | null;
 };
@@ -182,9 +176,8 @@ export type StaffListItem = {
 export async function listStaff(): Promise<StaffListItem[]> {
   const rows = await sql`
     select u.id, u.email, u.role, u.is_active, u.force_password_reset, u.created_at,
-      (select count(*)::int from staff_mfa_credentials m where m.user_id = u.id and m.is_verified) as factors,
       (select max(a.created_at) from staff_audit_log a
-        where a.actor_id = u.id and a.action = 'auth.login.mfa' and a.status = 'success') as last_login
+        where a.actor_id = u.id and a.action = 'auth.login' and a.status = 'success') as last_login
     from staff_users u
     order by u.created_at
   `;
@@ -194,7 +187,6 @@ export async function listStaff(): Promise<StaffListItem[]> {
     role: r.role,
     isActive: r.is_active,
     forceReset: r.force_password_reset,
-    factors: r.factors,
     createdAt: new Date(r.created_at).toISOString(),
     lastLogin: r.last_login ? new Date(r.last_login).toISOString() : null,
   }));

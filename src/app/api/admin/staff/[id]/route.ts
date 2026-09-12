@@ -12,7 +12,6 @@ const input = z.discriminatedUnion("action", [
   z.object({ action: z.literal("reactivate") }),
   z.object({ action: z.literal("role"), role: z.enum(["operator", "admin"]) }),
   z.object({ action: z.literal("force_reset") }),
-  z.object({ action: z.literal("reset_mfa") }),
   z.object({ action: z.literal("reset_link") }),
 ]);
 
@@ -21,7 +20,6 @@ const logAction = {
   reactivate: "staff.reactivated",
   role: "staff.role_changed",
   force_reset: "staff.force_reset",
-  reset_mfa: "staff.mfa_reset",
   reset_link: "staff.reset_link",
 } as const;
 

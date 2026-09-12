@@ -26,7 +26,7 @@ export default async function InvitePage({
   return (
     <AuthCard
       title="Creează-ți contul"
-      subtitle={`Invitație pentru ${invite.email}, cu rolul ${roleLabels[invite.role]}. După parolă îți configurezi a doua metodă de verificare.`}
+      subtitle={`Invitație pentru ${invite.email}, cu rolul ${roleLabels[invite.role]}.`}
     >
       <PasswordForm mode="invite" token={token} email={invite.email} />
     </AuthCard>

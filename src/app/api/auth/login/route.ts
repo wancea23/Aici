@@ -7,7 +7,7 @@ import { challengeDue, clearLimit, peek, recordFailure, rules } from "@/lib/auth
 import { verifyAltcha } from "@/lib/auth/altcha";
 import { burnPasswordCheck, hashPassword, needsRehash, verifyPassword } from "@/lib/auth/password";
 import { findStaffByEmail } from "@/lib/auth/staff";
-import { startPendingSession } from "@/lib/auth/session";
+import { startSession } from "@/lib/auth/session";
 import { audit } from "@/lib/auth/audit";
 import { sha256 } from "@/lib/auth/tokens";
 import { safeNext } from "@/lib/auth/redirect";
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
       recordFailure(rules.loginAccount, accountKey),
     ]);
     await audit({
-      action: "auth.login.password",
+      action: "auth.login",
       status: "failure",
       targetType: user ? "staff_user" : undefined,
       targetId: user?.id,
@@ -74,16 +74,15 @@ export async function POST(req: Request) {
     await sql`update staff_users set password_hash = ${fresh}, updated_at = now() where id = ${user.id}`;
   }
 
-  await startPendingSession(user.id, client);
+  await startSession(user.id, client);
   await audit({
     actorId: user.id,
-    action: "auth.login.password",
+    action: "auth.login",
     status: "success",
     targetType: "staff_user",
     targetId: user.id,
     client,
   });
 
-  const next = safeNext(parsed.data.next);
-  return json({ next: `/login/mfa?next=${encodeURIComponent(next)}` });
+  return json({ next: user.force_password_reset ? "/cont/parola" : safeNext(parsed.data.next) });
 }

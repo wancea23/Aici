@@ -28,7 +28,7 @@ export default async function ResetPage({
   return (
     <AuthCard
       title="Parolă nouă"
-      subtitle={`Pentru ${user.email}. După salvare te autentifici din nou, cu parola nouă și a doua metodă de verificare.`}
+      subtitle={`Pentru ${user.email}. După salvare te autentifici din nou cu parola nouă.`}
     >
       <PasswordForm mode="reset" token={token} email={user.email} />
     </AuthCard>

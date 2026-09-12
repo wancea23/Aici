@@ -2,7 +2,6 @@ export type ApiData = {
   error?: string;
   next?: string;
   challenge?: boolean;
-  recoveryCodes?: string[];
   link?: string;
   [key: string]: unknown;
 };

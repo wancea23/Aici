@@ -15,8 +15,9 @@ export type Rule = {
 export const rules = {
   loginIp: { name: "login-ip", windowSec: 15 * 60, max: 50, challengeAfter: 20 },
   loginAccount: { name: "login-account", windowSec: 60 * 60, max: 100, backoffAfter: 5, challengeAfter: 10 },
-  mfa: { name: "mfa", windowSec: 15 * 60, max: 20, backoffAfter: 3 },
+  password: { name: "password", windowSec: 15 * 60, max: 20, backoffAfter: 3 },
   tokenIp: { name: "token-ip", windowSec: 15 * 60, max: 30 },
+  reportIp: { name: "report-ip", windowSec: 60 * 60, max: 20 },
 } satisfies Record<string, Rule>;
 
 export type LimitState = { blocked: boolean; retryAfter: number; needsChallenge: boolean };
@@ -81,6 +82,9 @@ export async function recordFailure(rule: Rule, id: string) {
 
   return row.attempts;
 }
+
+// For limits that count every request, not only the failed ones.
+export const countAttempt = recordFailure;
 
 export function challengeDue(rule: Rule, attempts: number) {
   return rule.challengeAfter !== undefined && attempts >= rule.challengeAfter;

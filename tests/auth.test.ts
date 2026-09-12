@@ -1,20 +1,15 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { generateHOTP } from "@oslojs/otp";
 
-// Fixed secrets for the tests, set before any auth module reads them.
+// Fixed secrets for the tests, set before any module reads them.
 process.env.STAFF_PASSWORD_PEPPER = "11".repeat(32);
-process.env.MFA_ENCRYPTION_KEY = "22".repeat(32);
+process.env.DATA_ENCRYPTION_KEY = "22".repeat(32);
 process.env.ALTCHA_HMAC_KEY = "33".repeat(32);
-process.env.WEBAUTHN_RP_ID = "localhost";
-process.env.WEBAUTHN_ORIGIN = "http://localhost:3000";
 
 const load = {
   password: () => import("../src/lib/auth/password"),
   tokens: () => import("../src/lib/auth/tokens"),
-  totp: () => import("../src/lib/auth/totp"),
-  recovery: () => import("../src/lib/auth/recovery"),
   redirect: () => import("../src/lib/auth/redirect"),
   csrf: () => import("../src/lib/auth/csrf"),
   altcha: () => import("../src/lib/auth/altcha"),
@@ -84,42 +79,6 @@ test("tokens", async () => {
   assert.equal(safeEqual("abc", "abc"), true);
   assert.equal(safeEqual("abc", "abd"), false);
   assert.equal(safeEqual("abc", "abcd"), false);
-});
-
-test("TOTP secret encryption is bound to the user", async () => {
-  const { newTotpSecret, encryptSecret, decryptSecret } = await load.totp();
-  const secret = newTotpSecret();
-  const enc = encryptSecret(secret, "user-a");
-  assert.deepEqual(decryptSecret(enc, "user-a"), secret);
-  assert.throws(() => decryptSecret(enc, "user-b"));
-  assert.throws(() => decryptSecret({ ...enc, tag: Buffer.alloc(16).toString("base64") }, "user-a"));
-});
-
-test("TOTP codes and steps", async () => {
-  const { newTotpSecret, matchTotp } = await load.totp();
-  const secret = newTotpSecret();
-  const now = 1_757_000_000_000;
-  const step = Math.floor(now / 30000);
-  const code = (s: number) => generateHOTP(secret, BigInt(s), 6);
-
-  assert.equal(matchTotp(secret, code(step), now), step);
-  assert.equal(matchTotp(secret, code(step - 1), now), step - 1);
-  assert.equal(matchTotp(secret, code(step + 1), now), step + 1);
-  assert.equal(matchTotp(secret, code(step - 2), now), null);
-  assert.equal(matchTotp(secret, "12a456", now), null);
-  // the returned step is what the database compares with totp_last_step, so a reused
-  // code gives the same step and is refused there
-  assert.equal(matchTotp(secret, code(step), now + 20000), step);
-});
-
-test("recovery codes", async () => {
-  const { newRecoveryCodes, hashRecoveryCode } = await load.recovery();
-  const codes = newRecoveryCodes();
-  assert.equal(codes.length, 10);
-  assert.equal(new Set(codes).size, 10);
-  for (const c of codes) assert.match(c, /^[A-Z2-7]{4}(-[A-Z2-7]{4}){3}$/);
-  const typed = codes[0].toLowerCase().replace(/-/g, " ");
-  assert.equal(hashRecoveryCode(typed), hashRecoveryCode(codes[0]));
 });
 
 test("safeNext keeps redirects on this site", async () => {

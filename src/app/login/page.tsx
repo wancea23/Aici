@@ -14,9 +14,7 @@ export default async function LoginPage({
 }) {
   const next = safeNext((await searchParams).next);
 
-  const current = await currentSession();
-  if (current?.session.mfaVerified) redirect(next);
-  if (current) redirect(`/login/mfa?next=${encodeURIComponent(next)}`);
+  if (await currentSession()) redirect(next);
 
   return (
     <AuthCard

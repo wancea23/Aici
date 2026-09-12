@@ -1,7 +1,7 @@
 import "server-only";
 import { CappedMap, createChallenge, randomInt, verifySolution, type Payload } from "altcha-lib";
 import { deriveKey } from "altcha-lib/algorithms/pbkdf2";
-import { authEnv } from "@/lib/auth/env";
+import { serverEnv } from "@/lib/env";
 
 // Signatures already accepted, so one solved puzzle can't be replayed.
 const used = new CappedMap<string, true>({ maxSize: 10_000 });
@@ -13,7 +13,7 @@ export function newChallenge() {
     cost: 5000,
     counter: randomInt(5000, 10000),
     deriveKey,
-    hmacSignatureSecret: authEnv().ALTCHA_HMAC_KEY,
+    hmacSignatureSecret: serverEnv().ALTCHA_HMAC_KEY,
     expiresAt: new Date(Date.now() + 10 * 60 * 1000),
   });
 }
@@ -38,7 +38,7 @@ export async function verifyAltcha(payload: unknown): Promise<boolean> {
       challenge: data.challenge,
       solution: data.solution,
       deriveKey,
-      hmacSignatureSecret: authEnv().ALTCHA_HMAC_KEY,
+      hmacSignatureSecret: serverEnv().ALTCHA_HMAC_KEY,
     });
     return result.verified && !result.expired;
   } catch {

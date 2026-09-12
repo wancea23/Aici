@@ -28,12 +28,12 @@ export async function POST(req: Request) {
   const client = clientInfo(req);
   const limitKey = `password:${auth.user.id}`;
 
-  const limit = await peek(rules.mfa, limitKey);
+  const limit = await peek(rules.password, limitKey);
   if (limit.blocked) return tooMany(limit.retryAfter);
 
   const user = await findStaffById(auth.user.id);
   if (!user || !(await verifyPassword(user.password_hash, current))) {
-    await recordFailure(rules.mfa, limitKey);
+    await recordFailure(rules.password, limitKey);
     await audit({ actorId: auth.user.id, action: "auth.password.changed", status: "failure", client });
     return fail(400, "Parola actuală e greșită.");
   }
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 
   await changePassword(user.id, await hashPassword(password));
   await replaceAllSessions(user.id, client, auth.session.expiresAt);
-  await clearLimit(rules.mfa, limitKey);
+  await clearLimit(rules.password, limitKey);
   await audit({ actorId: user.id, action: "auth.password.changed", status: "success", client });
 
   return json({ next: "/panou" });

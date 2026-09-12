@@ -16,7 +16,7 @@ const input = z.object({
 
 const EXPIRED = "Invitația nu mai este valabilă. Cere una nouă administratorului.";
 
-// The invited person picks a password. MFA is set up at the first login right after.
+// The invited person picks a password and can sign in right after.
 export async function POST(req: Request) {
   if (!sameOrigin(req)) return fail(403, "Cerere respinsă.");
 

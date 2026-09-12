@@ -8,7 +8,7 @@ import { formatDate } from "@/lib/format";
 import type { StaffListItem } from "@/lib/auth/staff";
 
 type Role = StaffListItem["role"];
-type Action = "deactivate" | "reactivate" | "role" | "force_reset" | "reset_mfa" | "reset_link";
+type Action = "deactivate" | "reactivate" | "role" | "force_reset" | "reset_link";
 
 const roleNames: Record<Role, string> = { operator: "Operator", admin: "Administrator" };
 const card = "rounded-2xl border border-slate-200 bg-white p-6 shadow-sm";
@@ -17,8 +17,6 @@ const small = "rounded-md border border-slate-300 px-2 py-1 text-xs font-medium 
 const confirmText: Partial<Record<Action, string>> = {
   deactivate: "Dezactivezi contul? Toate sesiunile lui se închid imediat.",
   force_reset: "Contul va trebui să aleagă o parolă nouă după autentificare. Sesiunile active se închid.",
-  reset_mfa:
-    "Ștergi metodele de verificare ale contului? La următoarea autentificare le configurează din nou. Folosește asta doar dacă persoana și-a pierdut telefonul sau cheia.",
 };
 
 export default function StaffAdmin({ staff, selfId }: { staff: StaffListItem[]; selfId: string }) {
@@ -144,13 +142,12 @@ export default function StaffAdmin({ staff, selfId }: { staff: StaffListItem[]; 
       <section className={card}>
         <h2 className="font-semibold">Personal</h2>
         <div className="mt-4 overflow-x-auto">
-          <table className="w-full min-w-[52rem] text-left text-sm">
+          <table className="w-full min-w-[46rem] text-left text-sm">
             <thead className="text-xs text-slate-400">
               <tr>
                 <th className="py-2 pr-4 font-medium">Email</th>
                 <th className="py-2 pr-4 font-medium">Rol</th>
                 <th className="py-2 pr-4 font-medium">Stare</th>
-                <th className="py-2 pr-4 font-medium">Doi pași</th>
                 <th className="py-2 pr-4 font-medium">Ultima intrare</th>
                 <th className="py-2 font-medium">Acțiuni</th>
               </tr>
@@ -180,9 +177,6 @@ export default function StaffAdmin({ staff, selfId }: { staff: StaffListItem[]; 
                       {m.isActive ? "Activ" : <span className="text-red-600">Dezactivat</span>}
                       {m.forceReset && <span className="block text-xs text-amber-700">parolă nouă cerută</span>}
                     </td>
-                    <td className="py-3 pr-4">
-                      {m.factors > 0 ? `${m.factors} ${m.factors === 1 ? "metodă" : "metode"}` : "neconfigurat"}
-                    </td>
                     <td className="whitespace-nowrap py-3 pr-4 text-slate-500">
                       {m.lastLogin ? formatDate(m.lastLogin) : "niciodată"}
                     </td>
@@ -198,9 +192,6 @@ export default function StaffAdmin({ staff, selfId }: { staff: StaffListItem[]; 
                           )}
                           <button type="button" disabled={busy} onClick={() => act(m, "force_reset")} className={small}>
                             Cere parolă nouă
-                          </button>
-                          <button type="button" disabled={busy} onClick={() => act(m, "reset_mfa")} className={small}>
-                            Resetează doi pași
                           </button>
                           {m.isActive ? (
                             <button type="button" disabled={busy} onClick={() => act(m, "deactivate")} className={small}>

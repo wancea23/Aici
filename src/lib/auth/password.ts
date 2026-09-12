@@ -2,7 +2,7 @@ import "server-only";
 import { createHash, createHmac, randomBytes } from "node:crypto";
 import { availableParallelism } from "node:os";
 import { hash, parseOptions, verify } from "@node-rs/argon2";
-import { authEnv } from "@/lib/auth/env";
+import { serverEnv } from "@/lib/env";
 
 export const MIN_LENGTH = 15;
 export const MAX_LENGTH = 128;
@@ -69,7 +69,7 @@ export async function validateNewPassword(password: string, email?: string): Pro
 // The pepper lives in .env, not in the database, so a stolen table alone can't be cracked offline.
 // Base64 because the library's verify() only takes text, while hash() also takes raw bytes.
 function peppered(password: string) {
-  const key = Buffer.from(authEnv().STAFF_PASSWORD_PEPPER, "hex");
+  const key = Buffer.from(serverEnv().STAFF_PASSWORD_PEPPER, "hex");
   return createHmac("sha256", key).update(normalizePassword(password)).digest("base64");
 }
 

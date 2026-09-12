@@ -4,6 +4,8 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(self), geolocation=(self), microphone=()" },
+  // Browsers only honour this over HTTPS, so it does nothing on localhost.
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
 ];
 
 const nextConfig = {

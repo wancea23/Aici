@@ -1,9 +1,12 @@
 create extension if not exists postgis;
 
+-- Description and the exact location are encrypted by the app (AES-256-GCM, key in .env).
+-- geom only keeps the point rounded to about 100 m, for map queries and duplicate checks.
 create table if not exists reports (
   id uuid primary key default gen_random_uuid(),
   category text not null,
   description text not null default '',
+  location text not null,
   status text not null default 'nou',
   geom geometry(Point, 4326) not null,
   created_at timestamptz not null default now()
@@ -12,7 +15,7 @@ create table if not exists reports (
 create index if not exists reports_geom_idx on reports using gist (geom);
 create index if not exists reports_created_idx on reports (created_at desc);
 
--- The cleaned webp of each report. In the database for now, object storage later.
+-- The cleaned webp of each report, encrypted. In the database for now, object storage later.
 create table if not exists report_photos (
   report_id uuid primary key references reports (id) on delete cascade,
   data bytea not null,
@@ -35,14 +38,10 @@ create table if not exists staff_users (
 create unique index if not exists staff_users_email_idx on staff_users (lower(email));
 
 -- The cookie holds the token, the database only its SHA-256.
--- A session stays limited to the MFA pages until mfa_verified is true.
 create table if not exists staff_sessions (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references staff_users (id) on delete cascade,
   token_hash text not null unique,
-  mfa_verified boolean not null default false,
-  challenge text,
-  challenge_expires_at timestamptz,
   ip text,
   user_agent text,
   created_at timestamptz not null default now(),
@@ -52,38 +51,6 @@ create table if not exists staff_sessions (
 );
 
 create index if not exists staff_sessions_user_idx on staff_sessions (user_id);
-
-create table if not exists staff_mfa_credentials (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references staff_users (id) on delete cascade,
-  mfa_type text not null check (mfa_type in ('totp', 'webauthn')),
-  label text not null default '',
-  -- TOTP secret, encrypted with AES-256-GCM
-  encrypted_secret text,
-  secret_iv text,
-  secret_tag text,
-  -- Last accepted 30 second step, so a code can't be used twice
-  totp_last_step bigint,
-  webauthn_credential_id text unique,
-  webauthn_public_key bytea,
-  webauthn_counter bigint not null default 0,
-  webauthn_transports text[],
-  is_verified boolean not null default false,
-  created_at timestamptz not null default now(),
-  last_used_at timestamptz
-);
-
-create index if not exists staff_mfa_user_idx on staff_mfa_credentials (user_id);
-
-create table if not exists staff_recovery_codes (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references staff_users (id) on delete cascade,
-  code_hash text not null,
-  used_at timestamptz,
-  created_at timestamptz not null default now()
-);
-
-create index if not exists staff_recovery_user_idx on staff_recovery_codes (user_id) where used_at is null;
 
 -- Invitations and password reset links. Only the hash of the token is kept.
 create table if not exists staff_credential_tokens (

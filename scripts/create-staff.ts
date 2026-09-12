@@ -99,7 +99,7 @@ async function main() {
     client: { ip: null, userAgent: "cli" },
     details: { email, role },
   });
-  console.log(`Cont creat pentru ${email} (${role}). La prima intrare se configurează a doua metodă de verificare.`);
+  console.log(`Cont creat pentru ${email} (${role}). Se poate autentifica la /login.`);
 }
 
 main()

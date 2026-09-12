@@ -13,6 +13,8 @@ const sql =
     max: 10,
     ssl: useSsl ? "require" : undefined,
     prepare: false,
+    // Postgres notices like "already exists, skipping" are not errors, keep them out of the console.
+    onnotice: () => {},
   });
 
 if (process.env.NODE_ENV !== "production") {
