@@ -247,13 +247,8 @@ export default function ReportForm() {
           ) : (
             <span className="text-sm text-slate-500">Fă o poză sau alege una</span>
           )}
-          <input
-            type="file"
-            accept="image/*"
-            capture="environment"
-            className="hidden"
-            onChange={onPhoto}
-          />
+          {/* no capture attribute, so phones offer both the camera and the gallery */}
+          <input type="file" accept="image/*" className="hidden" onChange={onPhoto} />
         </label>
         <p className={`mt-2 text-xs ${geoError && !coords ? "text-red-600" : "text-slate-400"}`}>
           {coords
