@@ -74,3 +74,9 @@ export const reportInput = z.object({
 export const statusInput = z.object({
   status: z.enum(statuses),
 });
+
+const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+export function isUuid(value: string) {
+  return uuidPattern.test(value);
+}

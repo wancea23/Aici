@@ -160,6 +160,10 @@ function StatusSelect({ id, status }: { id: string; status: string }) {
       body: JSON.stringify({ status: next }),
     });
     setSaving(false);
+    if (res.status === 401) {
+      router.push("/login?next=/panou");
+      return;
+    }
     if (res.ok) router.refresh();
   }
 
