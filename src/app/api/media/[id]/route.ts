@@ -3,17 +3,24 @@ import sql from "@/lib/db";
 import { isUuid } from "@/lib/validation";
 import { requireStaffApi } from "@/lib/auth/dal";
 import { decryptBytes } from "@/lib/crypto";
+import { publicDetails } from "@/lib/env";
 
 export const runtime = "nodejs";
 
-// Photos are for staff only until faces and plates are blurred for a public feed.
+// Staff see every photo. Faces and plates aren't blurred yet, so everyone else sees them only
+// while PUBLIC_DETAILS is on, and only for reports that are on the public map.
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await requireStaffApi();
-  if (!auth.ok) return auth.response;
+  if (!auth.ok && !publicDetails()) return auth.response;
 
   const { id } = await params;
   if (!isUuid(id)) {
     return new NextResponse("not found", { status: 404 });
+  }
+
+  if (!auth.ok) {
+    const [onMap] = await sql`select 1 from reports where id = ${id} and status <> 'respins'`;
+    if (!onMap) return new NextResponse("not found", { status: 404 });
   }
 
   const [photo] = await sql`select data from report_photos where report_id = ${id}`;

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import sql from "@/lib/db";
 import { nearbyInput } from "@/lib/validation";
+import { readDescription } from "@/lib/reports";
+import { publicDetails } from "@/lib/env";
 
 const RADIUS_METERS = 10;
 
@@ -30,5 +32,14 @@ export async function GET(req: NextRequest) {
     limit 5
   `;
 
-  return NextResponse.json(rows);
+  // Descriptions are stored encrypted and go out readable only while PUBLIC_DETAILS is on.
+  const details = publicDetails();
+  return NextResponse.json(
+    rows.map((r) => ({
+      id: r.id,
+      status: r.status,
+      created_at: r.created_at,
+      description: details ? readDescription(r.id, r.description) : "",
+    }))
+  );
 }
