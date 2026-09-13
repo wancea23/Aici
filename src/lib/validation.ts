@@ -71,6 +71,12 @@ export const reportInput = z.object({
   lng: z.coerce.number().min(-180).max(180),
 });
 
+export const nearbyInput = z.object({
+  category: z.enum(categories),
+  lat: z.coerce.number().min(-90).max(90),
+  lng: z.coerce.number().min(-180).max(180),
+});
+
 export const statusInput = z.object({
   status: z.enum(statuses),
 });
