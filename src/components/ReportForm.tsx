@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { categories, categoryLabels, statusLabels, type Category, type Status } from "@/lib/validation";
+import { shrinkPhoto } from "@/lib/shrink-photo";
 
 type Coords = { lat: number; lng: number };
 
@@ -49,7 +50,7 @@ export default function ReportForm() {
     setBusy(true);
     try {
       const body = new FormData();
-      body.set("photo", photo!);
+      body.set("photo", await shrinkPhoto(photo!), "photo.jpg");
       body.set("category", category);
       body.set("description", description);
       body.set("lat", String(coords!.lat));
