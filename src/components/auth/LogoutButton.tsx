@@ -4,14 +4,22 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { sendJson } from "@/components/auth/api";
 
-export default function LogoutButton({ className }: { className?: string }) {
+export default function LogoutButton({
+  className,
+  endpoint = "/api/auth/logout",
+  to = "/login",
+}: {
+  className?: string;
+  endpoint?: string;
+  to?: string;
+}) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
 
   async function logout() {
     setBusy(true);
-    await sendJson("/api/auth/logout");
-    router.push("/login");
+    await sendJson(endpoint);
+    router.push(to);
     router.refresh();
   }
 

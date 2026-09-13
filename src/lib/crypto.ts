@@ -1,5 +1,5 @@
 import "server-only";
-import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
+import { createCipheriv, createDecipheriv, createHmac, hkdfSync, randomBytes } from "node:crypto";
 import { serverEnv } from "@/lib/env";
 
 // Citizen data is encrypted by the app with a key that never goes into the database,
@@ -12,6 +12,15 @@ const BYTES_VERSION = 1;
 
 function key() {
   return Buffer.from(serverEnv().DATA_ENCRYPTION_KEY, "hex");
+}
+
+// An encrypted email can't be searched, so each one also gets a keyed hash to look it up by.
+// Its key is derived from the data key, so there is no extra secret to pass around.
+let indexKey: Buffer | null = null;
+
+export function emailIndex(email: string) {
+  indexKey ??= Buffer.from(hkdfSync("sha256", key(), Buffer.alloc(0), "aici email index", 32));
+  return createHmac("sha256", indexKey).update(email.trim().toLowerCase()).digest("hex");
 }
 
 function seal(plain: Buffer, context: string) {

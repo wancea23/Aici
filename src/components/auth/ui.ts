@@ -8,3 +8,5 @@ export const secondaryButton =
   "rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 disabled:opacity-50";
 
 export const labelClass = "mb-1 block text-sm font-medium";
+
+export const linkClass = "font-medium text-brand-700 hover:underline";

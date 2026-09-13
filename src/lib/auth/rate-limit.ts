@@ -18,6 +18,11 @@ export const rules = {
   password: { name: "password", windowSec: 15 * 60, max: 20, backoffAfter: 3 },
   tokenIp: { name: "token-ip", windowSec: 15 * 60, max: 30 },
   reportIp: { name: "report-ip", windowSec: 60 * 60, max: 20 },
+  registerIp: { name: "register-ip", windowSec: 60 * 60, max: 20 },
+  // so the sign up form can't be used to flood someone's inbox
+  registerEmail: { name: "register-email", windowSec: 60 * 60, max: 5 },
+  citizenLoginIp: { name: "citizen-login-ip", windowSec: 15 * 60, max: 50, challengeAfter: 20 },
+  citizenLoginAccount: { name: "citizen-login-account", windowSec: 60 * 60, max: 100, backoffAfter: 5, challengeAfter: 10 },
 } satisfies Record<string, Rule>;
 
 export type LimitState = { blocked: boolean; retryAfter: number; needsChallenge: boolean };

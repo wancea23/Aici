@@ -7,6 +7,43 @@ import { encryptBytes, encryptText, isEncryptedBytes, isEncryptedText } from "@/
 const coarse = (x: number) => Math.round(x * 1000) / 1000;
 
 async function main() {
+  // Citizen accounts, the same tables as in init.sql.
+  await sql`
+    create table if not exists citizen_users (
+      id uuid primary key default gen_random_uuid(),
+      email_hash text not null unique,
+      email text not null,
+      password_hash text not null,
+      email_verified_at timestamptz not null default now(),
+      created_at timestamptz not null default now(),
+      updated_at timestamptz not null default now()
+    )
+  `;
+  await sql`
+    create table if not exists citizen_signups (
+      id uuid primary key default gen_random_uuid(),
+      email_hash text not null,
+      email text not null,
+      password_hash text not null,
+      token_hash text not null unique,
+      expires_at timestamptz not null,
+      created_at timestamptz not null default now()
+    )
+  `;
+  await sql`create index if not exists citizen_signups_email_idx on citizen_signups (email_hash)`;
+  await sql`
+    create table if not exists citizen_sessions (
+      id uuid primary key default gen_random_uuid(),
+      user_id uuid not null references citizen_users (id) on delete cascade,
+      token_hash text not null unique,
+      created_at timestamptz not null default now(),
+      last_active_at timestamptz not null default now(),
+      idle_expires_at timestamptz not null,
+      expires_at timestamptz not null
+    )
+  `;
+  await sql`create index if not exists citizen_sessions_user_idx on citizen_sessions (user_id)`;
+
   // The encrypted location column, and what the removed second login step left behind.
   await sql`alter table reports add column if not exists location text`;
   await sql`drop table if exists staff_mfa_credentials`;

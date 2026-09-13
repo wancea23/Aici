@@ -1,12 +1,19 @@
 import Link from "next/link";
 
+const taglines = {
+  staff: "Acces pentru personalul primăriei",
+  citizen: "See it. Report it. Fix it.",
+};
+
 export default function AuthCard({
   title,
   subtitle,
+  audience = "staff",
   children,
 }: {
   title: string;
-  subtitle?: string;
+  subtitle?: React.ReactNode;
+  audience?: keyof typeof taglines;
   children: React.ReactNode;
 }) {
   return (
@@ -15,7 +22,7 @@ export default function AuthCard({
         <Link href="/" className="text-2xl font-semibold tracking-tight text-brand-700">
           Aici
         </Link>
-        <p className="mt-1 text-slate-500">Acces pentru personalul primăriei</p>
+        <p className="mt-1 text-slate-500">{taglines[audience]}</p>
       </header>
 
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
