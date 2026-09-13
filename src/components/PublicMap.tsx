@@ -14,7 +14,8 @@ const ReportsMap = dynamic(() => import("@/components/ReportsMap"), {
 // Rejected reports are not on the public map, so they get no place in the legend either.
 const shown = statuses.filter((s) => s !== "respins");
 
-export default function PublicMap({ reports }: { reports: MapReport[] }) {
+// details: photos and descriptions in the popups, on while PUBLIC_DETAILS is set
+export default function PublicMap({ reports, details }: { reports: MapReport[]; details: boolean }) {
   const [selection, setSelection] = useState<Selection>(null);
   const pick = useCallback((id: string) => setSelection({ id, from: "map" }), []);
 
@@ -34,7 +35,7 @@ export default function PublicMap({ reports }: { reports: MapReport[] }) {
       </div>
 
       <div className="isolate h-[70vh] min-h-[24rem] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        <ReportsMap reports={reports} selection={selection} onPick={pick} photos={false} />
+        <ReportsMap reports={reports} selection={selection} onPick={pick} photos={details} />
       </div>
     </>
   );

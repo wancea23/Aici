@@ -49,3 +49,9 @@ export function mailEnv() {
   }
   return mail;
 }
+
+// The beta shows photos and descriptions on the public map. Off unless set, since faces and
+// plates aren't blurred and nobody reads the texts before they go out.
+export function publicDetails() {
+  return process.env.PUBLIC_DETAILS === "true";
+}

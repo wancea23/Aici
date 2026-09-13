@@ -11,13 +11,15 @@ export type Report = {
   created_at: string;
 };
 
-export type PublicReport = Pick<Report, "id" | "category" | "status" | "lat" | "lng" | "created_at">;
+export type PublicReport = Pick<Report, "id" | "category" | "status" | "lat" | "lng" | "created_at"> & {
+  description?: string;
+};
 
-// Everything the public map shows. No photo, no description, and the point rounded to
-// about 100 m even for old rows, so nothing here needs the key. Rejected reports stay off.
-export async function listPublicReports(limit = 500): Promise<PublicReport[]> {
+// What the public map shows: the point rounded to about 100 m even for old rows, and no
+// rejected reports. The description only comes along while PUBLIC_DETAILS is on.
+export async function listPublicReports(details: boolean, limit = 500): Promise<PublicReport[]> {
   const rows = await sql`
-    select id, category, status,
+    select id, category, status, description,
            round(ST_Y(geom)::numeric, 3)::float8 as lat,
            round(ST_X(geom)::numeric, 3)::float8 as lng,
            created_at
@@ -33,7 +35,18 @@ export async function listPublicReports(limit = 500): Promise<PublicReport[]> {
     lat: r.lat,
     lng: r.lng,
     created_at: new Date(r.created_at).toISOString(),
+    ...(details ? { description: readDescription(r.id, r.description) } : {}),
   }));
+}
+
+// One row that can't be decrypted shouldn't take a whole page down.
+export function readDescription(id: string, value: string) {
+  try {
+    return decryptText(value, `report:${id}:description`);
+  } catch (err) {
+    console.error("could not decrypt report", id, err);
+    return "";
+  }
 }
 
 export async function listReports(limit = 100): Promise<Report[]> {

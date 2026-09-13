@@ -148,7 +148,9 @@ public report form refuses uploads over 10 MB before reading them and takes at m
 an hour from one address.
 
 The public map at `/harta` shows every report that wasn't rejected, with its category, status
-and date, at the point rounded to about 100 m. Photos and descriptions stay with the city hall.
+and date, at the point rounded to about 100 m. Photos and descriptions stay with the city hall,
+unless `PUBLIC_DETAILS=true`, which the beta has on for now: then anyone sees them on the map
+and in the duplicate check, faces and plates included, since nothing blurs or reviews them yet.
 
 Virus scanning comes in later work.
 
