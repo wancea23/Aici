@@ -3,9 +3,13 @@ import { createHash, createHmac, randomBytes } from "node:crypto";
 import { availableParallelism } from "node:os";
 import { hash, parseOptions, verify } from "@node-rs/argon2";
 import { serverEnv } from "@/lib/env";
+import { citizenPasswordChecks } from "@/lib/auth/password-rules";
 
 export const MIN_LENGTH = 15;
 export const MAX_LENGTH = 128;
+
+// Staff follow the c5 research. Citizens get the rules people know from other sites.
+export type PasswordPolicy = "staff" | "citizen";
 
 // Argon2id with the OWASP minimum. Algorithm is a const enum the library can't
 // export under isolatedModules, so 2 is Argon2id written out.
@@ -16,11 +20,19 @@ export function normalizePassword(password: string) {
 }
 
 // Local rules only. Returns a message for the user, or null when the password is fine.
-export function checkPasswordRules(password: string, email?: string): string | null {
+export function checkPasswordRules(
+  password: string,
+  email?: string,
+  policy: PasswordPolicy = "staff"
+): string | null {
   const pw = normalizePassword(password);
   const length = [...pw].length;
-  if (length < MIN_LENGTH) return `Parola trebuie să aibă cel puțin ${MIN_LENGTH} caractere.`;
+  if (policy === "staff" && length < MIN_LENGTH) return `Parola trebuie să aibă cel puțin ${MIN_LENGTH} caractere.`;
   if (length > MAX_LENGTH) return `Parola poate avea cel mult ${MAX_LENGTH} caractere.`;
+  if (policy === "citizen") {
+    const missing = citizenPasswordChecks(pw).filter((check) => !check.ok);
+    if (missing.length) return `Parola trebuie să aibă ${missing.map((check) => check.label).join(", ")}.`;
+  }
   if (/^(.)\1*$/su.test(pw)) return "Parola nu poate fi un singur caracter repetat.";
 
   const local = email?.split("@")[0]?.toLowerCase() ?? "";
@@ -52,8 +64,12 @@ export async function isBreached(password: string): Promise<boolean> {
   return false;
 }
 
-export async function validateNewPassword(password: string, email?: string): Promise<string | null> {
-  const ruleError = checkPasswordRules(password, email);
+export async function validateNewPassword(
+  password: string,
+  email?: string,
+  policy: PasswordPolicy = "staff"
+): Promise<string | null> {
+  const ruleError = checkPasswordRules(password, email, policy);
   if (ruleError) return ruleError;
   try {
     if (await isBreached(password)) {

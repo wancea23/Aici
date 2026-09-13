@@ -6,7 +6,16 @@ import AltchaWidget from "@/components/auth/AltchaWidget";
 import { sendJson } from "@/components/auth/api";
 import { inputClass, labelClass, primaryButton } from "@/components/auth/ui";
 
-export default function LoginForm({ next }: { next: string }) {
+// Both logins use it: staff post to /api/auth/login, citizens to /api/citizen/login.
+export default function LoginForm({
+  next,
+  endpoint = "/api/auth/login",
+  children,
+}: {
+  next: string;
+  endpoint?: string;
+  children?: React.ReactNode;
+}) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,9 +37,10 @@ export default function LoginForm({ next }: { next: string }) {
     if (challenge && !altcha) return setError("Bifează verificarea de mai jos.");
 
     setBusy(true);
-    const res = await sendJson("/api/auth/login", { email, password, next, altcha: altcha ?? undefined });
+    const res = await sendJson(endpoint, { email, password, next, altcha: altcha ?? undefined });
     if (res.ok && res.data.next) {
       router.push(res.data.next);
+      router.refresh();
       return;
     }
     setBusy(false);
@@ -86,9 +96,7 @@ export default function LoginForm({ next }: { next: string }) {
         {busy ? "Se verifică..." : "Intră"}
       </button>
 
-      <p className="text-xs text-slate-400">
-        Ai uitat parola? Cere administratorului un link de resetare.
-      </p>
+      {children}
     </form>
   );
 }

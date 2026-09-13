@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import type {} from "altcha/types/react";
 
-// Proof of work solved in the browser, shown only after repeated failed logins.
+// Proof of work solved in the browser. Sign up always shows it, login only after repeated failures.
 export default function AltchaWidget({ onPayload }: { onPayload: (payload: string | null) => void }) {
   const ref = useRef<HTMLElement>(null);
 

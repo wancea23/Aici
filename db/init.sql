@@ -22,7 +22,7 @@ create table if not exists report_photos (
   created_at timestamptz not null default now()
 );
 
--- Staff accounts. Citizens report without an account.
+-- Staff accounts, made by invitation only.
 create table if not exists staff_users (
   id uuid primary key default gen_random_uuid(),
   email text not null,
@@ -104,3 +104,42 @@ create or replace trigger staff_audit_log_no_change
 create or replace trigger staff_audit_log_no_truncate
   before truncate on staff_audit_log
   for each statement execute function staff_audit_log_append_only();
+
+-- Citizen accounts. A row only exists once the email is confirmed, see citizen_signups.
+-- The email is encrypted by the app, email_hash is a keyed hash of it to look it up by.
+create table if not exists citizen_users (
+  id uuid primary key default gen_random_uuid(),
+  email_hash text not null unique,
+  email text not null,
+  password_hash text not null,
+  email_verified_at timestamptz not null default now(),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- A sign up waiting for its email link, with the password chosen for it.
+-- Deleted once it is used or expired.
+create table if not exists citizen_signups (
+  id uuid primary key default gen_random_uuid(),
+  email_hash text not null,
+  email text not null,
+  password_hash text not null,
+  token_hash text not null unique,
+  expires_at timestamptz not null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists citizen_signups_email_idx on citizen_signups (email_hash);
+
+-- Like staff_sessions, without the address and browser. Nothing here needs them.
+create table if not exists citizen_sessions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references citizen_users (id) on delete cascade,
+  token_hash text not null unique,
+  created_at timestamptz not null default now(),
+  last_active_at timestamptz not null default now(),
+  idle_expires_at timestamptz not null,
+  expires_at timestamptz not null
+);
+
+create index if not exists citizen_sessions_user_idx on citizen_sessions (user_id);
