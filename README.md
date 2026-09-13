@@ -142,7 +142,22 @@ of citizen data, and the database looks them up by a keyed hash of the address. 
 end after a week without activity or 30 days in total, and neither they nor the audit log keep
 the citizen's network address or browser.
 
-The public report form refuses uploads over 10 MB before reading them and takes at most 20
-reports an hour from one address.
+The browser shrinks each photo to at most 2048 px before sending it, so its GPS position and
+the rest of its EXIF data never leave the phone. The server still cleans whatever arrives. The
+public report form refuses uploads over 10 MB before reading them and takes at most 20 reports
+an hour from one address.
 
 Virus scanning comes in later work.
+
+## Deployment
+
+The beta runs on Vercel at https://aici-seven.vercel.app, in the Frankfurt region next to the
+Neon database (see `vercel.json`). It is deployed from a local folder with the Vercel CLI, not
+from GitHub, because `main` doesn't have the logins yet:
+
+   npx vercel@59.11.7 deploy --prod
+
+The settings live in the Vercel project as secrets: the same `DATABASE_URL` and keys as in
+`.env`, the SMTP settings, and `APP_URL=https://aici-seven.vercel.app`. `.vercelignore` keeps
+`.env`, `data/` and `research/` out of the upload. Vercel takes requests of at most 4.5 MB,
+which is why the browser shrinks photos before sending them.
