@@ -49,8 +49,8 @@ You need Node 20.9 or newer.
 
    npm run dev
 
-Open the address it prints. The report form is the home page, the city hall view is at
-`/panou` and needs a staff account.
+Open the address it prints. The report form is the home page and the public map is at
+`/harta`. The city hall view is at `/panou` and needs a staff account.
 
 The tables already exist on the shared `production` branch. If you point at your own
 empty database, create them once by running the SQL in `db/init.sql`. When a new version
@@ -146,6 +146,9 @@ The browser shrinks each photo to at most 2048 px before sending it, so its GPS 
 the rest of its EXIF data never leave the phone. The server still cleans whatever arrives. The
 public report form refuses uploads over 10 MB before reading them and takes at most 20 reports
 an hour from one address.
+
+The public map at `/harta` shows every report that wasn't rejected, with its category, status
+and date, at the point rounded to about 100 m. Photos and descriptions stay with the city hall.
 
 Virus scanning comes in later work.
 

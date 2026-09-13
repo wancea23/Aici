@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { categories, categoryLabels, statusLabels, type Category, type Status } from "@/lib/validation";
 import { shrinkPhoto } from "@/lib/shrink-photo";
 
@@ -13,11 +13,26 @@ type NearbyReport = {
   created_at: string;
 };
 
+const PERMISSION_DENIED = 1;
+
+// One position request, rejected with the browser's error.
+function position(highAccuracy: boolean) {
+  return new Promise<Coords>((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(
+      (pos) => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      reject,
+      { enableHighAccuracy: highAccuracy, timeout: 10000, maximumAge: highAccuracy ? 0 : 300000 }
+    )
+  );
+}
+
 export default function ReportForm() {
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [coords, setCoords] = useState<Coords | null>(null);
   const [geoError, setGeoError] = useState<string | null>(null);
+  const [locating, setLocating] = useState(false);
+  const asking = useRef(0);
   const [category, setCategory] = useState<Category>("groapa");
   const [description, setDescription] = useState("");
   const [busy, setBusy] = useState(false);
@@ -30,31 +45,53 @@ export default function ReportForm() {
     const file = e.target.files?.[0] ?? null;
     setPhoto(file);
     setPreview(file ? URL.createObjectURL(file) : null);
-    if (file) locate();
+    if (file) void locate();
   }
 
-  function locate() {
+  // Resolves with the position, or null after saying why there is none. Some phones, iPhones
+  // above all, only show the location prompt right after a tap, so the send button asks again.
+  async function locate(): Promise<Coords | null> {
     setGeoError(null);
     if (!navigator.geolocation) {
       setGeoError("Locația nu e disponibilă pe acest dispozitiv.");
-      return;
+      return null;
     }
-    navigator.geolocation.getCurrentPosition(
-      (pos) => setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-      () => setGeoError("Nu am putut citi locația. Verifică permisiunea."),
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-    );
+    asking.current++;
+    setLocating(true);
+    try {
+      // GPS first. Indoors it can time out, and then the rough position of the phone will do.
+      const found = await Promise.race([
+        position(true).catch((err: GeolocationPositionError) => {
+          if (err.code === PERMISSION_DENIED) throw err;
+          return position(false);
+        }),
+        // a prompt that never shows up would otherwise leave the form waiting forever
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error("no answer")), 25000)),
+      ]);
+      setCoords(found);
+      return found;
+    } catch (err) {
+      const denied = (err as GeolocationPositionError).code === PERMISSION_DENIED;
+      setGeoError(
+        denied
+          ? "Browserul nu are voie să citească locația. Permite-o din setările telefonului, apoi apasă din nou."
+          : "Nu am putut citi locația. Dacă ai deschis linkul din Telegram sau Instagram, deschide-l în Safari sau Chrome."
+      );
+      return null;
+    } finally {
+      if (--asking.current === 0) setLocating(false);
+    }
   }
 
-  async function createReport() {
+  async function createReport(at: Coords) {
     setBusy(true);
     try {
       const body = new FormData();
       body.set("photo", await shrinkPhoto(photo!), "photo.jpg");
       body.set("category", category);
       body.set("description", description);
-      body.set("lat", String(coords!.lat));
-      body.set("lng", String(coords!.lng));
+      body.set("lat", String(at.lat));
+      body.set("lng", String(at.lng));
 
       const res = await fetch("/api/reports", { method: "POST", body });
       const data = await res.json();
@@ -72,14 +109,20 @@ export default function ReportForm() {
     e.preventDefault();
     setError(null);
     if (!photo) return setError("Adaugă o poză.");
-    if (!coords) return setError("Aștept locația. Apasă din nou dacă întârzie.");
 
+    // Still no position: this tap asks again, and the report goes as soon as it comes.
     setBusy(true);
+    const at = coords ?? (await locate());
+    if (!at) {
+      setBusy(false);
+      return setError("Fără locație nu putem trimite sesizarea.");
+    }
+
     try {
       const params = new URLSearchParams({
         category,
-        lat: String(coords.lat),
-        lng: String(coords.lng),
+        lat: String(at.lat),
+        lng: String(at.lng),
       });
       const res = await fetch(`/api/reports/nearby?${params}`);
       const nearby = res.ok ? ((await res.json()) as NearbyReport[]) : [];
@@ -91,7 +134,7 @@ export default function ReportForm() {
     } catch {
       // If the check itself fails, don't block the user from reporting — fall through and create it.
     }
-    await createReport();
+    await createReport(at);
   }
 
   function followExisting(id: string) {
@@ -184,7 +227,7 @@ export default function ReportForm() {
           </button>
           <button
             type="button"
-            onClick={createReport}
+            onClick={() => coords && createReport(coords)}
             disabled={busy}
             className="flex-1 rounded-lg border border-slate-300 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
           >
@@ -212,11 +255,22 @@ export default function ReportForm() {
             onChange={onPhoto}
           />
         </label>
-        <p className="mt-2 text-xs text-slate-400">
+        <p className={`mt-2 text-xs ${geoError && !coords ? "text-red-600" : "text-slate-400"}`}>
           {coords
             ? `Locație: ${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`
-            : geoError ?? "Locația se adaugă după poză."}
+            : locating
+              ? "Se caută locația..."
+              : geoError ?? "Locația se adaugă după poză."}
         </p>
+        {photo && !coords && !locating && (
+          <button
+            type="button"
+            onClick={() => void locate()}
+            className="mt-1 text-xs font-medium text-brand-700 hover:underline"
+          >
+            {geoError ? "Încearcă din nou" : "Adaugă locația acum"}
+          </button>
+        )}
       </div>
 
       <div>
@@ -259,7 +313,7 @@ export default function ReportForm() {
         disabled={busy}
         className="w-full rounded-lg bg-brand-600 py-3 font-medium text-white hover:bg-brand-700 disabled:opacity-50"
       >
-        {busy ? "Se trimite..." : "Trimite sesizarea"}
+        {busy ? (locating ? "Se caută locația..." : "Se trimite...") : "Trimite sesizarea"}
       </button>
     </form>
   );

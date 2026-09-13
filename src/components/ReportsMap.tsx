@@ -17,10 +17,17 @@ import { formatDate, timeAgo } from "@/lib/format";
 
 export type Selection = { id: string; from: "map" | "list" } | null;
 
+// What a pin needs. Staff pass whole reports, the public map only these fields.
+export type MapReport = Pick<Report, "id" | "category" | "status" | "lat" | "lng" | "created_at"> & {
+  description?: string;
+};
+
 type Props = {
-  reports: Report[];
+  reports: MapReport[];
   selection: Selection;
   onPick: (id: string) => void;
+  // off on the public map, photos are for staff only
+  photos?: boolean;
 };
 
 const chisinau: [number, number] = [28.8638, 47.0105];
@@ -31,7 +38,7 @@ const svgNS = "http://www.w3.org/2000/svg";
 // The bundler breaks MapLibre's own worker lookup, see src/app/maplibre.
 maplibregl.setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 
-export default function ReportsMap({ reports, selection, onPick }: Props) {
+export default function ReportsMap({ reports, selection, onPick, photos = true }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const markers = useRef(new Map<string, maplibregl.Marker>());
@@ -71,7 +78,7 @@ export default function ReportsMap({ reports, selection, onPick }: Props) {
 
       const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
         .setLngLat([r.lng, r.lat])
-        .setPopup(reportPopup(r))
+        .setPopup(reportPopup(r, photos))
         .addTo(m);
       markers.current.set(r.id, marker);
       added.push(marker);
@@ -90,7 +97,7 @@ export default function ReportsMap({ reports, selection, onPick }: Props) {
     return () => {
       for (const marker of added) marker.remove();
     };
-  }, [reports, onPick]);
+  }, [reports, onPick, photos]);
 
   // The picked report stays raised on the map, wherever it was picked.
   useEffect(() => {
@@ -132,7 +139,7 @@ function icon(category: string, attrs: Record<string, string | number>) {
   return createElement(categoryIcons[category as Category] ?? categoryIcons.altul, attrs);
 }
 
-function pin(r: Report) {
+function pin(r: MapReport) {
   const el = document.createElement("div");
   el.className = "report-pin";
   el.title = `${categoryLabels[r.category as Category] ?? r.category}, ${statusLabels[r.status as Status] ?? r.status}`;
@@ -153,7 +160,7 @@ function pin(r: Report) {
 }
 
 // Filled on first open, so the photos only load when someone looks.
-function reportPopup(r: Report) {
+function reportPopup(r: MapReport, photos: boolean) {
   const card = new maplibregl.Popup({
     maxWidth: "none",
     closeButton: false,
@@ -170,11 +177,11 @@ function reportPopup(r: Report) {
       right: [-22, -25],
     },
   });
-  card.once("open", () => card.setDOMContent(popup(r)));
+  card.once("open", () => card.setDOMContent(photos ? popup(r) : publicPopup(r)));
   return card;
 }
 
-function popup(r: Report) {
+function popup(r: MapReport) {
   const el = document.createElement("div");
   el.className = "w-64";
 
@@ -209,9 +216,26 @@ function popup(r: Report) {
   return el;
 }
 
-function statusChip(status: string) {
+// The public card: what, how far along, and when. No photo and no description.
+function publicPopup(r: MapReport) {
+  const el = document.createElement("div");
+  el.className = "w-56 space-y-2 p-3";
+
+  const title = line(
+    "flex items-center gap-1.5 text-[15px] font-semibold text-slate-900",
+    categoryLabels[r.category as Category] ?? r.category
+  );
+  title.prepend(icon(r.category, { class: "h-4 w-4 flex-none text-slate-500" }));
+  const when = line("text-xs text-slate-500", `${timeAgo(r.created_at)}, locație aproximativă`);
+  when.title = formatDate(r.created_at);
+
+  el.append(title, statusChip(r.status, "w-fit border border-slate-200"), when);
+  return el;
+}
+
+function statusChip(status: string, place = "absolute left-2.5 top-2.5") {
   const el = line(
-    "absolute left-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-2 py-0.5 text-xs font-medium text-slate-800 shadow-sm",
+    `${place} inline-flex items-center gap-1.5 rounded-full bg-white/95 px-2 py-0.5 text-xs font-medium text-slate-800 shadow-sm`,
     statusLabels[status as Status] ?? status
   );
   const dot = document.createElement("span");

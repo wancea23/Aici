@@ -8,17 +8,20 @@ export default async function Home() {
   return (
     <main className="mx-auto flex min-h-screen max-w-xl flex-col px-5 py-10">
       <header className="mb-8">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3">
           <span className="text-2xl font-semibold tracking-tight text-brand-700">Aici</span>
-          <nav className="flex items-center gap-4 text-sm text-slate-500">
+          <nav className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-sm text-slate-500">
+            <Link href="/harta" className="hover:text-slate-800">
+              Harta
+            </Link>
+            <Link href="/panou" className="hover:text-slate-800">
+              Panou primărie
+            </Link>
             <Link
               href={citizen ? "/profil" : "/conectare"}
               className="rounded-lg border border-brand-600 px-3 py-1.5 font-medium text-brand-700 hover:bg-brand-50"
             >
               {citizen ? "Contul meu" : "Conectare"}
-            </Link>
-            <Link href="/panou" className="hover:text-slate-800">
-              Panou primărie
             </Link>
           </nav>
         </div>
@@ -32,6 +35,10 @@ export default async function Home() {
           <ReportForm />
         </div>
       </section>
+
+      <Link href="/harta" className="mt-4 text-center text-sm font-medium text-brand-700 hover:underline">
+        Vezi pe hartă ce au raportat alții
+      </Link>
     </main>
   );
 }
