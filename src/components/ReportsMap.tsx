@@ -13,13 +13,16 @@ import {
   type Category,
   type Status,
 } from "@/lib/validation";
-import { formatDate, timeAgo } from "@/lib/format";
+import { formatDate, howMany, timeAgo } from "@/lib/format";
 
 export type Selection = { id: string; from: "map" | "list" } | null;
 
 // What a pin needs. Staff pass whole reports, the public map only these fields.
 export type MapReport = Pick<Report, "id" | "category" | "status" | "lat" | "lng" | "created_at"> & {
   description?: string;
+  // a group is one pin: staff get the ids grouped under it, the public map only the count
+  members?: string[];
+  count?: number;
 };
 
 type Props = {
@@ -34,6 +37,8 @@ const chisinau: [number, number] = [28.8638, 47.0105];
 const mapStyle = "https://tiles.openfreemap.org/styles/bright";
 const pinShape = "M16 38C12 33 3 24 3 15a13 13 0 1 1 26 0c0 9-9 18-13 23z";
 const svgNS = "http://www.w3.org/2000/svg";
+// a big group would otherwise fill the popup and load every photo at once
+const maxThumbs = 8;
 
 // The bundler breaks MapLibre's own worker lookup, see src/app/maplibre.
 maplibregl.setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
@@ -213,6 +218,8 @@ function popup(r: MapReport) {
   if (r.description) {
     el.append(line("px-3.5 py-3 line-clamp-3 text-sm leading-snug text-slate-600", r.description));
   }
+  const group = groupNote(r, r.description ? "px-3.5 pb-3" : "px-3.5 py-3");
+  if (group) el.append(group);
   return el;
 }
 
@@ -230,6 +237,38 @@ function publicPopup(r: MapReport) {
   when.title = formatDate(r.created_at);
 
   el.append(title, statusChip(r.status, "w-fit border border-slate-200"), when);
+  const group = groupNote(r, "");
+  if (group) el.append(group);
+  return el;
+}
+
+// How many reports the pin stands for. Staff also get the photos of the ones grouped under it.
+function groupNote(r: MapReport, place: string) {
+  const total = r.members ? r.members.length + 1 : (r.count ?? 1);
+  if (total < 2) return null;
+
+  const el = document.createElement("div");
+  el.className = place;
+  el.append(line("text-xs font-medium text-slate-500", `Raportată de ${howMany(total, "ori")}`));
+  if (r.members?.length) {
+    const strip = document.createElement("div");
+    strip.className = "mt-1.5 flex flex-wrap gap-1.5";
+    for (const id of r.members.slice(0, maxThumbs)) {
+      const link = document.createElement("a");
+      link.href = `/api/media/${id}`;
+      link.target = "_blank";
+      link.rel = "noopener";
+      const img = document.createElement("img");
+      img.src = `/api/media/${id}`;
+      img.alt = "";
+      img.className = "h-12 w-12 rounded-md bg-slate-100 object-cover";
+      link.append(img);
+      strip.append(link);
+    }
+    const more = r.members.length - maxThumbs;
+    if (more > 0) strip.append(line("grid h-12 place-items-center px-1 text-xs text-slate-500", `+${more}`));
+    el.append(strip);
+  }
   return el;
 }
 

@@ -26,29 +26,35 @@ export async function PATCH(
     return fail(400, "status invalid");
   }
 
-  // The old status comes back too, so the log shows the change from and to.
-  const [row] = await sql`
-    with old as (select id, status from reports where id = ${id} for update)
-    update reports r
-    set status = ${parsed.data.status}
-    from old
-    where r.id = old.id
-    returning old.status as from_status
-  `;
+  // A group changes together: its first report and the ones grouped under it. Only rows that
+  // really change are written, and the log keeps the first report's old status.
+  const result = await sql.begin(async (tx) => {
+    const [root] = await tx`
+      select id, status from reports
+      where id = (select coalesce(duplicate_of, id) from reports where id = ${id})
+      for update
+    `;
+    if (!root) return null;
+    const moved = await tx`
+      update reports set status = ${parsed.data.status}
+      where (id = ${root.id} or duplicate_of = ${root.id}) and status <> ${parsed.data.status}
+    `;
+    return { id: root.id as string, from: root.status as string, count: moved.count };
+  });
 
-  if (!row) {
+  if (!result) {
     return fail(404, "sesizare inexistentă");
   }
 
-  if (row.from_status !== parsed.data.status) {
+  if (result.count > 0) {
     await audit({
       actorId: auth.user.id,
       action: "report.status_changed",
       status: "success",
       targetType: "report",
-      targetId: id,
+      targetId: result.id,
       client: clientInfo(req),
-      details: { from: row.from_status, to: parsed.data.status },
+      details: { from: result.from, to: parsed.data.status, reports: result.count },
     });
   }
 

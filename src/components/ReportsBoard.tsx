@@ -17,7 +17,7 @@ import {
   type Category,
   type Status,
 } from "@/lib/validation";
-import { formatDate, timeAgo } from "@/lib/format";
+import { formatDate, howMany, timeAgo } from "@/lib/format";
 
 // The map needs the browser, so it only renders on the client.
 const ReportsMap = dynamic(() => import("@/components/ReportsMap"), {
@@ -115,6 +115,11 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
                     </div>
                     <p className="mt-1.5 line-clamp-2 text-sm leading-snug text-slate-500">
                       <StatusSelect id={r.id} status={r.status} />{" "}
+                      {r.members.length > 0 && (
+                        <span className="mr-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
+                          {howMany(r.members.length + 1, "sesizări")}
+                        </span>
+                      )}
                       {r.description}
                     </p>
                   </div>

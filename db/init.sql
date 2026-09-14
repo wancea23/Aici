@@ -9,11 +9,14 @@ create table if not exists reports (
   location text not null,
   status text not null default 'nou',
   geom geometry(Point, 4326) not null,
+  -- Set when the report repeats an earlier one. It points at the first report of the group.
+  duplicate_of uuid references reports (id) on delete set null,
   created_at timestamptz not null default now()
 );
 
 create index if not exists reports_geom_idx on reports using gist (geom);
 create index if not exists reports_created_idx on reports (created_at desc);
+create index if not exists reports_duplicate_idx on reports (duplicate_of);
 
 -- The cleaned webp of each report, encrypted. In the database for now, object storage later.
 create table if not exists report_photos (

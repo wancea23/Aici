@@ -6,6 +6,7 @@ import Icon from "@/components/Icon";
 import { inputClass, linkClass, primaryButton, secondaryButton } from "@/components/auth/ui";
 import { categories, categoryLabels, statusLabels, type Category, type Status } from "@/lib/validation";
 import { shrinkPhoto } from "@/lib/shrink-photo";
+import { howMany } from "@/lib/format";
 
 type Coords = { lat: number; lng: number };
 
@@ -14,6 +15,8 @@ type NearbyReport = {
   description: string;
   status: string;
   created_at: string;
+  // reports in its group, itself included
+  count: number;
 };
 
 const PERMISSION_DENIED = 1;
@@ -190,7 +193,7 @@ export default function ReportForm() {
         <div className="rounded-xl bg-amber-50 p-4">
           <p className="font-medium text-amber-800">
             Am găsit {duplicates.length === 1 ? "o sesizare" : `${duplicates.length} sesizări`}{" "}
-            asemănătoare foarte aproape de tine.
+            asemănătoare în apropiere.
           </p>
           <p className="mt-1 text-sm text-amber-700">Poate cineva a raportat deja aceeași problemă.</p>
         </div>
@@ -207,6 +210,9 @@ export default function ReportForm() {
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">
                     {statusLabels[d.status as Status] ?? d.status}
+                    {d.count > 1 && (
+                      <span className="font-normal text-slate-500">, raportată de {howMany(d.count, "ori")}</span>
+                    )}
                   </span>
                   <span className="text-xs text-slate-400">
                     {new Date(d.created_at).toLocaleDateString("ro-RO")}
