@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import sql from "@/lib/db";
 import { reportInput } from "@/lib/validation";
-import { cleanPhoto } from "@/lib/image";
+import { cleanPhoto, looksLikeImage } from "@/lib/image";
+import { MAX_REQUEST_BYTES, MAX_UPLOAD_BYTES } from "@/lib/upload-limits";
 import { listReports } from "@/lib/reports";
 import { encryptBytes, encryptText } from "@/lib/crypto";
 import { requireStaffApi } from "@/lib/auth/dal";
@@ -12,15 +13,14 @@ import { tooMany } from "@/lib/auth/http";
 
 export const runtime = "nodejs";
 
-const MAX_BYTES = 10 * 1024 * 1024;
-
 // The database keeps the location rounded to about 100 m. The exact point is encrypted.
 const coarse = (x: number) => Math.round(x * 1000) / 1000;
 
 export async function POST(req: NextRequest) {
-  // Checked from the header, before the body is read into memory.
+  // Checked from the header, before the body is read into memory. The proxy rejects the
+  // same oversized requests earlier still, before they even reach this function.
   const length = Number(req.headers.get("content-length") ?? 0);
-  if (length > MAX_BYTES + 64 * 1024) {
+  if (length > MAX_REQUEST_BYTES) {
     return NextResponse.json({ error: "poza e prea mare" }, { status: 413 });
   }
 
@@ -44,11 +44,15 @@ export async function POST(req: NextRequest) {
   if (!(photo instanceof File)) {
     return NextResponse.json({ error: "lipsește poza" }, { status: 400 });
   }
-  if (photo.size > MAX_BYTES) {
+  if (photo.size > MAX_UPLOAD_BYTES) {
     return NextResponse.json({ error: "poza e prea mare" }, { status: 413 });
   }
 
   const raw = Buffer.from(await photo.arrayBuffer());
+
+  if (!looksLikeImage(raw)) {
+    return NextResponse.json({ error: "fișierul nu e o imagine validă" }, { status: 400 });
+  }
 
   let clean: Buffer;
   try {
