@@ -14,6 +14,12 @@ export function formatDate(iso: string) {
   return dateFormat.format(new Date(iso));
 }
 
+// Romanian puts "de" after the number from 20 on, but not for 101 to 119, 201 to 219 and so on.
+export function howMany(n: number, noun: string) {
+  const rest = n % 100;
+  return n >= 20 && (rest === 0 || rest >= 20) ? `${n} de ${noun}` : `${n} ${noun}`;
+}
+
 // Short relative time for lists, and the full date once it is older than a week.
 export function timeAgo(iso: string) {
   const minutes = Math.round((new Date(iso).getTime() - Date.now()) / 60000);

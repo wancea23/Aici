@@ -55,6 +55,13 @@ async function main() {
       drop column if exists challenge_expires_at
   `;
 
+  // A repeated report points at the first one of its group.
+  await sql`
+    alter table reports
+      add column if not exists duplicate_of uuid references reports (id) on delete set null
+  `;
+  await sql`create index if not exists reports_duplicate_idx on reports (duplicate_of)`;
+
   const reports = await sql`
     select id, description, location, ST_Y(geom) as lat, ST_X(geom) as lng from reports
   `;

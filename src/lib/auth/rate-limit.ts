@@ -18,6 +18,8 @@ export const rules = {
   password: { name: "password", windowSec: 15 * 60, max: 20, backoffAfter: 3 },
   tokenIp: { name: "token-ip", windowSec: 15 * 60, max: 30 },
   reportIp: { name: "report-ip", windowSec: 60 * 60, max: 20 },
+  // the duplicate check is public, so it gets a ceiling like the report form
+  nearbyIp: { name: "nearby-ip", windowSec: 60 * 60, max: 60 },
   registerIp: { name: "register-ip", windowSec: 60 * 60, max: 20 },
   // so the sign up form can't be used to flood someone's inbox
   registerEmail: { name: "register-email", windowSec: 60 * 60, max: 5 },

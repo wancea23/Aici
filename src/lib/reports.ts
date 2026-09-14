@@ -9,23 +9,29 @@ export type Report = {
   lat: number;
   lng: number;
   created_at: string;
+  // reports grouped under this one, oldest first
+  members: string[];
 };
 
 export type PublicReport = Pick<Report, "id" | "category" | "status" | "lat" | "lng" | "created_at"> & {
   description?: string;
+  // how many reports the pin stands for, itself included
+  count: number;
 };
 
-// What the public map shows: the point rounded to about 100 m even for old rows, and no
-// rejected reports. The description only comes along while PUBLIC_DETAILS is on.
+// What the public map shows: the point rounded to about 100 m even for old rows, no
+// rejected reports, and one pin per group. The description only comes along while
+// PUBLIC_DETAILS is on.
 export async function listPublicReports(details: boolean, limit = 500): Promise<PublicReport[]> {
   const rows = await sql`
-    select id, category, status, description,
-           round(ST_Y(geom)::numeric, 3)::float8 as lat,
-           round(ST_X(geom)::numeric, 3)::float8 as lng,
-           created_at
-    from reports
-    where status <> 'respins'
-    order by created_at desc
+    select r.id, r.category, r.status, r.description,
+           round(ST_Y(r.geom)::numeric, 3)::float8 as lat,
+           round(ST_X(r.geom)::numeric, 3)::float8 as lng,
+           r.created_at,
+           1 + (select count(*) from reports m where m.duplicate_of = r.id)::int as count
+    from reports r
+    where r.status <> 'respins' and r.duplicate_of is null
+    order by r.created_at desc
     limit ${limit}
   `;
   return rows.map((r) => ({
@@ -35,6 +41,7 @@ export async function listPublicReports(details: boolean, limit = 500): Promise<
     lat: r.lat,
     lng: r.lng,
     created_at: new Date(r.created_at).toISOString(),
+    count: r.count,
     ...(details ? { description: readDescription(r.id, r.description) } : {}),
   }));
 }
@@ -49,12 +56,17 @@ export function readDescription(id: string, value: string) {
   }
 }
 
+// One entry per group, its first report, with the ids of the ones grouped under it.
 export async function listReports(limit = 100): Promise<Report[]> {
   const rows = await sql`
-    select id, category, description, location, status,
-           ST_Y(geom) as lat, ST_X(geom) as lng, created_at
-    from reports
-    order by created_at desc
+    select r.id, r.category, r.description, r.location, r.status,
+           ST_Y(r.geom) as lat, ST_X(r.geom) as lng, r.created_at,
+           array(
+             select m.id::text from reports m where m.duplicate_of = r.id order by m.created_at
+           ) as members
+    from reports r
+    where r.duplicate_of is null
+    order by r.created_at desc
     limit ${limit}
   `;
 
@@ -81,6 +93,7 @@ export async function listReports(limit = 100): Promise<Report[]> {
       lat,
       lng,
       created_at: new Date(r.created_at).toISOString(),
+      members: r.members,
     };
   });
 }
