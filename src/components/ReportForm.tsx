@@ -1,6 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { Camera, Send } from "lucide";
+import Icon from "@/components/Icon";
+import { inputClass, linkClass, primaryButton, secondaryButton } from "@/components/auth/ui";
 import { categories, categoryLabels, statusLabels, type Category, type Status } from "@/lib/validation";
 import { shrinkPhoto } from "@/lib/shrink-photo";
 
@@ -162,7 +165,7 @@ export default function ReportForm() {
         <p className="mt-1 text-sm text-slate-600">
           Sesizarea existentă (cod {followedId.slice(0, 8)}) acoperă deja problema ta.
         </p>
-        <button onClick={reset} className="mt-4 text-sm font-medium text-brand-700 hover:underline">
+        <button onClick={reset} className={`mt-4 text-sm ${linkClass}`}>
           Raportează altceva
         </button>
       </div>
@@ -174,7 +177,7 @@ export default function ReportForm() {
       <div className="rounded-xl bg-brand-50 p-5 text-center">
         <p className="font-medium text-brand-800">Sesizarea a fost trimisă.</p>
         <p className="mt-1 text-sm text-slate-600">Cod: {doneId.slice(0, 8)}</p>
-        <button onClick={reset} className="mt-4 text-sm font-medium text-brand-700 hover:underline">
+        <button onClick={reset} className={`mt-4 text-sm ${linkClass}`}>
           Raportează alta
         </button>
       </div>
@@ -221,7 +224,7 @@ export default function ReportForm() {
           <button
             type="button"
             onClick={() => followExisting(duplicates[0].id)}
-            className="flex-1 rounded-lg bg-brand-600 py-3 text-sm font-medium text-white hover:bg-brand-700"
+            className={`flex-1 text-sm ${primaryButton}`}
           >
             E aceeași problemă
           </button>
@@ -229,7 +232,7 @@ export default function ReportForm() {
             type="button"
             onClick={() => coords && createReport(coords)}
             disabled={busy}
-            className="flex-1 rounded-lg border border-slate-300 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+            className={`flex-1 text-sm ${secondaryButton}`}
           >
             {busy ? "Se trimite..." : "Nu, e diferită"}
           </button>
@@ -241,11 +244,14 @@ export default function ReportForm() {
   return (
     <form onSubmit={submit} className="space-y-5">
       <div>
-        <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-6 text-center hover:border-brand-500">
+        <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-6 text-center transition-colors hover:border-brand-500 hover:bg-brand-50/40">
           {preview ? (
             <img src={preview} alt="" className="max-h-56 rounded-lg object-contain" />
           ) : (
-            <span className="text-sm text-slate-500">Fă o poză sau alege una</span>
+            <span className="flex flex-col items-center gap-2 text-sm text-slate-500">
+              <Icon node={Camera} className="h-6 w-6 text-slate-400" />
+              Fă o poză sau alege una
+            </span>
           )}
           {/* no capture attribute, so phones offer both the camera and the gallery */}
           <input type="file" accept="image/*" className="hidden" onChange={onPhoto} />
@@ -261,7 +267,7 @@ export default function ReportForm() {
           <button
             type="button"
             onClick={() => void locate()}
-            className="mt-1 text-xs font-medium text-brand-700 hover:underline"
+            className={`mt-1 text-xs ${linkClass}`}
           >
             {geoError ? "Încearcă din nou" : "Adaugă locația acum"}
           </button>
@@ -277,10 +283,10 @@ export default function ReportForm() {
               key={c}
               onClick={() => setCategory(c)}
               className={
-                "rounded-full border px-3 py-1.5 text-sm " +
+                "rounded-full border px-3 py-1.5 text-sm transition-colors " +
                 (category === c
                   ? "border-brand-600 bg-brand-600 text-white"
-                  : "border-slate-300 bg-white text-slate-600 hover:border-slate-400")
+                  : "border-slate-300 bg-white text-slate-600 hover:border-slate-400 hover:bg-slate-50")
               }
             >
               {categoryLabels[c]}
@@ -297,7 +303,7 @@ export default function ReportForm() {
           rows={3}
           maxLength={1000}
           placeholder="Ce ai observat?"
-          className="w-full rounded-lg border border-slate-300 p-3 text-sm outline-none focus:border-brand-500"
+          className={inputClass}
         />
       </div>
 
@@ -306,8 +312,9 @@ export default function ReportForm() {
       <button
         type="submit"
         disabled={busy}
-        className="w-full rounded-lg bg-brand-600 py-3 font-medium text-white hover:bg-brand-700 disabled:opacity-50"
+        className={`flex items-center justify-center gap-2 ${primaryButton}`}
       >
+        {!busy && <Icon node={Send} className="h-4 w-4" />}
         {busy ? (locating ? "Se caută locația..." : "Se trimite...") : "Trimite sesizarea"}
       </button>
     </form>

@@ -1,8 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { createElement, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Inbox } from "lucide";
+import Icon from "@/components/Icon";
 import type { Report } from "@/lib/reports";
 import type { Selection } from "@/components/ReportsMap";
 import {
@@ -70,7 +72,10 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
         </div>
 
         {reports.length === 0 ? (
-          <p className="text-slate-500 lg:col-span-2">Nicio sesizare încă.</p>
+          <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 py-12 text-center text-slate-400 lg:col-span-2">
+            <Icon node={Inbox} className="h-8 w-8" />
+            <p className="text-sm text-slate-500">Nicio sesizare încă.</p>
+          </div>
         ) : (
           <ul className="space-y-3 lg:col-span-2 lg:overflow-y-auto lg:p-1">
             {reports.map((r) => (
@@ -131,18 +136,7 @@ function CategoryBadge({ category, status }: { category: string; status: string 
       className="grid h-7 w-7 flex-none place-items-center rounded-full text-white shadow-sm"
       style={{ backgroundColor: statusColors[status as Status] ?? "#64748b" }}
     >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2.25}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-        className="h-4 w-4"
-      >
-        {node.map(([tag, attrs], i) => createElement(tag, { key: i, ...attrs }))}
-      </svg>
+      <Icon node={node} className="h-4 w-4" />
     </span>
   );
 }

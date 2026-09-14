@@ -16,14 +16,14 @@ export default async function MapPage() {
     <main className="mx-auto max-w-6xl px-5 py-10">
       <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <Link href="/" className="text-2xl font-semibold tracking-tight text-brand-700">
+          <Link href="/" className="text-2xl font-semibold tracking-tight text-brand-700 transition-colors hover:text-brand-800">
             Aici
           </Link>
           <p className="text-sm text-slate-500">Harta sesizărilor</p>
         </div>
         <Link
           href="/"
-          className="rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700"
+          className="rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-700 active:bg-brand-800"
         >
           Raportează o problemă
         </Link>
