@@ -19,7 +19,7 @@ export default function AuthCard({
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col px-5 py-10">
       <header className="mb-8">
-        <Link href="/" className="text-2xl font-semibold tracking-tight text-brand-700">
+        <Link href="/" className="text-2xl font-semibold tracking-tight text-brand-700 transition-colors hover:text-brand-800">
           Aici
         </Link>
         <p className="mt-1 text-slate-500">{taglines[audience]}</p>
