@@ -6,6 +6,7 @@ import { cleanPhoto, looksLikeImage } from "@/lib/image";
 import { MAX_REQUEST_BYTES, MAX_UPLOAD_BYTES } from "@/lib/upload-limits";
 import { listReports } from "@/lib/reports";
 import { encryptBytes, encryptText } from "@/lib/crypto";
+import { currentCitizen } from "@/lib/auth/citizen-session";
 import { requireStaffApi } from "@/lib/auth/dal";
 import { clientInfo } from "@/lib/auth/request";
 import { countAttempt, peek, rules } from "@/lib/auth/rate-limit";
@@ -63,16 +64,18 @@ export async function POST(req: NextRequest) {
 
   const id = randomUUID();
   const { category, description, lat, lng } = parsed.data;
+  const citizen = await currentCitizen();
 
   // One transaction, so a report is never saved without its photo.
   await sql.begin(async (tx) => {
     await tx`
-      insert into reports (id, category, description, location, geom)
+      insert into reports (id, category, description, location, geom, citizen_id)
       values (
         ${id}, ${category},
         ${encryptText(description, `report:${id}:description`)},
         ${encryptText(`${lat},${lng}`, `report:${id}:location`)},
-        ST_SetSRID(ST_MakePoint(${coarse(lng)}, ${coarse(lat)}), 4326)
+        ST_SetSRID(ST_MakePoint(${coarse(lng)}, ${coarse(lat)}), 4326),
+        ${citizen?.id ?? null}
       )
     `;
     await tx`

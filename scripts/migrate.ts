@@ -62,6 +62,13 @@ async function main() {
   `;
   await sql`create index if not exists reports_duplicate_idx on reports (duplicate_of)`;
 
+  // Who reported it, for citizens who were signed in. citizen_users already exists by here.
+  await sql`
+    alter table reports
+      add column if not exists citizen_id uuid references citizen_users (id) on delete set null
+  `;
+  await sql`create index if not exists reports_citizen_idx on reports (citizen_id)`;
+
   const reports = await sql`
     select id, description, location, ST_Y(geom) as lat, ST_X(geom) as lng from reports
   `;
