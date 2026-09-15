@@ -31,9 +31,8 @@ function getAppSql() {
     onnotice: () => {},
   });
 
-  if (process.env.NODE_ENV !== "production") {
-    globalForAppDb.appSql = client;
-  }
+  // Cached in production too: without it every call opened a new pool that never closed.
+  globalForAppDb.appSql = client;
   return client;
 }
 
