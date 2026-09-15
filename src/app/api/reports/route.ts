@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
-import sql from "@/lib/db";
+import { withAccess } from "@/lib/db-access";
 import { reportInput } from "@/lib/validation";
 import { cleanPhoto, looksLikeImage } from "@/lib/image";
 import { MAX_REQUEST_BYTES, MAX_UPLOAD_BYTES } from "@/lib/upload-limits";
@@ -66,8 +66,10 @@ export async function POST(req: NextRequest) {
   const { category, description, lat, lng } = parsed.data;
   const citizen = await currentCitizen();
 
-  // One transaction, so a report is never saved without its photo.
-  await sql.begin(async (tx) => {
+  // One transaction, so a report is never saved without its photo. Row-level security (see
+  // db/init.sql) checks that an anonymous submission's citizen_id is null and a signed-in
+  // citizen's is their own, matching the value inserted here either way.
+  await withAccess({ citizenId: citizen?.id }, async (tx) => {
     await tx`
       insert into reports (id, category, description, location, geom, citizen_id)
       values (

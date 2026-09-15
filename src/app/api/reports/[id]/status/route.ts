@@ -1,4 +1,4 @@
-import sql from "@/lib/db";
+import { withAccess } from "@/lib/db-access";
 import { isUuid, statusInput } from "@/lib/validation";
 import { requireStaffApi } from "@/lib/auth/dal";
 import { sameOrigin } from "@/lib/auth/csrf";
@@ -27,8 +27,9 @@ export async function PATCH(
   }
 
   // A group changes together: its first report and the ones grouped under it. Only rows that
-  // really change are written, and the log keeps the first report's old status.
-  const result = await sql.begin(async (tx) => {
+  // really change are written, and the log keeps the first report's old status. requireStaffApi
+  // already verified this request, so app.is_staff is safe to set for row-level security.
+  const result = await withAccess({ staff: true }, async (tx) => {
     const [root] = await tx`
       select id, status from reports
       where id = (select coalesce(duplicate_of, id) from reports where id = ${id})

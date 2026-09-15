@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import sql from "@/lib/db";
+import { withAccess } from "@/lib/db-access";
 import { isUuid } from "@/lib/validation";
 import { requireStaffApi } from "@/lib/auth/dal";
 import { currentCitizen } from "@/lib/auth/citizen-session";
@@ -10,7 +10,9 @@ export const runtime = "nodejs";
 
 // Staff see every photo, and a citizen sees photos of reports they submitted. Faces and
 // plates aren't blurred yet, so anyone else sees one only while PUBLIC_DETAILS is on, and
-// only for a report that's on the public map.
+// only for a report that's on the public map. Row-level security (see db/init.sql) is what
+// actually enforces this now: the select below simply returns nothing for anyone it doesn't
+// apply to, instead of the route working that out by hand.
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!isUuid(id)) {
@@ -18,17 +20,12 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   }
 
   const auth = await requireStaffApi();
-  if (!auth.ok) {
-    const citizen = await currentCitizen();
-    const [report] = await sql`select citizen_id, status from reports where id = ${id}`;
-    const owner = citizen && report?.citizen_id === citizen.id;
-    const onPublicMap = publicDetails() && report && report.status !== "respins";
-    if (!owner && !onPublicMap) {
-      return new NextResponse("not found", { status: 404 });
-    }
-  }
+  const citizen = auth.ok ? null : await currentCitizen();
 
-  const [photo] = await sql`select data from report_photos where report_id = ${id}`;
+  const [photo] = await withAccess(
+    { staff: auth.ok, citizenId: citizen?.id, publicDetails: publicDetails() },
+    (tx) => tx`select data from report_photos where report_id = ${id}`
+  );
   if (!photo) {
     return new NextResponse("not found", { status: 404 });
   }

@@ -1,5 +1,5 @@
 import "server-only";
-import sql from "@/lib/db";
+import type postgres from "postgres";
 
 // Two open reports of the same category closer than this are taken as the same problem.
 export const DUPLICATE_METERS = 25;
@@ -19,7 +19,14 @@ export type NearbyGroup = {
 
 // Open groups of this category whose public point is near, closest first. A group is its first
 // report plus the ones pointing at it with duplicate_of, and it has the first report's status.
-export async function openGroupsNear(category: string, lat: number, lng: number): Promise<NearbyGroup[]> {
+// Takes the caller's own connection (see withAccess in lib/db-access.ts) so this reads under
+// whatever identity, if any, that caller already set for row-level security.
+export async function openGroupsNear(
+  sql: postgres.Sql,
+  category: string,
+  lat: number,
+  lng: number
+): Promise<NearbyGroup[]> {
   const here = sql`ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geography`;
   return sql<NearbyGroup[]>`
     with public_points as (

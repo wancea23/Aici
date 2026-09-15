@@ -40,10 +40,12 @@ You need Node 20.9 or newer.
 
    DATABASE_URL=postgresql://user:password@host.neon.tech/dbname?sslmode=require
 
-3. Add the secrets from `.env.example` to your `.env`. `STAFF_PASSWORD_PEPPER` and
-   `DATA_ENCRYPTION_KEY` must be the same for everyone on the team, because the database is
-   shared, so ask a teammate for them. With a different data key the photos and descriptions
-   can't be read. The email settings can stay empty while you develop, see Citizen accounts.
+3. Add the secrets from `.env.example` to your `.env`. `STAFF_PASSWORD_PEPPER`,
+   `DATA_ENCRYPTION_KEY` and `APP_DB_PASSWORD` must be the same for everyone on the team,
+   because the database is shared, so ask a teammate for them. With a different data key the
+   photos and descriptions can't be read, and with a different `APP_DB_PASSWORD` the app can't
+   connect as `app_data` at all (see Row-level security). The email settings can stay empty
+   while you develop, see Citizen accounts.
 
 4. Run it:
 
@@ -152,6 +154,32 @@ and date, at the point rounded to about 100 m. Photos and descriptions stay with
 unless `PUBLIC_DETAILS=true`, which the beta has on for now: then anyone sees them on the map
 and in the duplicate check, faces and plates included, since nothing blurs or reviews them yet.
 
+## Row-level security
+
+`reports`, `report_photos`, `citizen_users`, `citizen_signups` and `citizen_sessions` hold
+personal data, but only the first two have an owner per row that the app's features actually
+query by (a citizen viewing their own reports). The other three are looked up by a secret
+token or a hashed email during login and sign up, before any identity is established, so
+there is no "current citizen" yet to scope a policy by — adding one there would either do
+nothing or break that bootstrapping, so they are left to the encryption and short-lived,
+hashed tokens already protecting them.
+
+For `reports` and `report_photos`, every ordinary query now runs as `app_data`, a Postgres
+role with no more than `SELECT`, `INSERT` and (for `reports`) `UPDATE`, and row-level
+security policies on both tables — not the owner role used for migrations and the auth code
+that has to look accounts up before it knows who is asking. A citizen can see their own
+reports and photos; anyone can see a report and its photo, unless it was rejected, in which
+case only staff and the citizen who filed it still can; a citizen can only create a report
+under their own id or anonymously, never someone else's. Before this, all of that was checked
+only in application code, most visibly in the media route, which used to work out by hand
+exactly what this PR now makes the database itself refuse. `withAccess` (`lib/db-access.ts`)
+sets who is asking — `app.citizen_id`, `app.is_staff`, `app.public_details` — as session-local
+facts scoped to one transaction, so they never leak onto another request sharing a pooled
+connection. `APP_DB_PASSWORD` is `app_data`'s login password, shared across the team the same
+way as the other secrets; the role and its policies are created by `db/init.sql` and
+`scripts/migrate.ts`, but only `scripts/migrate.ts` can set the password, since it alone reads
+`.env`.
+
 Virus scanning comes in later work.
 
 ## Deployment
@@ -166,3 +194,8 @@ The settings live in the Vercel project as secrets: the same `DATABASE_URL` and 
 `.env`, the SMTP settings, and `APP_URL=https://aici-seven.vercel.app`. `.vercelignore` keeps
 `.env`, `data/` and `research/` out of the upload. Vercel takes requests of at most 4.5 MB,
 which is why the browser shrinks photos before sending them.
+
+This includes `APP_DB_PASSWORD`, since row-level security (see Security notes) means the app
+can't read or write a report at all without it. It must be set on Vercel, and `npm run
+db:migrate` must have been run against the production database at least once, before the
+first deploy after this change — otherwise every page that touches a report breaks.

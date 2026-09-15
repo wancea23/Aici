@@ -1,4 +1,4 @@
-import sql from "@/lib/db";
+import { withAccess } from "@/lib/db-access";
 import { decryptText } from "@/lib/crypto";
 
 export type Report = {
@@ -21,9 +21,10 @@ export type PublicReport = Pick<Report, "id" | "category" | "status" | "lat" | "
 
 // What the public map shows: the point rounded to about 100 m even for old rows, no
 // rejected reports, and one pin per group. The description only comes along while
-// PUBLIC_DETAILS is on.
+// PUBLIC_DETAILS is on. No identity is set, so row-level security's public policy is what
+// actually keeps rejected reports out, same as the explicit where clause below.
 export async function listPublicReports(details: boolean, limit = 500): Promise<PublicReport[]> {
-  const rows = await sql`
+  const rows = await withAccess({}, (sql) => sql`
     select r.id, r.category, r.status, r.description,
            round(ST_Y(r.geom)::numeric, 3)::float8 as lat,
            round(ST_X(r.geom)::numeric, 3)::float8 as lng,
@@ -33,7 +34,7 @@ export async function listPublicReports(details: boolean, limit = 500): Promise<
     where r.status <> 'respins' and r.duplicate_of is null
     order by r.created_at desc
     limit ${limit}
-  `;
+  `);
   return rows.map((r) => ({
     id: r.id,
     category: r.category,
@@ -50,14 +51,15 @@ export type CitizenReport = Pick<Report, "id" | "category" | "description" | "st
 
 // One citizen's own submissions, most recent first. Status already reflects the whole
 // group (see the status route), so a report grouped under another still shows correctly.
+// Scoped by citizen_id here and, as a second line of defense, by row-level security too.
 export async function listReportsForCitizen(citizenId: string, limit = 100): Promise<CitizenReport[]> {
-  const rows = await sql`
+  const rows = await withAccess({ citizenId }, (sql) => sql`
     select id, category, description, status, created_at
     from reports
     where citizen_id = ${citizenId}
     order by created_at desc
     limit ${limit}
-  `;
+  `);
   return rows.map((r) => ({
     id: r.id,
     category: r.category,
@@ -77,9 +79,10 @@ export function readDescription(id: string, value: string) {
   }
 }
 
-// One entry per group, its first report, with the ids of the ones grouped under it.
+// One entry per group, its first report, with the ids of the ones grouped under it. Staff
+// only — the caller must have already checked that with requireStaffApi/requireStaffPage.
 export async function listReports(limit = 100): Promise<Report[]> {
-  const rows = await sql`
+  const rows = await withAccess({ staff: true }, (sql) => sql`
     select r.id, r.category, r.description, r.location, r.status,
            ST_Y(r.geom) as lat, ST_X(r.geom) as lng, r.created_at,
            array(
@@ -89,7 +92,7 @@ export async function listReports(limit = 100): Promise<Report[]> {
     where r.duplicate_of is null
     order by r.created_at desc
     limit ${limit}
-  `;
+  `);
 
   // Plain objects with a string date, so they can be handed to client components.
   return rows.map((r) => {

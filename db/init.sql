@@ -29,6 +29,96 @@ create table if not exists report_photos (
   created_at timestamptz not null default now()
 );
 
+-- app_data is the role the app's ordinary queries run as (see src/lib/db-app.ts), instead of
+-- the owner role used here and by scripts/migrate.ts. Row-level security is invisible to a
+-- table's owner, so without this second role the policies below would enforce nothing. Its
+-- login password is set separately, from APP_DB_PASSWORD, by scripts/migrate.ts — never here.
+do $$
+begin
+  if not exists (select 1 from pg_roles where rolname = 'app_data') then
+    create role app_data login;
+  end if;
+end $$;
+
+grant usage on schema public to app_data;
+grant select, insert, update on reports to app_data;
+grant select, insert on report_photos to app_data;
+
+alter table reports enable row level security;
+alter table report_photos enable row level security;
+
+-- Facts the app sets per request, scoped to one transaction (see withAccess in
+-- src/lib/db-access.ts): app.citizen_id for a signed-in citizen, app.is_staff for an already
+-- verified staff request, app.public_details mirroring the PUBLIC_DETAILS setting. Anonymous
+-- means none of these were set, and current_setting(..., true) then reads as null, not an error.
+
+do $$
+begin
+  -- Staff can do anything with reports, the same trust the app already gives them.
+  if not exists (select 1 from pg_policies where tablename = 'reports' and policyname = 'reports_staff_all') then
+    create policy reports_staff_all on reports for all
+      using (current_setting('app.is_staff', true) = 'true')
+      with check (current_setting('app.is_staff', true) = 'true');
+  end if;
+
+  -- A citizen can always see their own reports, rejected ones included.
+  if not exists (select 1 from pg_policies where tablename = 'reports' and policyname = 'reports_owner_select') then
+    create policy reports_owner_select on reports for select
+      using (
+        citizen_id is not null
+        and citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid
+      );
+  end if;
+
+  -- What the public map and the duplicate check already show anyone: open or resolved
+  -- reports. A rejected one stays hidden unless you're staff or the one who reported it.
+  if not exists (select 1 from pg_policies where tablename = 'reports' and policyname = 'reports_public_select') then
+    create policy reports_public_select on reports for select
+      using (status <> 'respins');
+  end if;
+
+  -- Anyone can create a report. A signed-in citizen can only claim their own id as the
+  -- reporter; an anonymous submission must leave it null, never someone else's.
+  if not exists (select 1 from pg_policies where tablename = 'reports' and policyname = 'reports_insert') then
+    create policy reports_insert on reports for insert
+      with check (
+        citizen_id is null
+        or citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid
+      );
+  end if;
+
+  -- A photo is visible under the same rule the media route used to check by hand: staff see
+  -- every photo, a citizen sees their own report's photo, and everyone else only while
+  -- PUBLIC_DETAILS is on and the report was not rejected.
+  if not exists (select 1 from pg_policies where tablename = 'report_photos' and policyname = 'report_photos_select') then
+    create policy report_photos_select on report_photos for select
+      using (
+        exists (
+          select 1 from reports r
+          where r.id = report_photos.report_id
+            and (
+              current_setting('app.is_staff', true) = 'true'
+              or (r.citizen_id is not null and r.citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid)
+              or (current_setting('app.public_details', true) = 'true' and r.status <> 'respins')
+            )
+        )
+      );
+  end if;
+
+  -- A photo can only be attached to a report that is anonymous or belongs to the same
+  -- citizen, so nobody can attach a photo to a report they do not own.
+  if not exists (select 1 from pg_policies where tablename = 'report_photos' and policyname = 'report_photos_insert') then
+    create policy report_photos_insert on report_photos for insert
+      with check (
+        exists (
+          select 1 from reports r
+          where r.id = report_photos.report_id
+            and (r.citizen_id is null or r.citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid)
+        )
+      );
+  end if;
+end $$;
+
 -- Staff accounts, made by invitation only.
 create table if not exists staff_users (
   id uuid primary key default gen_random_uuid(),
