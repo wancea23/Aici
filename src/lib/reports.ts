@@ -46,6 +46,27 @@ export async function listPublicReports(details: boolean, limit = 500): Promise<
   }));
 }
 
+export type CitizenReport = Pick<Report, "id" | "category" | "description" | "status" | "created_at">;
+
+// One citizen's own submissions, most recent first. Status already reflects the whole
+// group (see the status route), so a report grouped under another still shows correctly.
+export async function listReportsForCitizen(citizenId: string, limit = 100): Promise<CitizenReport[]> {
+  const rows = await sql`
+    select id, category, description, status, created_at
+    from reports
+    where citizen_id = ${citizenId}
+    order by created_at desc
+    limit ${limit}
+  `;
+  return rows.map((r) => ({
+    id: r.id,
+    category: r.category,
+    description: readDescription(r.id, r.description),
+    status: r.status,
+    created_at: new Date(r.created_at).toISOString(),
+  }));
+}
+
 // One row that can't be decrypted shouldn't take a whole page down.
 export function readDescription(id: string, value: string) {
   try {

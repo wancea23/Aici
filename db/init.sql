@@ -11,12 +11,16 @@ create table if not exists reports (
   geom geometry(Point, 4326) not null,
   -- Set when the report repeats an earlier one. It points at the first report of the group.
   duplicate_of uuid references reports (id) on delete set null,
+  -- Who reported it, for citizens who were signed in. Null for anonymous reports; the
+  -- foreign key to citizen_users is added further down, once that table exists.
+  citizen_id uuid,
   created_at timestamptz not null default now()
 );
 
 create index if not exists reports_geom_idx on reports using gist (geom);
 create index if not exists reports_created_idx on reports (created_at desc);
 create index if not exists reports_duplicate_idx on reports (duplicate_of);
+create index if not exists reports_citizen_idx on reports (citizen_id);
 
 -- The cleaned webp of each report, encrypted. In the database for now, object storage later.
 create table if not exists report_photos (
@@ -119,6 +123,16 @@ create table if not exists citizen_users (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- Postgres has no "add constraint if not exists", so this is checked by hand.
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname = 'reports_citizen_id_fkey') then
+    alter table reports
+      add constraint reports_citizen_id_fkey
+      foreign key (citizen_id) references citizen_users (id) on delete set null;
+  end if;
+end $$;
 
 -- A sign up waiting for its email link, with the password chosen for it.
 -- Deleted once it is used or expired.
