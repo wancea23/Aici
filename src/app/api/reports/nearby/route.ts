@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { nearbyInput } from "@/lib/validation";
 import { readDescription } from "@/lib/reports";
 import { openGroupsNear } from "@/lib/duplicates";
+import { withAccess } from "@/lib/db-access";
 import { publicDetails } from "@/lib/env";
 import { clientInfo } from "@/lib/auth/request";
 import { countAttempt, peek, rules } from "@/lib/auth/rate-limit";
@@ -25,7 +26,7 @@ export async function GET(req: NextRequest) {
   const { category, lat, lng } = parsed.data;
 
   // Matched on the public map points only, so the answer tells nothing the map doesn't.
-  const groups = await openGroupsNear(category, lat, lng);
+  const groups = await withAccess({}, (tx) => openGroupsNear(tx, category, lat, lng));
   const details = publicDetails();
   return NextResponse.json(
     groups.slice(0, 5).map((g) => ({
