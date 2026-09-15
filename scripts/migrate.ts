@@ -69,6 +69,89 @@ async function main() {
   `;
   await sql`create index if not exists reports_citizen_idx on reports (citizen_id)`;
 
+  // app_data: the role ordinary app queries run as, so row-level security actually applies
+  // (it never applies to the owner role this script itself connects as). Structure and
+  // policies mirror db/init.sql exactly; see the comments there for what each one does.
+  await sql`
+    do $$
+    begin
+      if not exists (select 1 from pg_roles where rolname = 'app_data') then
+        create role app_data login;
+      end if;
+    end $$
+  `;
+  await sql`grant usage on schema public to app_data`;
+  await sql`grant select, insert, update on reports to app_data`;
+  await sql`grant select, insert on report_photos to app_data`;
+  await sql`alter table reports enable row level security`;
+  await sql`alter table report_photos enable row level security`;
+  await sql`
+    do $$
+    begin
+      if not exists (select 1 from pg_policies where tablename = 'reports' and policyname = 'reports_staff_all') then
+        create policy reports_staff_all on reports for all
+          using (current_setting('app.is_staff', true) = 'true')
+          with check (current_setting('app.is_staff', true) = 'true');
+      end if;
+      if not exists (select 1 from pg_policies where tablename = 'reports' and policyname = 'reports_owner_select') then
+        create policy reports_owner_select on reports for select
+          using (
+            citizen_id is not null
+            and citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid
+          );
+      end if;
+      if not exists (select 1 from pg_policies where tablename = 'reports' and policyname = 'reports_public_select') then
+        create policy reports_public_select on reports for select
+          using (status <> 'respins');
+      end if;
+      if not exists (select 1 from pg_policies where tablename = 'reports' and policyname = 'reports_insert') then
+        create policy reports_insert on reports for insert
+          with check (
+            citizen_id is null
+            or citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid
+          );
+      end if;
+      if not exists (select 1 from pg_policies where tablename = 'report_photos' and policyname = 'report_photos_select') then
+        create policy report_photos_select on report_photos for select
+          using (
+            exists (
+              select 1 from reports r
+              where r.id = report_photos.report_id
+                and (
+                  current_setting('app.is_staff', true) = 'true'
+                  or (r.citizen_id is not null and r.citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid)
+                  or (current_setting('app.public_details', true) = 'true' and r.status <> 'respins')
+                )
+            )
+          );
+      end if;
+      if not exists (select 1 from pg_policies where tablename = 'report_photos' and policyname = 'report_photos_insert') then
+        create policy report_photos_insert on report_photos for insert
+          with check (
+            exists (
+              select 1 from reports r
+              where r.id = report_photos.report_id
+                and (r.citizen_id is null or r.citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid)
+            )
+          );
+      end if;
+    end $$
+  `;
+
+  // Only this script can actually set app_data's password, from a secret never committed.
+  // Skipped, not failed, when it's missing — a later, unrelated migration shouldn't need it
+  // just because nobody has generated it yet. ALTER ROLE takes no bind parameter for the
+  // password, so quote_literal builds one safely instead of splicing the value in by hand.
+  if (process.env.APP_DB_PASSWORD) {
+    const [{ quoted }] = await sql<{ quoted: string }[]>`
+      select quote_literal(${process.env.APP_DB_PASSWORD}) as quoted
+    `;
+    await sql.unsafe(`alter role app_data password ${quoted}`);
+    console.log("app_data password set from APP_DB_PASSWORD.");
+  } else {
+    console.log("APP_DB_PASSWORD is not set — app_data has no usable password yet.");
+  }
+
   const reports = await sql`
     select id, description, location, ST_Y(geom) as lat, ST_X(geom) as lng from reports
   `;
