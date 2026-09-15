@@ -11,24 +11,30 @@ function appDataUrl() {
   return url.toString();
 }
 
-const url = appDataUrl();
-
-// Cloud providers require TLS. Local Docker does not.
-const useSsl = /sslmode=require|neon\.tech|supabase/.test(url);
-
 const globalForAppDb = globalThis as unknown as { appSql?: ReturnType<typeof postgres> };
 
-const appSql =
-  globalForAppDb.appSql ??
-  postgres(url, {
+// Built lazily, on first real use, not at module load: Next.js imports every route file while
+// building the app, just to read its config, and a strict env var lookup there would crash the
+// build itself instead of just failing a request — this way it only ever runs when a request
+// actually needs the database, by which point the environment is guaranteed to be there.
+function getAppSql() {
+  if (globalForAppDb.appSql) return globalForAppDb.appSql;
+
+  const url = appDataUrl();
+  // Cloud providers require TLS. Local Docker does not.
+  const useSsl = /sslmode=require|neon\.tech|supabase/.test(url);
+
+  const client = postgres(url, {
     max: 10,
     ssl: useSsl ? "require" : undefined,
     prepare: false,
     onnotice: () => {},
   });
 
-if (process.env.NODE_ENV !== "production") {
-  globalForAppDb.appSql = appSql;
+  if (process.env.NODE_ENV !== "production") {
+    globalForAppDb.appSql = client;
+  }
+  return client;
 }
 
-export default appSql;
+export default getAppSql;

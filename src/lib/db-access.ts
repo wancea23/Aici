@@ -1,6 +1,6 @@
 import "server-only";
 import type postgres from "postgres";
-import appSql from "@/lib/db-app";
+import getAppSql from "@/lib/db-app";
 
 export type AccessContext = {
   citizenId?: string;
@@ -18,7 +18,7 @@ export async function withAccess<T>(
 ): Promise<T> {
   // begin()'s declared return type is UnwrapPromiseArray<T>, which only differs from T when T
   // itself is an array — never the case for anything this function is used for.
-  return appSql.begin<T>(async (tx) => {
+  return getAppSql().begin<T>(async (tx) => {
     if (ctx.citizenId) await tx`select set_config('app.citizen_id', ${ctx.citizenId}, true)`;
     if (ctx.staff) await tx`select set_config('app.is_staff', 'true', true)`;
     if (ctx.publicDetails) await tx`select set_config('app.public_details', 'true', true)`;
