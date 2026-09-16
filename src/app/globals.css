@@ -38,6 +38,14 @@
   transform: scale(1.25);
 }
 
+.picker-pin {
+  cursor: grab;
+}
+
+.picker-pin:active {
+  cursor: grabbing;
+}
+
 .report-pin-shape {
   fill: var(--pin);
   stroke: #fbfdfd;

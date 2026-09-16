@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { withAccess } from "@/lib/db-access";
-import { reportInput } from "@/lib/validation";
+import { outsideArea, reportInput } from "@/lib/validation";
 import { cleanPhoto, looksLikeImage } from "@/lib/image";
 import { MAX_REQUEST_BYTES, MAX_UPLOAD_BYTES } from "@/lib/upload-limits";
 import { listReports } from "@/lib/reports";
@@ -40,7 +40,8 @@ export async function POST(req: NextRequest) {
     lng: form.get("lng"),
   });
   if (!parsed.success) {
-    return NextResponse.json({ error: "date invalide" }, { status: 400 });
+    const outside = parsed.error.issues.some((issue) => issue.message === outsideArea);
+    return NextResponse.json({ error: outside ? outsideArea : "date invalide" }, { status: 400 });
   }
   if (!(photo instanceof File)) {
     return NextResponse.json({ error: "lipsește poza" }, { status: 400 });

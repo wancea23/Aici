@@ -14,6 +14,7 @@ import {
   type Status,
 } from "@/lib/validation";
 import { formatDate, howMany, timeAgo } from "@/lib/format";
+import { chisinau, mapStyle, pinShape, romanianLabels } from "@/lib/map-setup";
 
 export type Selection = { id: string; from: "map" | "list" } | null;
 
@@ -33,15 +34,9 @@ type Props = {
   photos?: boolean;
 };
 
-const chisinau: [number, number] = [28.8638, 47.0105];
-const mapStyle = "https://tiles.openfreemap.org/styles/bright";
-const pinShape = "M16 38C12 33 3 24 3 15a13 13 0 1 1 26 0c0 9-9 18-13 23z";
 const svgNS = "http://www.w3.org/2000/svg";
 // a big group would otherwise fill the popup and load every photo at once
 const maxThumbs = 8;
-
-// The bundler breaks MapLibre's own worker lookup, see src/app/maplibre.
-maplibregl.setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 
 export default function ReportsMap({ reports, selection, onPick, photos = true }: Props) {
   const box = useRef<HTMLDivElement>(null);
@@ -127,17 +122,6 @@ export default function ReportsMap({ reports, selection, onPick, photos = true }
   }, [selection]);
 
   return <div ref={box} className="h-full w-full" />;
-}
-
-// The style prefers English street names. We want the Romanian ones.
-function romanianLabels(m: maplibregl.Map) {
-  for (const layer of m.getStyle().layers) {
-    if (layer.type !== "symbol") continue;
-    const field = m.getLayoutProperty(layer.id, "text-field");
-    if (field && JSON.stringify(field).includes("name")) {
-      m.setLayoutProperty(layer.id, "text-field", ["coalesce", ["get", "name:ro"], ["get", "name"]]);
-    }
-  }
 }
 
 function icon(category: string, attrs: Record<string, string | number>) {
