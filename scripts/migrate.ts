@@ -43,6 +43,16 @@ async function main() {
     )
   `;
   await sql`create index if not exists citizen_sessions_user_idx on citizen_sessions (user_id)`;
+  await sql`
+    create table if not exists citizen_password_resets (
+      id uuid primary key default gen_random_uuid(),
+      user_id uuid not null references citizen_users (id) on delete cascade,
+      token_hash text not null unique,
+      expires_at timestamptz not null,
+      created_at timestamptz not null default now()
+    )
+  `;
+  await sql`create index if not exists citizen_password_resets_user_idx on citizen_password_resets (user_id)`;
 
   // The encrypted location column, and what the removed second login step left behind.
   await sql`alter table reports add column if not exists location text`;

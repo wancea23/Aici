@@ -74,6 +74,43 @@ export function existingAccountMail(email: string, base: string): Mail {
   };
 }
 
+export function passwordResetMail(email: string, link: string, minutes: number): Mail {
+  return {
+    to: email,
+    subject: "Alege o parolă nouă pentru contul Aici",
+    text: [
+      "Bună ziua,",
+      "",
+      `Cineva, probabil tu, a cerut o parolă nouă pentru contul Aici cu adresa ${email}.`,
+      "Ca să o alegi, deschide linkul de mai jos:",
+      "",
+      link,
+      "",
+      `Linkul e valabil ${minutes} minute și merge o singură dată.`,
+      "Dacă nu ai cerut tu, ignoră mesajul. Parola ta rămâne aceeași.",
+      "",
+      "Echipa Aici",
+    ].join("\n"),
+  };
+}
+
+// Sent after a reset, so the owner notices if it wasn't them.
+export function passwordChangedMail(email: string, base: string): Mail {
+  return {
+    to: email,
+    subject: "Parola contului Aici a fost schimbată",
+    text: [
+      "Bună ziua,",
+      "",
+      `Parola contului Aici cu adresa ${email} a fost schimbată, iar contul a fost deconectat de pe toate dispozitivele.`,
+      `Dacă ai fost tu, te poți conecta cu parola nouă: ${base}/conectare`,
+      `Dacă nu ai fost tu, cere imediat o parolă nouă: ${base}/forgot-password`,
+      "",
+      "Echipa Aici",
+    ].join("\n"),
+  };
+}
+
 export type StatusUpdate = {
   category: string;
   // the day of the report, already formatted

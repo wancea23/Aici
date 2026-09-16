@@ -33,6 +33,11 @@ export default async function CitizenLoginPage({
       }
     >
       <LoginForm next={next} endpoint="/api/citizen/login">
+        <p className="text-sm">
+          <Link href="/forgot-password" className={linkClass}>
+            Ai uitat parola?
+          </Link>
+        </p>
         <p className="text-xs text-slate-400">
           Lucrezi la primărie?{" "}
           <Link href="/login" className="hover:underline">

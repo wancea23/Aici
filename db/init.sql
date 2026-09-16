@@ -251,6 +251,17 @@ create table if not exists citizen_sessions (
 
 create index if not exists citizen_sessions_user_idx on citizen_sessions (user_id);
 
+-- A link for a forgotten password. Only the hash of the token is kept, and using it deletes the row.
+create table if not exists citizen_password_resets (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references citizen_users (id) on delete cascade,
+  token_hash text not null unique,
+  expires_at timestamptz not null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists citizen_password_resets_user_idx on citizen_password_resets (user_id);
+
 -- The history of a report: each status change and each message from the city hall.
 -- The message is encrypted by the app, the citizen who reported it reads it on /profil.
 create table if not exists report_events (

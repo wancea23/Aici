@@ -23,6 +23,9 @@ export const rules = {
   registerIp: { name: "register-ip", windowSec: 60 * 60, max: 20 },
   // so the sign up form can't be used to flood someone's inbox
   registerEmail: { name: "register-email", windowSec: 60 * 60, max: 5 },
+  // the forgotten password form sends emails too
+  resetIp: { name: "reset-ip", windowSec: 60 * 60, max: 20 },
+  resetEmail: { name: "reset-email", windowSec: 60 * 60, max: 3 },
   // a status clicked back and forth shouldn't turn into a pile of emails
   statusMail: { name: "status-mail", windowSec: 60 * 60, max: 10 },
   citizenLoginIp: { name: "citizen-login-ip", windowSec: 15 * 60, max: 50, challengeAfter: 20 },

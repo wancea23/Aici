@@ -97,6 +97,52 @@ export async function rehashCitizenPassword(id: string, passwordHash: string) {
   await sql`update citizen_users set password_hash = ${passwordHash}, updated_at = now() where id = ${id}`;
 }
 
+// From the c5 research: a reset link lasts 15 minutes and works once.
+export const RESET_MINUTES = 15;
+
+// A new link replaces any older one for the account. Returns the raw token for the email.
+export async function createPasswordReset(userId: string) {
+  const { token, hash } = newToken();
+  await sql.begin(async (tx) => {
+    await tx`delete from citizen_password_resets where user_id = ${userId} or expires_at <= now()`;
+    await tx`
+      insert into citizen_password_resets (user_id, token_hash, expires_at)
+      values (${userId}, ${hash}, now() + ${RESET_MINUTES}::int * interval '1 minute')
+    `;
+  });
+  return token;
+}
+
+export type PasswordReset = { id: string; userId: string; email: string };
+
+// Looks a link up without using it, so the page can say early that it expired.
+export async function findPasswordReset(token: string): Promise<PasswordReset | null> {
+  if (!/^[A-Za-z0-9_-]{43}$/.test(token)) return null;
+  const [row] = await sql`
+    select r.id, u.id as user_id, u.email
+    from citizen_password_resets r
+    join citizen_users u on u.id = r.user_id
+    where r.token_hash = ${sha256(token)} and r.expires_at > now()
+  `;
+  if (!row) return null;
+  return { id: row.id, userId: row.user_id, email: decryptText(row.email, `citizen:${row.user_id}:email`) };
+}
+
+// Using the link, saving the password and signing out every device happen together, so the
+// link works once and a session someone else may hold ends with the old password.
+export async function redeemPasswordReset(reset: PasswordReset, passwordHash: string): Promise<boolean> {
+  return sql.begin(async (tx) => {
+    const [taken] = await tx`
+      delete from citizen_password_resets where id = ${reset.id} and expires_at > now() returning id
+    `;
+    if (!taken) return false;
+    await tx`delete from citizen_password_resets where user_id = ${reset.userId}`;
+    await tx`update citizen_users set password_hash = ${passwordHash}, updated_at = now() where id = ${reset.userId}`;
+    await tx`delete from citizen_sessions where user_id = ${reset.userId}`;
+    return true;
+  });
+}
+
 // Citizen events go into the same audit log as staff ones, but without the address or
 // browser: the log is never cleared, and nothing there needs them.
 export function auditCitizen(

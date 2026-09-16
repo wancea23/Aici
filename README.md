@@ -70,6 +70,11 @@ password. Without `SMTP_HOST`, `npm run dev` prints every email with its link in
 so the whole flow can be tried without sending anything. In production `APP_URL` has to be set
 as well, the links in the emails are built from it.
 
+A citizen who forgets the password asks for a link at `/forgot-password`. The link lasts 15
+minutes, works once and opens `/new-password`, where the new password follows the same rules as
+at sign up. Saving it signs the account out on every device, and an email tells the owner that
+the password changed.
+
 ## Staff accounts
 
 City hall staff sign in at `/login` with their email and password.
@@ -159,6 +164,13 @@ one network address, so it can't be used to flood an inbox. Links in emails are 
 of citizen data, and the database looks them up by a keyed hash of the address. Citizen sessions
 end after a week without activity or 30 days in total, and neither they nor the audit log keep
 the citizen's network address or browser.
+
+A password reset works the same way. The form always asks for the ALTCHA, answers the same
+whether or not the address has an account, looks the account up only after the answer is sent,
+and takes at most 3 requests an hour for one address. The database keeps only a SHA-256 of the
+256 bit token, a new request replaces the older link, and using the link deletes it together with
+every session of the account in one transaction. The page with the token in its address sends no
+Referer header, and guessing tokens is throttled like the other links.
 
 The browser shrinks each photo to at most 2048 px before sending it, so its GPS position and
 the rest of its EXIF data never leave the phone. The server still cleans whatever arrives. The
