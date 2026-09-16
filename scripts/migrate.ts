@@ -138,6 +138,54 @@ async function main() {
     end $$
   `;
 
+  // The history of each report, the same as in init.sql.
+  await sql`
+    create table if not exists report_events (
+      id uuid primary key,
+      report_id uuid not null references reports (id) on delete cascade,
+      status text not null,
+      previous_status text not null,
+      note text,
+      staff_id uuid references staff_users (id) on delete set null,
+      created_at timestamptz not null default now()
+    )
+  `;
+  await sql`create index if not exists report_events_report_idx on report_events (report_id, created_at)`;
+  await sql`
+    create or replace function report_events_append_only() returns trigger as $$
+    begin
+      raise exception 'report_events is append only';
+    end;
+    $$ language plpgsql
+  `;
+  await sql`
+    create or replace trigger report_events_no_change
+      before update on report_events
+      for each row execute function report_events_append_only()
+  `;
+  await sql`grant select, insert on report_events to app_data`;
+  await sql`alter table report_events enable row level security`;
+  await sql`
+    do $$
+    begin
+      if not exists (select 1 from pg_policies where tablename = 'report_events' and policyname = 'report_events_staff') then
+        create policy report_events_staff on report_events for all
+          using (current_setting('app.is_staff', true) = 'true')
+          with check (current_setting('app.is_staff', true) = 'true');
+      end if;
+      if not exists (select 1 from pg_policies where tablename = 'report_events' and policyname = 'report_events_owner_select') then
+        create policy report_events_owner_select on report_events for select
+          using (
+            exists (
+              select 1 from reports r
+              where r.id = report_events.report_id
+                and r.citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid
+            )
+          );
+      end if;
+    end $$
+  `;
+
   // Only this script can actually set app_data's password, from a secret never committed.
   // Skipped, not failed, when it's missing — a later, unrelated migration shouldn't need it
   // just because nobody has generated it yet. ALTER ROLE takes no bind parameter for the

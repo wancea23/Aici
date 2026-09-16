@@ -39,6 +39,15 @@ export async function findStaffById(id: string): Promise<StaffAccount | null> {
   return row ?? null;
 }
 
+// Who wrote each line of a report's history, for the panel.
+export async function staffEmails(ids: string[]): Promise<Map<string, string>> {
+  if (ids.length === 0) return new Map();
+  const rows = await sql<{ id: string; email: string }[]>`
+    select id, email from staff_users where id in ${sql(ids)}
+  `;
+  return new Map(rows.map((r) => [r.id, r.email]));
+}
+
 // A new invitation replaces an older unused one for the same address.
 export async function createInvite(email: string, role: Role, createdBy: string) {
   const { token, hash } = newToken();

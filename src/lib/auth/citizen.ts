@@ -84,6 +84,15 @@ export async function completeSignup(signup: Signup): Promise<{ id: string } | "
   });
 }
 
+// For the status emails. An account deleted since then is simply left out.
+export async function citizenEmails(ids: string[]): Promise<Map<string, string>> {
+  if (ids.length === 0) return new Map();
+  const rows = await sql<{ id: string; email: string }[]>`
+    select id, email from citizen_users where id in ${sql(ids)}
+  `;
+  return new Map(rows.map((r) => [r.id, decryptText(r.email, `citizen:${r.id}:email`)]));
+}
+
 export async function rehashCitizenPassword(id: string, passwordHash: string) {
   await sql`update citizen_users set password_hash = ${passwordHash}, updated_at = now() where id = ${id}`;
 }
