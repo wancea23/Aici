@@ -1,14 +1,20 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { Camera, Send } from "lucide";
+import dynamic from "next/dynamic";
+import { useCallback, useRef, useState } from "react";
+import { Camera, LocateFixed, Send } from "lucide";
 import Icon from "@/components/Icon";
 import { inputClass, linkClass, primaryButton, secondaryButton } from "@/components/auth/ui";
 import { categories, categoryLabels, statusLabels, type Category, type Status } from "@/lib/validation";
 import { shrinkPhoto } from "@/lib/shrink-photo";
 import { howMany } from "@/lib/format";
+import type { Coords } from "@/components/LocationPicker";
 
-type Coords = { lat: number; lng: number };
+// The map needs the browser, so it only renders on the client.
+const LocationPicker = dynamic(() => import("@/components/LocationPicker"), {
+  ssr: false,
+  loading: () => <div className="h-full w-full animate-pulse bg-slate-100" />,
+});
 
 type NearbyReport = {
   id: string;
@@ -36,6 +42,10 @@ export default function ReportForm() {
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [coords, setCoords] = useState<Coords | null>(null);
+  // set once the person moves the pin, so a late GPS answer doesn't move it back
+  const [pickedByHand, setPickedByHand] = useState(false);
+  const byHand = useRef(false);
+  const [focus, setFocus] = useState(0);
   const [geoError, setGeoError] = useState<string | null>(null);
   const [locating, setLocating] = useState(false);
   const asking = useRef(0);
@@ -74,7 +84,9 @@ export default function ReportForm() {
         // a prompt that never shows up would otherwise leave the form waiting forever
         new Promise<never>((_, reject) => setTimeout(() => reject(new Error("no answer")), 25000)),
       ]);
+      if (byHand.current) return null;
       setCoords(found);
+      setFocus((n) => n + 1);
       return found;
     } catch (err) {
       const denied = (err as GeolocationPositionError).code === PERMISSION_DENIED;
@@ -83,10 +95,24 @@ export default function ReportForm() {
           ? "Browserul nu are voie să citească locația. Permite-o din setările telefonului, apoi apasă din nou."
           : "Nu am putut citi locația. Dacă ai deschis linkul din Telegram sau Instagram, deschide-l în Safari sau Chrome."
       );
+      if (byHand.current) setGeoError(null);
       return null;
     } finally {
       if (--asking.current === 0) setLocating(false);
     }
+  }
+
+  const pickOnMap = useCallback((at: Coords) => {
+    byHand.current = true;
+    setPickedByHand(true);
+    setCoords(at);
+    setGeoError(null);
+  }, []);
+
+  function backToGps() {
+    byHand.current = false;
+    setPickedByHand(false);
+    void locate();
   }
 
   async function createReport(at: Coords) {
@@ -121,7 +147,7 @@ export default function ReportForm() {
     const at = coords ?? (await locate());
     if (!at) {
       setBusy(false);
-      return setError("Fără locație nu putem trimite sesizarea.");
+      return setError("Fără locație nu putem trimite sesizarea. Atinge harta unde e problema.");
     }
 
     try {
@@ -152,6 +178,8 @@ export default function ReportForm() {
     setPhoto(null);
     setPreview(null);
     setCoords(null);
+    byHand.current = false;
+    setPickedByHand(false);
     setGeoError(null);
     setCategory("groapa");
     setDescription("");
@@ -262,21 +290,40 @@ export default function ReportForm() {
           {/* no capture attribute, so phones offer both the camera and the gallery */}
           <input type="file" accept="image/*" className="hidden" onChange={onPhoto} />
         </label>
-        <p className={`mt-2 text-xs ${geoError && !coords ? "text-red-600" : "text-slate-400"}`}>
-          {coords
-            ? `Locație: ${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`
-            : locating
-              ? "Se caută locația..."
-              : geoError ?? "Locația se adaugă după poză."}
-        </p>
-        {photo && !coords && !locating && (
-          <button
-            type="button"
-            onClick={() => void locate()}
-            className={`mt-1 text-xs ${linkClass}`}
-          >
-            {geoError ? "Încearcă din nou" : "Adaugă locația acum"}
-          </button>
+        {photo ? (
+          <div className="mt-3">
+            <div className="isolate h-56 overflow-hidden rounded-xl border border-slate-200">
+              <LocationPicker value={coords} category={category} focus={focus} onPick={pickOnMap} />
+            </div>
+            <p className={`mt-2 text-xs ${geoError && !coords ? "text-red-600" : "text-slate-500"}`}>
+              {pickedByHand
+                ? "Ai pus pinul pe hartă. Trage-l sau atinge harta ca să-l muți."
+                : coords
+                  ? "Pinul e unde ești acum. Dacă poza e făcută în alt loc, mută-l acolo."
+                  : locating
+                    ? "Se caută locația..."
+                    : geoError
+                      ? `${geoError} Sau atinge harta unde e problema.`
+                      : "Atinge harta unde e problema."}
+            </p>
+            {pickedByHand && (
+              <button
+                type="button"
+                onClick={backToGps}
+                className={`mt-1 inline-flex items-center gap-1 text-xs ${linkClass}`}
+              >
+                <Icon node={LocateFixed} className="h-3.5 w-3.5" />
+                Folosește locația mea
+              </button>
+            )}
+            {!pickedByHand && !coords && !locating && (
+              <button type="button" onClick={() => void locate()} className={`mt-1 text-xs ${linkClass}`}>
+                Încearcă din nou
+              </button>
+            )}
+          </div>
+        ) : (
+          <p className="mt-2 text-xs text-slate-400">După poză alegi locația pe hartă.</p>
         )}
       </div>
 

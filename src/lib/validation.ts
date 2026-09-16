@@ -64,11 +64,17 @@ export const statusInk: Record<Status, string> = {
   respins: "#475569",
 };
 
+// A rectangle around Moldova with a small margin. The map can't leave it and the server
+// refuses reports outside it, since no city hall here could act on them.
+export const serviceArea = { south: 45.4, north: 48.6, west: 26.5, east: 30.2 };
+
+export const outsideArea = "Locația trebuie să fie în Republica Moldova.";
+
 export const reportInput = z.object({
   category: z.enum(categories),
   description: z.string().trim().max(1000).optional().default(""),
-  lat: z.coerce.number().min(-90).max(90),
-  lng: z.coerce.number().min(-180).max(180),
+  lat: z.coerce.number().min(serviceArea.south, outsideArea).max(serviceArea.north, outsideArea),
+  lng: z.coerce.number().min(serviceArea.west, outsideArea).max(serviceArea.east, outsideArea),
 });
 
 export const nearbyInput = z.object({

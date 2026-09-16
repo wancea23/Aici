@@ -31,7 +31,7 @@ export default async function Home() {
 
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <h1 className="text-lg font-semibold">Raportează o problemă</h1>
-        <p className="mt-1 text-sm text-slate-500">Fă o poză, iar locația se adaugă singură.</p>
+        <p className="mt-1 text-sm text-slate-500">Fă o poză, iar locația se adaugă singură. O poți muta pe hartă.</p>
         <div className="mt-5">
           <ReportForm />
         </div>
