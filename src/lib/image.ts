@@ -1,4 +1,5 @@
 import sharp from "sharp";
+import { blurFaces } from "@/lib/face-blur";
 
 const allowed = new Set(["jpeg", "png", "webp"]);
 
@@ -18,8 +19,9 @@ export function looksLikeImage(buf: Buffer): boolean {
   return false;
 }
 
-// Re encodes the photo into a fresh webp. This applies the orientation flag to the
-// pixels and drops EXIF, GPS and anything else hidden in the original file.
+// Re encodes the photo into a fresh webp, blurring any faces found in it along the way.
+// This also applies the orientation flag to the pixels and drops EXIF, GPS and anything
+// else hidden in the original file.
 export async function cleanPhoto(input: Buffer): Promise<Buffer> {
   const image = sharp(input, { failOn: "error" });
   const meta = await image.metadata();
@@ -28,9 +30,14 @@ export async function cleanPhoto(input: Buffer): Promise<Buffer> {
     throw new Error("unsupported image");
   }
 
-  return image
+  const resized = await image
     .rotate()
     .resize(1600, 1600, { fit: "inside", withoutEnlargement: true })
-    .webp({ quality: 75 })
     .toBuffer();
+
+  // Blurring happens on the already-resized image: one known size to reason about, and
+  // faces get bigger, easier-to-detect regions than shrinking them down first would give.
+  const blurred = await blurFaces(resized);
+
+  return sharp(blurred).webp({ quality: 75 }).toBuffer();
 }
