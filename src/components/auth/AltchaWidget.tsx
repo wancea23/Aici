@@ -21,5 +21,14 @@ export default function AltchaWidget({ onPayload }: { onPayload: (payload: strin
     return () => el.removeEventListener("statechange", onState);
   }, [onPayload]);
 
-  return <altcha-widget ref={ref} challenge="/api/auth/altcha" language="ro" suppressHydrationWarning />;
+  // a custom element is inline by default, which ignores the form's spacing
+  return (
+    <altcha-widget
+      ref={ref}
+      challenge="/api/auth/altcha"
+      language="ro"
+      style={{ display: "block" }}
+      suppressHydrationWarning
+    />
+  );
 }

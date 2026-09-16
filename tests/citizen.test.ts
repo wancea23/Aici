@@ -49,6 +49,20 @@ test("sign up mails", async () => {
   assert.ok(!again.text.includes("token"));
 });
 
+test("password reset mails", async () => {
+  const { passwordResetMail, passwordChangedMail } = await load.mail();
+  const link = "https://aici.example/new-password?token=abc";
+  const reset = passwordResetMail("ion@mail.md", link, 15);
+  assert.equal(reset.to, "ion@mail.md");
+  assert.ok(reset.text.includes(link));
+  assert.ok(reset.text.includes("15 minute"));
+  // the notice after a change has no token, only the ways back in
+  const changed = passwordChangedMail("ion@mail.md", "https://aici.example");
+  assert.ok(changed.text.includes("https://aici.example/conectare"));
+  assert.ok(changed.text.includes("https://aici.example/forgot-password"));
+  assert.ok(!changed.text.includes("token"));
+});
+
 test("without SMTP, development prints the mail instead", async () => {
   const { sendMail } = await load.mail();
   const printed: string[] = [];

@@ -1,88 +1,59 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import AltchaWidget from "@/components/auth/AltchaWidget";
+import { useState } from "react";
+import Link from "next/link";
 import PasswordChecklist from "@/components/citizen/PasswordChecklist";
 import { sendJson } from "@/components/auth/api";
 import { inputClass, labelClass, linkClass, primaryButton } from "@/components/auth/ui";
 import { citizenPasswordChecks } from "@/lib/auth/password-rules";
 
-export default function RegisterForm() {
-  const [email, setEmail] = useState("");
+export default function NewPasswordForm({ token, email }: { token: string; email: string }) {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [altcha, setAltcha] = useState<string | null>(null);
-  // a solved puzzle works once, so the widget is remounted after every attempt
-  const [widgetKey, setWidgetKey] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [expired, setExpired] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [sentTo, setSentTo] = useState<string | null>(null);
-
-  const missing = citizenPasswordChecks(password).filter((check) => !check.ok);
-
-  const onAltcha = useCallback((payload: string | null) => {
-    setAltcha(payload);
-    if (payload) setError(null);
-  }, []);
+  const [done, setDone] = useState(false);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    const missing = citizenPasswordChecks(password).filter((check) => !check.ok);
     if (missing.length) {
       return setError(`Parola trebuie să aibă ${missing.map((check) => check.label).join(", ")}.`);
     }
     if (password !== confirm) return setError("Parolele nu coincid.");
-    if (!altcha) return setError("Bifează verificarea de mai jos.");
 
     setBusy(true);
-    const res = await sendJson("/api/citizen/register", { email, password, altcha });
+    const res = await sendJson("/api/citizen/reset", { token, password });
     setBusy(false);
-    setAltcha(null);
-    setWidgetKey((k) => k + 1);
 
-    if (res.ok) return setSentTo(email.trim().toLowerCase());
+    if (res.ok) return setDone(true);
     setError(res.data.error ?? "A apărut o eroare.");
+    setExpired(res.data.error?.includes("nu mai este valabil") ?? false);
   }
 
-  if (sentTo) {
+  if (done) {
     return (
-      <div className="space-y-3 text-sm text-slate-600">
+      <div className="space-y-5 text-sm">
         <p className="rounded-xl bg-brand-50 p-4 text-brand-800">
-          Ți-am trimis un link la <span className="break-all font-medium">{sentTo}</span>.
+          Parola e schimbată. Te-am deconectat de pe toate dispozitivele.
         </p>
-        <p>Deschide-l în 24 de ore ca să confirmi contul.</p>
-        <p className="text-xs text-slate-400">
-          Nu a venit? Uită-te și în Spam, sau{" "}
-          <button type="button" onClick={() => setSentTo(null)} className={linkClass}>
-            trimite din nou
-          </button>
-          .
-        </p>
+        <Link href="/conectare" className={`${primaryButton} block text-center`}>
+          Conectează-te
+        </Link>
       </div>
     );
   }
 
   return (
     <form onSubmit={submit} className="space-y-4">
-      <div>
-        <label htmlFor="email" className={labelClass}>
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="username"
-          required
-          maxLength={254}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className={inputClass}
-        />
-      </div>
+      {/* lets password managers save the new password under the right account */}
+      <input type="email" autoComplete="username" value={email} readOnly hidden />
 
       <div>
         <label htmlFor="new-password" className={labelClass}>
-          Parolă
+          Parola nouă
         </label>
         <input
           id="new-password"
@@ -99,7 +70,7 @@ export default function RegisterForm() {
 
       <div>
         <label htmlFor="confirm-password" className={labelClass}>
-          Repetă parola
+          Repetă parola nouă
         </label>
         <input
           id="confirm-password"
@@ -112,16 +83,23 @@ export default function RegisterForm() {
         />
       </div>
 
-      <AltchaWidget key={widgetKey} onPayload={onAltcha} />
-
       {error && (
         <p role="alert" className="text-sm text-red-600">
           {error}
+          {expired && (
+            <>
+              {" "}
+              <Link href="/forgot-password" className={linkClass}>
+                Cere un link nou
+              </Link>
+              .
+            </>
+          )}
         </p>
       )}
 
       <button type="submit" disabled={busy} className={primaryButton}>
-        {busy ? "Se trimite..." : "Creează contul"}
+        {busy ? "Se salvează..." : "Salvează parola"}
       </button>
     </form>
   );
