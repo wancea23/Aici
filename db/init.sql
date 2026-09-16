@@ -250,3 +250,52 @@ create table if not exists citizen_sessions (
 );
 
 create index if not exists citizen_sessions_user_idx on citizen_sessions (user_id);
+
+-- The history of a report: each status change and each message from the city hall.
+-- The message is encrypted by the app, the citizen who reported it reads it on /profil.
+create table if not exists report_events (
+  id uuid primary key,
+  report_id uuid not null references reports (id) on delete cascade,
+  status text not null,
+  previous_status text not null,
+  note text,
+  staff_id uuid references staff_users (id) on delete set null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists report_events_report_idx on report_events (report_id, created_at);
+
+-- A line of history is never edited. Deleting the report still takes its history with it.
+create or replace function report_events_append_only() returns trigger as $$
+begin
+  raise exception 'report_events is append only';
+end;
+$$ language plpgsql;
+
+create or replace trigger report_events_no_change
+  before update on report_events
+  for each row execute function report_events_append_only();
+
+grant select, insert on report_events to app_data;
+alter table report_events enable row level security;
+
+do $$
+begin
+  if not exists (select 1 from pg_policies where tablename = 'report_events' and policyname = 'report_events_staff') then
+    create policy report_events_staff on report_events for all
+      using (current_setting('app.is_staff', true) = 'true')
+      with check (current_setting('app.is_staff', true) = 'true');
+  end if;
+
+  -- The citizen who reported it reads the history. Nobody else outside the city hall does.
+  if not exists (select 1 from pg_policies where tablename = 'report_events' and policyname = 'report_events_owner_select') then
+    create policy report_events_owner_select on report_events for select
+      using (
+        exists (
+          select 1 from reports r
+          where r.id = report_events.report_id
+            and r.citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid
+        )
+      );
+  end if;
+end $$;

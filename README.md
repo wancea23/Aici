@@ -87,6 +87,22 @@ City hall staff sign in at `/login` with their email and password.
 Operators see the panel and change report status. Admins can also manage staff and read the
 audit log.
 
+## Report history
+
+Picking a report in `/panou` opens its deadline, its history and a form to change the status
+and write a message for the citizen. Every status change and every message becomes a line in
+`report_events`, one for each report in the group. A rejection needs a reason.
+
+The deadline is 30 calendar days from the day of the report, the general term for petitions in
+the Administrative Code (art. 60). The panel shows the days left on every open report and counts
+the overdue ones. A report on Aici doesn't carry everything a formal petition needs, so the
+count follows the legal term as a service target.
+
+Citizens who reported from their account see each report's history on `/profil` and get an
+email when something changes. The email only names the category, the day and the new status and
+links to `/profil`, so the message itself stays behind the login. One citizen gets at most 10 of
+these emails an hour.
+
 ## Tests
 
    npm test
@@ -179,6 +195,11 @@ connection. `APP_DB_PASSWORD` is `app_data`'s login password, shared across the 
 way as the other secrets; the role and its policies are created by `db/init.sql` and
 `scripts/migrate.ts`, but only `scripts/migrate.ts` can set the password, since it alone reads
 `.env`.
+
+`report_events` works the same way: staff read and add lines, a citizen reads the lines of their
+own reports, and nobody else sees any. `app_data` can't update or delete a line, and a trigger
+refuses edits even from the owner role, so the history can't be quietly rewritten. Messages are
+encrypted like descriptions, and the audit log only records that a message was written.
 
 Virus scanning comes in later work.
 

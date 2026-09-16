@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { BadgeCheck, Inbox, Mail, Send } from "lucide";
+import { BadgeCheck, ChevronDown, Inbox, Mail, MessageSquare, Send } from "lucide";
 import AuthCard from "@/components/auth/AuthCard";
 import LogoutButton from "@/components/auth/LogoutButton";
 import Icon from "@/components/Icon";
+import ReportTimeline from "@/components/ReportTimeline";
 import { secondaryButton } from "@/components/auth/ui";
 import { currentCitizen } from "@/lib/auth/citizen-session";
 import { listReportsForCitizen } from "@/lib/reports";
@@ -57,36 +58,56 @@ export default async function ProfilePage() {
       ) : (
         <ul className="mt-2 divide-y divide-slate-100">
           {reports.map((r) => (
-            <li key={r.id} className="flex items-center gap-3 py-3">
-              <img
-                src={`/api/media/${r.id}`}
-                alt=""
-                loading="lazy"
-                className="h-12 w-12 flex-none rounded-lg bg-slate-100 object-cover"
-              />
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="truncate text-sm font-medium text-slate-900">
-                    {categoryLabels[r.category as Category] ?? r.category}
-                  </span>
-                  <span
-                    className="inline-flex flex-none items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium"
-                    style={{ color: statusInk[r.status as Status] ?? "#475569" }}
-                  >
-                    <span
-                      className="h-1.5 w-1.5 rounded-full"
-                      style={{ backgroundColor: statusColors[r.status as Status] ?? "#64748b" }}
-                    />
-                    {statusLabels[r.status as Status] ?? r.status}
-                  </span>
+            <li key={r.id}>
+              {/* a tap before hydration may already have opened it */}
+              <details className="group" suppressHydrationWarning>
+                <summary className="flex cursor-pointer list-none items-center gap-3 py-3 [&::-webkit-details-marker]:hidden">
+                  <img
+                    src={`/api/media/${r.id}`}
+                    alt=""
+                    loading="lazy"
+                    className="h-12 w-12 flex-none rounded-lg bg-slate-100 object-cover"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="truncate text-sm font-medium text-slate-900">
+                        {categoryLabels[r.category as Category] ?? r.category}
+                      </span>
+                      <span
+                        className="inline-flex flex-none items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium"
+                        style={{ color: statusInk[r.status as Status] ?? "#475569" }}
+                      >
+                        <span
+                          className="h-1.5 w-1.5 rounded-full"
+                          style={{ backgroundColor: statusColors[r.status as Status] ?? "#64748b" }}
+                        />
+                        {statusLabels[r.status as Status] ?? r.status}
+                      </span>
+                    </div>
+                    <p className="mt-0.5 truncate text-xs text-slate-500">
+                      {r.description || "Fără descriere"}
+                    </p>
+                    <div className="flex items-center gap-2 text-xs text-slate-400">
+                      <time dateTime={r.created_at} className="whitespace-nowrap" suppressHydrationWarning>
+                        {timeAgo(r.created_at)}
+                      </time>
+                      {r.events.some((e) => e.note) && (
+                        <span className="inline-flex items-center gap-1 whitespace-nowrap font-medium text-brand-700">
+                          <Icon node={MessageSquare} className="h-3.5 w-3.5" />
+                          Răspuns
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <Icon
+                    node={ChevronDown}
+                    className="h-4 w-4 flex-none text-slate-400 transition-transform group-open:rotate-180"
+                  />
+                </summary>
+                <div className="pb-4 pl-[3.75rem] pr-7">
+                  <ReportTimeline createdAt={r.created_at} events={r.events} audience="citizen" />
                 </div>
-                <p className="mt-0.5 truncate text-xs text-slate-500">
-                  {r.description || "Fără descriere"}
-                </p>
-                <time dateTime={r.created_at} className="text-xs text-slate-400" suppressHydrationWarning>
-                  {timeAgo(r.created_at)}
-                </time>
-              </div>
+              </details>
             </li>
           ))}
         </ul>

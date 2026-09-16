@@ -77,9 +77,18 @@ export const nearbyInput = z.object({
   lng: z.coerce.number().min(-180).max(180),
 });
 
-export const statusInput = z.object({
-  status: z.enum(statuses),
-});
+// The note is a message for the citizens who reported it. A rejection has to say why.
+export const statusInput = z
+  .object({
+    status: z.enum(statuses),
+    note: z.string().trim().max(1000, "Mesajul poate avea cel mult 1000 de caractere.").optional().default(""),
+  })
+  .refine((v) => v.status !== "respins" || v.note !== "", {
+    message: "Scrie motivul respingerii. Cetățeanul îl vede.",
+    path: ["note"],
+  });
+
+export const closedStatuses: readonly Status[] = ["rezolvat", "respins"];
 
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 

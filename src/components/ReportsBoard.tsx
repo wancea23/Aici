@@ -2,9 +2,9 @@
 
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Inbox } from "lucide";
 import Icon from "@/components/Icon";
+import ReportDetails, { DeadlinePill } from "@/components/ReportDetails";
 import type { Report } from "@/lib/reports";
 import type { Selection } from "@/components/ReportsMap";
 import {
@@ -18,6 +18,7 @@ import {
   type Status,
 } from "@/lib/validation";
 import { formatDate, howMany, timeAgo } from "@/lib/format";
+import { answerDeadline } from "@/lib/deadline";
 
 // The map needs the browser, so it only renders on the client.
 const ReportsMap = dynamic(() => import("@/components/ReportsMap"), {
@@ -50,6 +51,7 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
 
   const counts: Record<string, number> = {};
   for (const r of reports) counts[r.status] = (counts[r.status] ?? 0) + 1;
+  const overdue = reports.filter((r) => (answerDeadline(r.created_at, r.status)?.daysLeft ?? 0) < 0).length;
 
   return (
     <>
@@ -61,6 +63,11 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
             <span className="text-slate-400">{counts[s] ?? 0}</span>
           </span>
         ))}
+        {overdue > 0 && (
+          <span className="font-medium text-red-700">
+            Termen depășit <span className="text-red-400">{overdue}</span>
+          </span>
+        )}
       </div>
 
       <div className="grid gap-6 lg:h-[calc(100vh-12.5rem)] lg:min-h-[28rem] lg:grid-cols-5">
@@ -114,7 +121,10 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
                       </time>
                     </div>
                     <p className="mt-1.5 line-clamp-2 text-sm leading-snug text-slate-500">
-                      <StatusSelect id={r.id} status={r.status} />{" "}
+                      <span className="font-medium" style={{ color: statusInk[r.status as Status] ?? "#475569" }}>
+                        {statusLabels[r.status as Status] ?? r.status}
+                      </span>{" "}
+                      <DeadlinePill createdAt={r.created_at} status={r.status} />
                       {r.members.length > 0 && (
                         <span className="mr-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
                           {howMany(r.members.length + 1, "sesizări")}
@@ -124,6 +134,7 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
                     </p>
                   </div>
                 </button>
+                {selection?.id === r.id && <ReportDetails report={r} />}
               </li>
             ))}
           </ul>
@@ -143,43 +154,5 @@ function CategoryBadge({ category, status }: { category: string; status: string 
     >
       <Icon node={node} className="h-4 w-4" />
     </span>
-  );
-}
-
-function StatusSelect({ id, status }: { id: string; status: string }) {
-  const router = useRouter();
-  const [saving, setSaving] = useState(false);
-
-  async function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const next = e.target.value;
-    setSaving(true);
-    const res = await fetch(`/api/reports/${id}/status`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: next }),
-    });
-    setSaving(false);
-    if (res.status === 401) {
-      router.push("/login?next=/panou");
-      return;
-    }
-    if (res.ok) router.refresh();
-  }
-
-  return (
-    <select
-      value={status}
-      disabled={saving}
-      onClick={(e) => e.stopPropagation()}
-      onChange={onChange}
-      className="rounded border-0 bg-transparent p-0 font-medium outline-none"
-      style={{ color: statusInk[status as Status] ?? "#475569" }}
-    >
-      {statuses.map((s) => (
-        <option key={s} value={s}>
-          {statusLabels[s]}
-        </option>
-      ))}
-    </select>
   );
 }

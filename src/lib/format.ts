@@ -9,9 +9,20 @@ const dateFormat = new Intl.DateTimeFormat("ro-RO", {
 
 const relativeFormat = new Intl.RelativeTimeFormat("ro", { numeric: "auto" });
 
+const dayFormat = new Intl.DateTimeFormat("ro-RO", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+  timeZone: "Europe/Chisinau",
+});
+
 // Fixed time zone so the server and the browser print the same thing.
 export function formatDate(iso: string) {
   return dateFormat.format(new Date(iso));
+}
+
+export function formatDay(iso: string) {
+  return dayFormat.format(new Date(iso));
 }
 
 // Romanian puts "de" after the number from 20 on, but not for 101 to 119, 201 to 219 and so on.

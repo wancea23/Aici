@@ -73,3 +73,37 @@ export function existingAccountMail(email: string, base: string): Mail {
     ].join("\n"),
   };
 }
+
+export type StatusUpdate = {
+  category: string;
+  // the day of the report, already formatted
+  reportedOn: string;
+  status: string;
+  statusChanged: boolean;
+  hasNote: boolean;
+};
+
+// Says only that something changed. The message from the city hall stays behind the login,
+// so a mailbox never holds more about the report than its category and day.
+export function statusMail(email: string, update: StatusUpdate, base: string): Mail {
+  const report = `„${update.category}” din ${update.reportedOn}`;
+  const news = update.statusChanged
+    ? [`Sesizarea ta ${report} are un status nou: ${update.status}.`]
+    : [`Primăria ți-a scris despre sesizarea ta ${report}.`];
+  if (update.statusChanged && update.hasNote) news.push("Primăria ți-a lăsat și un mesaj.");
+
+  return {
+    to: email,
+    subject: update.statusChanged ? `Sesizarea ta: ${update.status}` : "Ai un mesaj despre sesizarea ta",
+    text: [
+      "Bună ziua,",
+      "",
+      ...news,
+      `Vezi detaliile în contul tău: ${base}/profil`,
+      "",
+      "Primești acest email pentru că ai trimis sesizarea din contul tău Aici.",
+      "",
+      "Echipa Aici",
+    ].join("\n"),
+  };
+}

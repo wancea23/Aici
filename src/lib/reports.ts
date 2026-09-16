@@ -1,5 +1,19 @@
+import type postgres from "postgres";
 import { withAccess } from "@/lib/db-access";
 import { decryptText } from "@/lib/crypto";
+import { staffEmails } from "@/lib/auth/staff";
+
+export type ReportEvent = {
+  id: string;
+  status: string;
+  previous: string;
+  note: string;
+  at: string;
+  // who wrote it, only in the panel
+  by?: string;
+};
+
+type RawEvent = { id: string; status: string; previous: string; note: string | null; at: string; staff_id?: string };
 
 export type Report = {
   id: string;
@@ -11,6 +25,8 @@ export type Report = {
   created_at: string;
   // reports grouped under this one, oldest first
   members: string[];
+  // oldest first
+  events: ReportEvent[];
 };
 
 export type PublicReport = Pick<Report, "id" | "category" | "status" | "lat" | "lng" | "created_at"> & {
@@ -47,17 +63,41 @@ export async function listPublicReports(details: boolean, limit = 500): Promise<
   }));
 }
 
-export type CitizenReport = Pick<Report, "id" | "category" | "description" | "status" | "created_at">;
+export type CitizenReport = Pick<Report, "id" | "category" | "description" | "status" | "created_at" | "events">;
+
+// A report's history as one json array, so the list stays a single query.
+function eventsOf(sql: postgres.Sql, withAuthor: boolean) {
+  return sql`
+    coalesce((
+      select json_agg(json_build_object(
+        'id', e.id, 'status', e.status, 'previous', e.previous_status, 'note', e.note,
+        'at', e.created_at${withAuthor ? sql`, 'staff_id', e.staff_id` : sql``}
+      ) order by e.created_at)
+      from report_events e where e.report_id = r.id
+    ), '[]')
+  `;
+}
+
+function readEvents(events: RawEvent[], authors?: Map<string, string>): ReportEvent[] {
+  return events.map((e) => ({
+    id: e.id,
+    status: e.status,
+    previous: e.previous,
+    note: e.note ? readText(e.note, `event:${e.id}:note`) : "",
+    at: new Date(e.at).toISOString(),
+    ...(authors ? { by: (e.staff_id && authors.get(e.staff_id)) || "" } : {}),
+  }));
+}
 
 // One citizen's own submissions, most recent first. Status already reflects the whole
 // group (see the status route), so a report grouped under another still shows correctly.
 // Scoped by citizen_id here and, as a second line of defense, by row-level security too.
 export async function listReportsForCitizen(citizenId: string, limit = 100): Promise<CitizenReport[]> {
   const rows = await withAccess({ citizenId }, (sql) => sql`
-    select id, category, description, status, created_at
-    from reports
-    where citizen_id = ${citizenId}
-    order by created_at desc
+    select r.id, r.category, r.description, r.status, r.created_at, ${eventsOf(sql, false)} as events
+    from reports r
+    where r.citizen_id = ${citizenId}
+    order by r.created_at desc
     limit ${limit}
   `);
   return rows.map((r) => ({
@@ -66,15 +106,20 @@ export async function listReportsForCitizen(citizenId: string, limit = 100): Pro
     description: readDescription(r.id, r.description),
     status: r.status,
     created_at: new Date(r.created_at).toISOString(),
+    events: readEvents(r.events),
   }));
 }
 
-// One row that can't be decrypted shouldn't take a whole page down.
 export function readDescription(id: string, value: string) {
+  return readText(value, `report:${id}:description`);
+}
+
+// One row that can't be decrypted shouldn't take a whole page down.
+function readText(value: string, context: string) {
   try {
-    return decryptText(value, `report:${id}:description`);
+    return decryptText(value, context);
   } catch (err) {
-    console.error("could not decrypt report", id, err);
+    console.error("could not decrypt", context, err);
     return "";
   }
 }
@@ -87,12 +132,17 @@ export async function listReports(limit = 100): Promise<Report[]> {
            ST_Y(r.geom) as lat, ST_X(r.geom) as lng, r.created_at,
            array(
              select m.id::text from reports m where m.duplicate_of = r.id order by m.created_at
-           ) as members
+           ) as members,
+           ${eventsOf(sql, true)} as events
     from reports r
     where r.duplicate_of is null
     order by r.created_at desc
     limit ${limit}
   `);
+
+  const authorIds = new Set<string>();
+  for (const r of rows) for (const e of r.events as RawEvent[]) if (e.staff_id) authorIds.add(e.staff_id);
+  const authors = await staffEmails([...authorIds]);
 
   // Plain objects with a string date, so they can be handed to client components.
   return rows.map((r) => {
@@ -118,6 +168,7 @@ export async function listReports(limit = 100): Promise<Report[]> {
       lng,
       created_at: new Date(r.created_at).toISOString(),
       members: r.members,
+      events: readEvents(r.events, authors),
     };
   });
 }
