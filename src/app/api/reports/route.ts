@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
-import { withAccess } from "@/lib/db-access";
-import { outsideArea, reportInput } from "@/lib/validation";
-import { cleanPhoto, looksLikeImage } from "@/lib/image";
-import { MAX_REQUEST_BYTES, MAX_UPLOAD_BYTES } from "@/lib/upload-limits";
-import { listReports } from "@/lib/reports";
-import { encryptBytes, encryptText } from "@/lib/crypto";
-import { currentCitizen } from "@/lib/auth/citizen-session";
-import { requireStaffApi } from "@/lib/auth/dal";
-import { clientInfo } from "@/lib/auth/request";
-import { countAttempt, peek, rules } from "@/lib/auth/rate-limit";
-import { tooMany } from "@/lib/auth/http";
+import { withAccess } from "@/server/db/access";
+import { outsideArea, reportInput } from "@/features/reports/validation";
+import { cleanPhoto, looksLikeImage } from "@/features/photos/image";
+import { MAX_REQUEST_BYTES, MAX_UPLOAD_BYTES } from "@/features/photos/upload-limits";
+import { listReports } from "@/features/reports/queries";
+import { encryptBytes, encryptText } from "@/server/security/crypto";
+import { currentCitizen } from "@/features/citizens/session";
+import { requireStaffApi } from "@/features/staff/dal";
+import { clientInfo } from "@/server/http/request";
+import { countAttempt, peek, rules } from "@/server/security/rate-limit";
+import { tooMany } from "@/server/http/responses";
 
 export const runtime = "nodejs";
 

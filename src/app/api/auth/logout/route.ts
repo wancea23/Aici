@@ -1,8 +1,8 @@
-import { sameOrigin } from "@/lib/auth/csrf";
-import { clientInfo } from "@/lib/auth/request";
-import { fail, json } from "@/lib/auth/http";
-import { clearSessionCookie, currentSession, deleteCurrentSession } from "@/lib/auth/session";
-import { audit } from "@/lib/auth/audit";
+import { sameOrigin } from "@/server/security/csrf";
+import { clientInfo } from "@/server/http/request";
+import { fail, json } from "@/server/http/responses";
+import { clearSessionCookie, currentSession, deleteCurrentSession } from "@/features/staff/session";
+import { audit } from "@/server/security/audit";
 
 export async function POST(req: Request) {
   if (!sameOrigin(req)) return fail(403, "Cerere respinsă.");

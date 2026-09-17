@@ -52,7 +52,7 @@ You need Node 20.9 or newer.
    npm run dev
 
 Open the address it prints. The report form is the home page and the public map is at
-`/harta`. The city hall view is at `/panou` and needs a staff account.
+`/map`. The city hall view is at `/dashboard` and needs a staff account.
 
 The tables already exist on the shared `production` branch. If you point at your own
 empty database, create them once by running the SQL in `db/init.sql`. When a new version
@@ -60,10 +60,10 @@ changes the database, run `npm run db:migrate` once. Running it again does no ha
 
 ## Citizen accounts
 
-Citizens can still report without an account. Whoever wants one signs up at `/inregistrare`
+Citizens can still report without an account. Whoever wants one signs up at `/sign-up`
 with an email and a password, and gets a link by email. The account only exists once they open
-that link, and the page then says the email is verified. They sign in at `/conectare` with the
-password chosen at sign up, and see their account at `/profil`.
+that link, and the page then says the email is verified. They sign in at `/sign-in` with the
+password chosen at sign up, and see their account at `/profile`.
 
 Sending email needs an SMTP account in `.env`, see `.env.example`. Gmail works with an app
 password. Without `SMTP_HOST`, `npm run dev` prints every email with its link in the terminal,
@@ -94,7 +94,7 @@ audit log.
 
 ## Report history
 
-Picking a report in `/panou` opens its deadline, its history and a form to change the status
+Picking a report in `/dashboard` opens its deadline, its history and a form to change the status
 and write a message for the citizen. Every status change and every message becomes a line in
 `report_events`, one for each report in the group. A rejection needs a reason.
 
@@ -103,9 +103,9 @@ the Administrative Code (art. 60). The panel shows the days left on every open r
 the overdue ones. A report on Aici doesn't carry everything a formal petition needs, so the
 count follows the legal term as a service target.
 
-Citizens who reported from their account see each report's history on `/profil` and get an
+Citizens who reported from their account see each report's history on `/profile` and get an
 email when something changes. The email only names the category, the day and the new status and
-links to `/profil`, so the message itself stays behind the login. One citizen gets at most 10 of
+links to `/profile`, so the message itself stays behind the login. One citizen gets at most 10 of
 these emails an hour.
 
 ## Tests
@@ -114,15 +114,29 @@ these emails an hour.
 
 ## Layout
 
-- `db/init.sql` sets up the tables and PostGIS
-- `src/app` holds the pages and the API routes
-- `src/lib` holds the database connection, input validation, the image pipeline, the
-  encryption of citizen data, and `mail.ts` which sends email
-- `src/lib/auth` holds login for staff and citizens: passwords, sessions, throttling, the audit log
-- `src/components` holds the report form, the city hall map, and the login and sign up screens
-- `scripts/create-staff.ts` creates a staff account from the terminal, `scripts/migrate.ts`
-  updates an existing database
+Each feature keeps its screens and its logic in one folder.
+
+- `src/app` only holds the routes: `(citizen)` for the public pages and citizen accounts,
+  `(staff)` for the city hall pages, and `api`. The names in brackets don't show up in the URL
+- `src/features/reports` the report form, the city hall board, history, duplicates, the deadline
+  and the input validation
+- `src/features/map` the maps and their shared setup
+- `src/features/photos` the upload pipeline: shrinking in the browser, cleaning and face blur
+  on the server
+- `src/features/citizens` citizen accounts: sign up, sessions, password reset
+- `src/features/staff` staff accounts: sessions, the access checks (`dal.ts`), the admin page
+- `src/server` code shared by the whole backend: `db` (the owner and `app_data` connections),
+  `security` (encryption, passwords, tokens, CSRF, throttling, ALTCHA, the audit log), `http`
+  and `mail.ts`
+- `src/ui` shared building blocks: the auth card, login form, icons, styles, date formatting
+- `db` the schema (`init.sql`), `migrate.ts` which updates an existing database,
+  `create-staff.ts` which creates a staff account from the terminal, and a Docker Compose
+  file for a local database
+- `tests` grouped the same way as `src`
 - `research/` holds the domain, legal, security, and stack research behind the project
+
+The pages used to have Romanian URLs (`/panou`, `/harta`, `/conectare` and so on). They
+redirect permanently to the new ones, so old links and emails keep working.
 
 ## Security notes
 
@@ -177,7 +191,7 @@ the rest of its EXIF data never leave the phone. The server still cleans whateve
 public report form refuses uploads over 10 MB before reading them and takes at most 20 reports
 an hour from one address.
 
-The public map at `/harta` shows every report that wasn't rejected, with its category, status
+The public map at `/map` shows every report that wasn't rejected, with its category, status
 and date, at the point rounded to about 100 m. Photos and descriptions stay with the city hall,
 unless `PUBLIC_DETAILS=true`, which the beta has on for now: then anyone sees them on the map
 and in the duplicate check, faces and plates included, since nothing blurs or reviews them yet.
@@ -200,12 +214,12 @@ reports and photos; anyone can see a report and its photo, unless it was rejecte
 case only staff and the citizen who filed it still can; a citizen can only create a report
 under their own id or anonymously, never someone else's. Before this, all of that was checked
 only in application code, most visibly in the media route, which used to work out by hand
-exactly what this PR now makes the database itself refuse. `withAccess` (`lib/db-access.ts`)
+exactly what this PR now makes the database itself refuse. `withAccess` (`server/db/access.ts`)
 sets who is asking — `app.citizen_id`, `app.is_staff`, `app.public_details` — as session-local
 facts scoped to one transaction, so they never leak onto another request sharing a pooled
 connection. `APP_DB_PASSWORD` is `app_data`'s login password, shared across the team the same
 way as the other secrets; the role and its policies are created by `db/init.sql` and
-`scripts/migrate.ts`, but only `scripts/migrate.ts` can set the password, since it alone reads
+`db/migrate.ts`, but only `db/migrate.ts` can set the password, since it alone reads
 `.env`.
 
 `report_events` works the same way: staff read and add lines, a citizen reads the lines of their

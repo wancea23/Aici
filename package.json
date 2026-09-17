@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "tsx --conditions=react-server --test \"tests/**/*.test.ts\"",
-    "staff:create": "tsx --conditions=react-server --env-file=.env scripts/create-staff.ts",
-    "db:migrate": "tsx --conditions=react-server --env-file=.env scripts/migrate.ts"
+    "staff:create": "tsx --conditions=react-server --env-file=.env db/create-staff.ts",
+    "db:migrate": "tsx --conditions=react-server --env-file=.env db/migrate.ts"
   },
   "dependencies": {
     "@node-rs/argon2": "2.2.1",

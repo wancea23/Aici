@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { sameOrigin } from "@/lib/auth/csrf";
-import { clientInfo } from "@/lib/auth/request";
-import { fail, json } from "@/lib/auth/http";
-import { requireStaffApi } from "@/lib/auth/dal";
-import { applyStaffAction, createResetLink, findStaffById, linkFor } from "@/lib/auth/staff";
-import { audit } from "@/lib/auth/audit";
-import { isUuid } from "@/lib/validation";
+import { sameOrigin } from "@/server/security/csrf";
+import { clientInfo } from "@/server/http/request";
+import { fail, json } from "@/server/http/responses";
+import { requireStaffApi } from "@/features/staff/dal";
+import { applyStaffAction, createResetLink, findStaffById, linkFor } from "@/features/staff/accounts";
+import { audit } from "@/server/security/audit";
+import { isUuid } from "@/features/reports/validation";
 
 const input = z.discriminatedUnion("action", [
   z.object({ action: z.literal("deactivate") }),
@@ -45,7 +45,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (data.action === "reset_link") {
     if (!target.is_active) return fail(400, "Contul este dezactivat.");
     const token = await createResetLink(target.id, target.email, auth.user.id);
-    result = { link: linkFor(req, "/resetare", token) };
+    result = { link: linkFor(req, "/reset-password", token) };
   } else {
     await applyStaffAction(target.id, data.action, data.action === "role" ? data.role : undefined);
   }

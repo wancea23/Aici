@@ -1,13 +1,13 @@
 import { after } from "next/server";
 import { z } from "zod";
-import { sameOrigin } from "@/lib/auth/csrf";
-import { clientInfo } from "@/lib/auth/request";
-import { fail, json, tooMany } from "@/lib/auth/http";
-import { countAttempt, peek, rules } from "@/lib/auth/rate-limit";
-import { verifyAltcha } from "@/lib/auth/altcha";
-import { RESET_MINUTES, auditCitizen, createPasswordReset, findCitizenByEmail } from "@/lib/auth/citizen";
-import { emailIndex } from "@/lib/crypto";
-import { appUrl, canSendMail, passwordResetMail, sendMail } from "@/lib/mail";
+import { sameOrigin } from "@/server/security/csrf";
+import { clientInfo } from "@/server/http/request";
+import { fail, json, tooMany } from "@/server/http/responses";
+import { countAttempt, peek, rules } from "@/server/security/rate-limit";
+import { verifyAltcha } from "@/server/security/altcha";
+import { RESET_MINUTES, auditCitizen, createPasswordReset, findCitizenByEmail } from "@/features/citizens/accounts";
+import { emailIndex } from "@/server/security/crypto";
+import { appUrl, canSendMail, passwordResetMail, sendMail } from "@/server/mail";
 
 export const runtime = "nodejs";
 

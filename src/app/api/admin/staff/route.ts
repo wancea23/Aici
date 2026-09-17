@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { sameOrigin } from "@/lib/auth/csrf";
-import { clientInfo } from "@/lib/auth/request";
-import { fail, json } from "@/lib/auth/http";
-import { requireStaffApi } from "@/lib/auth/dal";
-import { createInvite, findStaffByEmail, linkFor } from "@/lib/auth/staff";
-import { audit } from "@/lib/auth/audit";
+import { sameOrigin } from "@/server/security/csrf";
+import { clientInfo } from "@/server/http/request";
+import { fail, json } from "@/server/http/responses";
+import { requireStaffApi } from "@/features/staff/dal";
+import { createInvite, findStaffByEmail, linkFor } from "@/features/staff/accounts";
+import { audit } from "@/server/security/audit";
 
 const input = z.object({
   email: z.string().trim().toLowerCase().email().max(254),
@@ -33,5 +33,5 @@ export async function POST(req: Request) {
     client: clientInfo(req),
     details: { email, role },
   });
-  return json({ link: linkFor(req, "/invitatie", token) });
+  return json({ link: linkFor(req, "/invite", token) });
 }

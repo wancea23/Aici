@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { nearbyInput } from "@/lib/validation";
-import { readDescription } from "@/lib/reports";
-import { openGroupsNear } from "@/lib/duplicates";
-import { withAccess } from "@/lib/db-access";
-import { publicDetails } from "@/lib/env";
-import { clientInfo } from "@/lib/auth/request";
-import { countAttempt, peek, rules } from "@/lib/auth/rate-limit";
-import { tooMany } from "@/lib/auth/http";
+import { nearbyInput } from "@/features/reports/validation";
+import { readDescription } from "@/features/reports/queries";
+import { openGroupsNear } from "@/features/reports/duplicates";
+import { withAccess } from "@/server/db/access";
+import { publicDetails } from "@/server/env";
+import { clientInfo } from "@/server/http/request";
+import { countAttempt, peek, rules } from "@/server/security/rate-limit";
+import { tooMany } from "@/server/http/responses";
 
 export async function GET(req: NextRequest) {
   const ipKey = clientInfo(req).ip ?? "unknown";
