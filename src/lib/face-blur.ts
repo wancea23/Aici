@@ -74,10 +74,11 @@ async function detectInRegion(model: blazeface.BlazeFaceModel, input: Buffer, re
     tensor.dispose();
   }
 
-  // The detected box hugs the eyes/nose/mouth, not the whole head — padded out well past
-  // that so hair, ears and jaw are covered too, since the point is nobody stays recognisable.
+  // The detected box hugs the eyes/nose/mouth, not the whole head — padded out a bit so
+  // hair, ears and jaw are covered too. Kept small: this box is inscribed with an ellipse
+  // below, so anything more generous here blurs well past the face into the neck/shoulders.
   // Coordinates are within this crop; region.left/top shifts them back to the full image.
-  const padFactor = 0.6;
+  const padFactor = 0.15;
 
   return faces
     .map((face): Box | null => {
@@ -145,16 +146,36 @@ export async function detectFaces(input: Buffer): Promise<Box[]> {
 
 const MIN_BLUR_SIGMA = 8;
 
-// Blurs each given region of the image in place. Pure image editing, no detection — the
-// regions can come from detectFaces, or from a test that doesn't want to run the model.
+// A soft-edged white ellipse filling most of width x height, on a transparent background.
+// Composited over a blurred crop with the "dest-in" blend mode, it keeps only the oval part
+// of that crop opaque — corners of the bounding box stay untouched, original pixels, instead
+// of blurring the whole rectangle around a face that's actually oval, not square.
+async function ellipseMask(width: number, height: number): Promise<Buffer> {
+  const svg = `<svg width="${width}" height="${height}">
+    <ellipse cx="${width / 2}" cy="${height / 2}" rx="${width * 0.46}" ry="${height * 0.46}" fill="white" />
+  </svg>`;
+  const hardEdge = await sharp(Buffer.from(svg)).png().toBuffer();
+  // Blurring the mask itself softens its edge, rather than relying on SVG filter support,
+  // which varies across the library sharp renders SVG with.
+  const feather = Math.max(2, Math.min(width, height) * 0.08);
+  return sharp(hardEdge).blur(feather).toBuffer();
+}
+
+// Blurs each given region of the image, in the oval shape of a face rather than the
+// rectangle it was detected in. Pure image editing, no detection — the regions can come
+// from detectFaces, or from a test that doesn't want to run the model.
 export async function applyBlur(input: Buffer, boxes: Box[]): Promise<Buffer> {
   if (boxes.length === 0) return input;
 
   const overlays = await Promise.all(
     boxes.map(async (box) => {
       const sigma = Math.max(MIN_BLUR_SIGMA, Math.max(box.width, box.height) / 5);
-      const blurred = await sharp(input).extract(box).blur(sigma).toBuffer();
-      return { input: blurred, left: box.left, top: box.top };
+      const [blurred, mask] = await Promise.all([
+        sharp(input).extract(box).blur(sigma).toBuffer(),
+        ellipseMask(box.width, box.height),
+      ]);
+      const oval = await sharp(blurred).composite([{ input: mask, blend: "dest-in" }]).png().toBuffer();
+      return { input: oval, left: box.left, top: box.top };
     })
   );
 
