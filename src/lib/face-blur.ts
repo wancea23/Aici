@@ -74,11 +74,11 @@ async function detectInRegion(model: blazeface.BlazeFaceModel, input: Buffer, re
     tensor.dispose();
   }
 
-  // The detected box hugs the eyes/nose/mouth, not the whole head — padded out a bit so
-  // hair, ears and jaw are covered too. Kept small: this box is inscribed with an ellipse
-  // below, so anything more generous here blurs well past the face into the neck/shoulders.
+  // BlazeFace's box already runs a bit past the face itself, into the hairline and ears —
+  // shrunk back in here so the oval below lands on the face alone. Negative on purpose:
+  // padding this out, even a little, was covering hair and ears that should stay visible.
   // Coordinates are within this crop; region.left/top shifts them back to the full image.
-  const padFactor = 0.15;
+  const padFactor = -0.15;
 
   return faces
     .map((face): Box | null => {
