@@ -29,10 +29,10 @@ create table if not exists report_photos (
   created_at timestamptz not null default now()
 );
 
--- app_data is the role the app's ordinary queries run as (see src/lib/db-app.ts), instead of
--- the owner role used here and by scripts/migrate.ts. Row-level security is invisible to a
+-- app_data is the role the app's ordinary queries run as (see src/server/db/app.ts), instead of
+-- the owner role used here and by db/migrate.ts. Row-level security is invisible to a
 -- table's owner, so without this second role the policies below would enforce nothing. Its
--- login password is set separately, from APP_DB_PASSWORD, by scripts/migrate.ts — never here.
+-- login password is set separately, from APP_DB_PASSWORD, by db/migrate.ts — never here.
 do $$
 begin
   if not exists (select 1 from pg_roles where rolname = 'app_data') then
@@ -48,7 +48,7 @@ alter table reports enable row level security;
 alter table report_photos enable row level security;
 
 -- Facts the app sets per request, scoped to one transaction (see withAccess in
--- src/lib/db-access.ts): app.citizen_id for a signed-in citizen, app.is_staff for an already
+-- src/server/db/access.ts): app.citizen_id for a signed-in citizen, app.is_staff for an already
 -- verified staff request, app.public_details mirroring the PUBLIC_DETAILS setting. Anonymous
 -- means none of these were set, and current_setting(..., true) then reads as null, not an error.
 
@@ -263,7 +263,7 @@ create table if not exists citizen_password_resets (
 create index if not exists citizen_password_resets_user_idx on citizen_password_resets (user_id);
 
 -- The history of a report: each status change and each message from the city hall.
--- The message is encrypted by the app, the citizen who reported it reads it on /profil.
+-- The message is encrypted by the app, the citizen who reported it reads it on /profile.
 create table if not exists report_events (
   id uuid primary key,
   report_id uuid not null references reports (id) on delete cascade,

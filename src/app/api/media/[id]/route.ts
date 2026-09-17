@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { withAccess } from "@/lib/db-access";
-import { isUuid } from "@/lib/validation";
-import { requireStaffApi } from "@/lib/auth/dal";
-import { currentCitizen } from "@/lib/auth/citizen-session";
-import { decryptBytes } from "@/lib/crypto";
-import { publicDetails } from "@/lib/env";
+import { withAccess } from "@/server/db/access";
+import { isUuid } from "@/features/reports/validation";
+import { requireStaffApi } from "@/features/staff/dal";
+import { currentCitizen } from "@/features/citizens/session";
+import { decryptBytes } from "@/server/security/crypto";
+import { publicDetails } from "@/server/env";
 
 export const runtime = "nodejs";
 

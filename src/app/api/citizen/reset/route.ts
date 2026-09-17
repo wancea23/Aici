@@ -1,12 +1,12 @@
 import { after } from "next/server";
 import { z } from "zod";
-import { sameOrigin } from "@/lib/auth/csrf";
-import { clientInfo } from "@/lib/auth/request";
-import { fail, json, tooMany } from "@/lib/auth/http";
-import { peek, recordFailure, rules } from "@/lib/auth/rate-limit";
-import { hashPassword, validateNewPassword } from "@/lib/auth/password";
-import { auditCitizen, findPasswordReset, redeemPasswordReset } from "@/lib/auth/citizen";
-import { appUrl, canSendMail, passwordChangedMail, sendMail } from "@/lib/mail";
+import { sameOrigin } from "@/server/security/csrf";
+import { clientInfo } from "@/server/http/request";
+import { fail, json, tooMany } from "@/server/http/responses";
+import { peek, recordFailure, rules } from "@/server/security/rate-limit";
+import { hashPassword, validateNewPassword } from "@/server/security/password";
+import { auditCitizen, findPasswordReset, redeemPasswordReset } from "@/features/citizens/accounts";
+import { appUrl, canSendMail, passwordChangedMail, sendMail } from "@/server/mail";
 
 export const runtime = "nodejs";
 

@@ -1,14 +1,14 @@
 import { after } from "next/server";
 import { z } from "zod";
-import { sameOrigin } from "@/lib/auth/csrf";
-import { clientInfo } from "@/lib/auth/request";
-import { fail, json, tooMany } from "@/lib/auth/http";
-import { countAttempt, peek, rules } from "@/lib/auth/rate-limit";
-import { verifyAltcha } from "@/lib/auth/altcha";
-import { hashPassword, validateNewPassword } from "@/lib/auth/password";
-import { auditCitizen, createSignup, findCitizenByEmail } from "@/lib/auth/citizen";
-import { emailIndex } from "@/lib/crypto";
-import { appUrl, canSendMail, existingAccountMail, sendMail, signupMail } from "@/lib/mail";
+import { sameOrigin } from "@/server/security/csrf";
+import { clientInfo } from "@/server/http/request";
+import { fail, json, tooMany } from "@/server/http/responses";
+import { countAttempt, peek, rules } from "@/server/security/rate-limit";
+import { verifyAltcha } from "@/server/security/altcha";
+import { hashPassword, validateNewPassword } from "@/server/security/password";
+import { auditCitizen, createSignup, findCitizenByEmail } from "@/features/citizens/accounts";
+import { emailIndex } from "@/server/security/crypto";
+import { appUrl, canSendMail, existingAccountMail, sendMail, signupMail } from "@/server/mail";
 
 export const runtime = "nodejs";
 
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
         await sendMail(existingAccountMail(email, base));
       } else {
         const token = await createSignup(email, await hashPassword(password));
-        await sendMail(signupMail(email, `${base}/verificare?token=${token}`));
+        await sendMail(signupMail(email, `${base}/verify-email?token=${token}`));
       }
       await auditCitizen("citizen.signup", "success", existing?.id, { existing: Boolean(existing) });
     } catch (err) {

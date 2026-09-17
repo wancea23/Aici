@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { sameOrigin } from "@/lib/auth/csrf";
-import { clientInfo } from "@/lib/auth/request";
-import { fail, json, tooMany } from "@/lib/auth/http";
-import { peek, recordFailure, rules } from "@/lib/auth/rate-limit";
-import { hashPassword, validateNewPassword } from "@/lib/auth/password";
-import { findStaffById, findToken, redeemReset } from "@/lib/auth/staff";
-import { audit } from "@/lib/auth/audit";
+import { sameOrigin } from "@/server/security/csrf";
+import { clientInfo } from "@/server/http/request";
+import { fail, json, tooMany } from "@/server/http/responses";
+import { peek, recordFailure, rules } from "@/server/security/rate-limit";
+import { hashPassword, validateNewPassword } from "@/server/security/password";
+import { findStaffById, findToken, redeemReset } from "@/features/staff/accounts";
+import { audit } from "@/server/security/audit";
 
 export const runtime = "nodejs";
 

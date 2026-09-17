@@ -1,14 +1,14 @@
 import { z } from "zod";
-import { sameOrigin } from "@/lib/auth/csrf";
-import { clientInfo } from "@/lib/auth/request";
-import { fail, json, tooMany } from "@/lib/auth/http";
-import { challengeDue, clearLimit, peek, recordFailure, rules } from "@/lib/auth/rate-limit";
-import { verifyAltcha } from "@/lib/auth/altcha";
-import { burnPasswordCheck, hashPassword, needsRehash, verifyPassword } from "@/lib/auth/password";
-import { auditCitizen, findCitizenByEmail, findPendingSignup, rehashCitizenPassword } from "@/lib/auth/citizen";
-import { startCitizenSession } from "@/lib/auth/citizen-session";
-import { safeNext } from "@/lib/auth/redirect";
-import { emailIndex } from "@/lib/crypto";
+import { sameOrigin } from "@/server/security/csrf";
+import { clientInfo } from "@/server/http/request";
+import { fail, json, tooMany } from "@/server/http/responses";
+import { challengeDue, clearLimit, peek, recordFailure, rules } from "@/server/security/rate-limit";
+import { verifyAltcha } from "@/server/security/altcha";
+import { burnPasswordCheck, hashPassword, needsRehash, verifyPassword } from "@/server/security/password";
+import { auditCitizen, findCitizenByEmail, findPendingSignup, rehashCitizenPassword } from "@/features/citizens/accounts";
+import { startCitizenSession } from "@/features/citizens/session";
+import { safeNext } from "@/server/http/redirect";
+import { emailIndex } from "@/server/security/crypto";
 
 export const runtime = "nodejs";
 

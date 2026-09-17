@@ -1,16 +1,16 @@
 import { z } from "zod";
-import sql from "@/lib/db";
-import { sameOrigin } from "@/lib/auth/csrf";
-import { clientInfo } from "@/lib/auth/request";
-import { fail, json, tooMany } from "@/lib/auth/http";
-import { challengeDue, clearLimit, peek, recordFailure, rules } from "@/lib/auth/rate-limit";
-import { verifyAltcha } from "@/lib/auth/altcha";
-import { burnPasswordCheck, hashPassword, needsRehash, verifyPassword } from "@/lib/auth/password";
-import { findStaffByEmail } from "@/lib/auth/staff";
-import { startSession } from "@/lib/auth/session";
-import { audit } from "@/lib/auth/audit";
-import { sha256 } from "@/lib/auth/tokens";
-import { safeNext } from "@/lib/auth/redirect";
+import sql from "@/server/db/owner";
+import { sameOrigin } from "@/server/security/csrf";
+import { clientInfo } from "@/server/http/request";
+import { fail, json, tooMany } from "@/server/http/responses";
+import { challengeDue, clearLimit, peek, recordFailure, rules } from "@/server/security/rate-limit";
+import { verifyAltcha } from "@/server/security/altcha";
+import { burnPasswordCheck, hashPassword, needsRehash, verifyPassword } from "@/server/security/password";
+import { findStaffByEmail } from "@/features/staff/accounts";
+import { startSession } from "@/features/staff/session";
+import { audit } from "@/server/security/audit";
+import { sha256 } from "@/server/security/tokens";
+import { safeNext } from "@/server/http/redirect";
 
 export const runtime = "nodejs";
 
@@ -84,5 +84,5 @@ export async function POST(req: Request) {
     client,
   });
 
-  return json({ next: user.force_password_reset ? "/cont/parola" : safeNext(parsed.data.next) });
+  return json({ next: user.force_password_reset ? "/account/password" : safeNext(parsed.data.next) });
 }

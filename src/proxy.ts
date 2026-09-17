@@ -1,9 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { SESSION_COOKIE } from "@/lib/auth/cookie";
-import { MAX_REQUEST_BYTES } from "@/lib/upload-limits";
+import { SESSION_COOKIE } from "@/server/security/cookie";
+import { MAX_REQUEST_BYTES } from "@/features/photos/upload-limits";
 
 // Only checks that a session cookie is present, so visitors go straight to the login page.
-// The real check against the database runs in every page and route (lib/auth/dal.ts).
+// The real check against the database runs in every page and route (features/staff/dal.ts).
 export function proxy(req: NextRequest) {
   // Oversized submissions are turned away here, before the request reaches the server
   // function at all, instead of only after it has already been received and read.
@@ -23,5 +23,5 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/panou/:path*", "/admin/:path*", "/cont/:path*", "/api/reports"],
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/account/:path*", "/api/reports"],
 };

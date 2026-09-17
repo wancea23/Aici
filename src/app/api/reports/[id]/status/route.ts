@@ -1,17 +1,17 @@
 import { after } from "next/server";
 import { randomUUID } from "node:crypto";
-import { withAccess } from "@/lib/db-access";
-import { categoryLabels, isUuid, statusInput, statusLabels, type Category, type Status } from "@/lib/validation";
-import { encryptText } from "@/lib/crypto";
-import { formatDay } from "@/lib/format";
-import { appUrl, canSendMail, sendMail, statusMail } from "@/lib/mail";
-import { requireStaffApi } from "@/lib/auth/dal";
-import { sameOrigin } from "@/lib/auth/csrf";
-import { clientInfo } from "@/lib/auth/request";
-import { fail, json } from "@/lib/auth/http";
-import { audit } from "@/lib/auth/audit";
-import { citizenEmails } from "@/lib/auth/citizen";
-import { countAttempt, rules } from "@/lib/auth/rate-limit";
+import { withAccess } from "@/server/db/access";
+import { categoryLabels, isUuid, statusInput, statusLabels, type Category, type Status } from "@/features/reports/validation";
+import { encryptText } from "@/server/security/crypto";
+import { formatDay } from "@/ui/format";
+import { appUrl, canSendMail, sendMail, statusMail } from "@/server/mail";
+import { requireStaffApi } from "@/features/staff/dal";
+import { sameOrigin } from "@/server/security/csrf";
+import { clientInfo } from "@/server/http/request";
+import { fail, json } from "@/server/http/responses";
+import { audit } from "@/server/security/audit";
+import { citizenEmails } from "@/features/citizens/accounts";
+import { countAttempt, rules } from "@/server/security/rate-limit";
 
 type GroupRow = { id: string; category: string; status: string; citizen_id: string | null; created_at: Date };
 

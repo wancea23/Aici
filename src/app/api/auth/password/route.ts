@@ -1,13 +1,13 @@
 import { z } from "zod";
-import { sameOrigin } from "@/lib/auth/csrf";
-import { clientInfo } from "@/lib/auth/request";
-import { fail, json, tooMany } from "@/lib/auth/http";
-import { requireStaffApi } from "@/lib/auth/dal";
-import { clearLimit, peek, recordFailure, rules } from "@/lib/auth/rate-limit";
-import { hashPassword, normalizePassword, validateNewPassword, verifyPassword } from "@/lib/auth/password";
-import { changePassword, findStaffById } from "@/lib/auth/staff";
-import { replaceAllSessions } from "@/lib/auth/session";
-import { audit } from "@/lib/auth/audit";
+import { sameOrigin } from "@/server/security/csrf";
+import { clientInfo } from "@/server/http/request";
+import { fail, json, tooMany } from "@/server/http/responses";
+import { requireStaffApi } from "@/features/staff/dal";
+import { clearLimit, peek, recordFailure, rules } from "@/server/security/rate-limit";
+import { hashPassword, normalizePassword, validateNewPassword, verifyPassword } from "@/server/security/password";
+import { changePassword, findStaffById } from "@/features/staff/accounts";
+import { replaceAllSessions } from "@/features/staff/session";
+import { audit } from "@/server/security/audit";
 
 export const runtime = "nodejs";
 
@@ -49,5 +49,5 @@ export async function POST(req: Request) {
   await clearLimit(rules.password, limitKey);
   await audit({ actorId: user.id, action: "auth.password.changed", status: "success", client });
 
-  return json({ next: "/panou" });
+  return json({ next: "/dashboard" });
 }
