@@ -10,6 +10,10 @@ export const secondaryButton =
   "rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors " +
   "hover:border-slate-400 hover:bg-slate-50 active:bg-slate-100 disabled:opacity-50";
 
+export const dangerButton =
+  "rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors " +
+  "hover:bg-red-700 active:bg-red-800 disabled:opacity-50";
+
 export const labelClass = "mb-1 block text-sm font-medium text-slate-700";
 
 export const linkClass = "font-medium text-brand-700 transition-colors hover:text-brand-800 hover:underline";
