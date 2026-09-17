@@ -20,7 +20,15 @@ function loadModel(): Promise<blazeface.BlazeFaceModel> {
     await tf.ready();
 
     const modelJson = JSON.parse(fs.readFileSync(path.join(MODEL_DIR, "model.json"), "utf8"));
-    const weightData = fs.readFileSync(path.join(MODEL_DIR, "group1-shard1of1.bin")).buffer;
+    const weightBuffer = fs.readFileSync(path.join(MODEL_DIR, "group1-shard1of1.bin"));
+    // A Buffer's own .buffer is typed ArrayBufferLike (it can be a SharedArrayBuffer), and
+    // for a small file it can even be a view into a larger pool shared with unrelated reads
+    // elsewhere. Copying into a Uint8Array allocated right here sidesteps both problems: it
+    // holds exactly these bytes, and — unlike a Buffer's — is never shared-memory backed, so
+    // the cast below just states a fact tfjs's WeightData type otherwise can't be told.
+    const weightCopy = new Uint8Array(weightBuffer.byteLength);
+    weightCopy.set(weightBuffer);
+    const weightData = weightCopy.buffer as ArrayBuffer;
     const artifacts: tf.io.ModelArtifacts = {
       modelTopology: modelJson.modelTopology,
       weightSpecs: modelJson.weightsManifest[0].weights,
