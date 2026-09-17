@@ -20,6 +20,14 @@ export async function findCitizenByEmail(email: string): Promise<CitizenAccount 
   return row ?? null;
 }
 
+// For actions a signed in citizen has to confirm with their password.
+export async function findCitizenById(id: string): Promise<CitizenAccount | null> {
+  const [row] = await sql<CitizenAccount[]>`
+    select id, password_hash from citizen_users where id = ${id}
+  `;
+  return row ?? null;
+}
+
 // The newest sign up still waiting for its link, so a login before confirming can say so.
 export async function findPendingSignup(email: string) {
   const [row] = await sql<{ password_hash: string }[]>`

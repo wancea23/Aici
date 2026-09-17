@@ -6,6 +6,7 @@ import AuthCard from "@/ui/AuthCard";
 import LogoutButton from "@/ui/LogoutButton";
 import Icon from "@/ui/Icon";
 import ReportTimeline from "@/features/reports/ReportTimeline";
+import AccountData from "@/features/citizens/AccountData";
 import { secondaryButton } from "@/ui/styles";
 import { currentCitizen } from "@/features/citizens/session";
 import { listReportsForCitizen } from "@/features/reports/queries";
@@ -112,6 +113,8 @@ export default async function ProfilePage() {
           ))}
         </ul>
       )}
+
+      <AccountData />
     </AuthCard>
   );
 }

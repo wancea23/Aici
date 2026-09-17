@@ -30,6 +30,10 @@ export const rules = {
   statusMail: { name: "status-mail", windowSec: 60 * 60, max: 10 },
   citizenLoginIp: { name: "citizen-login-ip", windowSec: 15 * 60, max: 50, challengeAfter: 20 },
   citizenLoginAccount: { name: "citizen-login-account", windowSec: 60 * 60, max: 100, backoffAfter: 5, challengeAfter: 10 },
+  // one download decrypts every report of the account, so it gets a low ceiling
+  citizenExport: { name: "citizen-export", windowSec: 60 * 60, max: 5 },
+  // the delete form asks for the password, so wrong tries slow down like a login
+  citizenDelete: { name: "citizen-delete", windowSec: 15 * 60, max: 10, backoffAfter: 3 },
 } satisfies Record<string, Rule>;
 
 export type LimitState = { blocked: boolean; retryAfter: number; needsChallenge: boolean };
