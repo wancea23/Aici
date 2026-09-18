@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Eye, EyeOff } from "lucide";
+import Icon from "@/ui/Icon";
 import PasswordChecklist from "@/features/citizens/PasswordChecklist";
 import { sendJson } from "@/ui/api";
-import { inputClass, labelClass, linkClass, primaryButton } from "@/ui/styles";
+import { inputClass, labelClass, linkClass, primaryButton } from "@/ui/themed-styles";
 import { citizenPasswordChecks } from "@/features/citizens/password-rules";
 
 export default function NewPasswordForm({ token, email }: { token: string; email: string }) {
@@ -14,6 +16,7 @@ export default function NewPasswordForm({ token, email }: { token: string; email
   const [expired, setExpired] = useState(false);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
+  const [reveal, setReveal] = useState(false);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -35,8 +38,8 @@ export default function NewPasswordForm({ token, email }: { token: string; email
 
   if (done) {
     return (
-      <div className="space-y-5 text-sm">
-        <p className="rounded-xl bg-brand-50 p-4 text-brand-800">
+      <div className="space-y-5 font-body-sm text-body-sm">
+        <p className="rounded-lg bg-primary/10 p-space-md text-primary">
           Parola e schimbată. Te-am deconectat de pe toate dispozitivele.
         </p>
         <Link href="/sign-in" className={`${primaryButton} block text-center`}>
@@ -47,34 +50,44 @@ export default function NewPasswordForm({ token, email }: { token: string; email
   }
 
   return (
-    <form onSubmit={submit} className="space-y-4">
+    <form onSubmit={submit} className="flex flex-col gap-space-md">
       {/* lets password managers save the new password under the right account */}
       <input type="email" autoComplete="username" value={email} readOnly hidden />
 
-      <div>
+      <div className="flex flex-col gap-1.5">
         <label htmlFor="new-password" className={labelClass}>
           Parola nouă
         </label>
-        <input
-          id="new-password"
-          type="password"
-          autoComplete="new-password"
-          required
-          maxLength={128}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className={inputClass}
-        />
+        <div className="relative flex items-center">
+          <input
+            id="new-password"
+            type={reveal ? "text" : "password"}
+            autoComplete="new-password"
+            required
+            maxLength={128}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={`${inputClass} pr-11`}
+          />
+          <button
+            type="button"
+            onClick={() => setReveal((v) => !v)}
+            aria-label={reveal ? "Ascunde parola" : "Arată parola"}
+            className="absolute right-0 flex h-11 w-11 items-center justify-center text-outline transition-colors hover:text-on-surface"
+          >
+            <Icon node={reveal ? EyeOff : Eye} className="h-5 w-5" />
+          </button>
+        </div>
         <PasswordChecklist password={password} />
       </div>
 
-      <div>
+      <div className="flex flex-col gap-1.5">
         <label htmlFor="confirm-password" className={labelClass}>
           Repetă parola nouă
         </label>
         <input
           id="confirm-password"
-          type="password"
+          type={reveal ? "text" : "password"}
           autoComplete="new-password"
           required
           value={confirm}
@@ -84,7 +97,7 @@ export default function NewPasswordForm({ token, email }: { token: string; email
       </div>
 
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="font-body-sm text-body-sm text-error">
           {error}
           {expired && (
             <>

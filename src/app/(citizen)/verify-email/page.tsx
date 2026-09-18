@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import AuthCard from "@/ui/AuthCard";
 import ConfirmEmail from "@/features/citizens/ConfirmEmail";
-import { linkClass } from "@/ui/styles";
+import { linkClass } from "@/ui/themed-styles";
 import { findSignup } from "@/features/citizens/accounts";
 
 export const metadata: Metadata = { title: "Confirmare email" };
@@ -18,7 +18,7 @@ export default async function VerifyPage({
   if (!token || !signup) {
     return (
       <AuthCard audience="citizen" title="Link expirat">
-        <p className="text-sm text-slate-600">
+        <p className="font-body-sm text-body-sm text-on-surface-variant">
           Linkul nu mai este valabil sau a fost deja folosit.{" "}
           <Link href="/sign-up" className={linkClass}>
             Înregistrează-te din nou

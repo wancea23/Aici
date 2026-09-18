@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import AuthCard from "@/ui/AuthCard";
 import NewPasswordForm from "@/features/citizens/NewPasswordForm";
-import { linkClass } from "@/ui/styles";
+import { linkClass } from "@/ui/themed-styles";
 import { RESET_MINUTES, findPasswordReset } from "@/features/citizens/accounts";
 
 // The token is in the address, so the page never passes it on in a Referer header.
@@ -19,7 +19,7 @@ export default async function NewPasswordPage({
   if (!token || !reset) {
     return (
       <AuthCard audience="citizen" title="Link expirat">
-        <p className="text-sm text-slate-600">
+        <p className="font-body-sm text-body-sm text-on-surface-variant">
           Linkul nu mai este valabil. Expiră după {RESET_MINUTES} minute și merge o singură dată.{" "}
           <Link href="/forgot-password" className={linkClass}>
             Cere unul nou

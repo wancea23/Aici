@@ -1,3 +1,8 @@
+// Theme-blind on purpose: shared by every page that hasn't been redesigned against the new
+// design system yet (see themed-styles.ts for the token-based versions Phase 1 screens use).
+// Making this file itself dark-aware once made every un-migrated page partially react to the
+// dark toggle — e.g. a form input going dark while its own label and card stayed hardcoded
+// light. Keep these fixed until each consumer's own phase migrates it to themed-styles.ts.
 export const inputClass =
   "w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition-shadow " +
   "focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10";
