@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import AuthCard from "@/ui/AuthCard";
 import ForgotPasswordForm from "@/features/citizens/ForgotPasswordForm";
-import { linkClass } from "@/ui/styles";
+import { linkClass } from "@/ui/themed-styles";
 import { RESET_MINUTES } from "@/features/citizens/accounts";
 
 export const metadata: Metadata = { title: "Parolă uitată" };

@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useRef, useState } from "react";
 import { Camera, LocateFixed, Send } from "lucide";
 import Icon from "@/ui/Icon";
-import { inputClass, linkClass, primaryButton, secondaryButton } from "@/ui/styles";
+import { inputClass, linkClass, primaryButton, secondaryButton } from "@/ui/themed-styles";
 import { categories, categoryLabels, statusLabels, type Category, type Status } from "@/features/reports/validation";
 import { shrinkPhoto } from "@/features/photos/shrink-photo";
 import { howMany } from "@/ui/format";
@@ -13,7 +13,7 @@ import type { Coords } from "@/features/map/LocationPicker";
 // The map needs the browser, so it only renders on the client.
 const LocationPicker = dynamic(() => import("@/features/map/LocationPicker"), {
   ssr: false,
-  loading: () => <div className="h-full w-full animate-pulse bg-slate-100" />,
+  loading: () => <div className="h-full w-full animate-pulse bg-surface-container-low" />,
 });
 
 type NearbyReport = {
@@ -191,9 +191,9 @@ export default function ReportForm() {
 
   if (followedId) {
     return (
-      <div className="rounded-xl bg-brand-50 p-5 text-center">
-        <p className="font-medium text-brand-800">Bine, nu mai trimitem una nouă.</p>
-        <p className="mt-1 text-sm text-slate-600">
+      <div className="rounded-xl bg-primary/10 p-5 text-center">
+        <p className="font-label-lg text-label-lg text-primary">Bine, nu mai trimitem una nouă.</p>
+        <p className="mt-1 font-body-sm text-body-sm text-on-surface-variant">
           Sesizarea existentă (cod {followedId.slice(0, 8)}) acoperă deja problema ta.
         </p>
         <button onClick={reset} className={`mt-4 text-sm ${linkClass}`}>
@@ -205,9 +205,9 @@ export default function ReportForm() {
 
   if (doneId) {
     return (
-      <div className="rounded-xl bg-brand-50 p-5 text-center">
-        <p className="font-medium text-brand-800">Sesizarea a fost trimisă.</p>
-        <p className="mt-1 text-sm text-slate-600">Cod: {doneId.slice(0, 8)}</p>
+      <div className="rounded-xl bg-primary/10 p-5 text-center">
+        <p className="font-label-lg text-label-lg text-primary">Sesizarea a fost trimisă.</p>
+        <p className="mt-1 font-body-sm text-body-sm text-on-surface-variant">Cod: {doneId.slice(0, 8)}</p>
         <button onClick={reset} className={`mt-4 text-sm ${linkClass}`}>
           Raportează alta
         </button>
@@ -218,41 +218,43 @@ export default function ReportForm() {
   if (duplicates && duplicates.length > 0) {
     return (
       <div className="space-y-4">
-        <div className="rounded-xl bg-amber-50 p-4">
-          <p className="font-medium text-amber-800">
+        <div className="rounded-xl bg-amber-500/10 p-4">
+          <p className="font-label-lg text-label-lg text-amber-700 dark:text-amber-400">
             Am găsit {duplicates.length === 1 ? "o sesizare" : `${duplicates.length} sesizări`}{" "}
             asemănătoare în apropiere.
           </p>
-          <p className="mt-1 text-sm text-amber-700">Poate cineva a raportat deja aceeași problemă.</p>
+          <p className="mt-1 font-body-sm text-body-sm text-amber-600 dark:text-amber-300">
+            Poate cineva a raportat deja aceeași problemă.
+          </p>
         </div>
 
         <ul className="space-y-2">
           {duplicates.map((d) => (
-            <li key={d.id} className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+            <li key={d.id} className="overflow-hidden rounded-lg border border-outline-variant bg-surface-container-lowest">
               <img
                 src={`/api/media/${d.id}`}
                 alt=""
-                className="h-64 w-full bg-slate-100 object-cover"
+                className="h-64 w-full bg-surface-container-low object-cover"
               />
               <div className="p-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">
+                  <span className="font-label-lg text-label-lg text-on-surface">
                     {statusLabels[d.status as Status] ?? d.status}
                     {d.count > 1 && (
-                      <span className="font-normal text-slate-500">, raportată de {howMany(d.count, "ori")}</span>
+                      <span className="font-normal text-on-surface-variant">, raportată de {howMany(d.count, "ori")}</span>
                     )}
                   </span>
-                  <span className="text-xs text-slate-400">
+                  <span className="font-body-sm text-body-sm text-outline">
                     {new Date(d.created_at).toLocaleDateString("ro-RO")}
                   </span>
                 </div>
-                {d.description && <p className="mt-1 text-sm text-slate-600">{d.description}</p>}
+                {d.description && <p className="mt-1 font-body-sm text-body-sm text-on-surface-variant">{d.description}</p>}
               </div>
             </li>
           ))}
         </ul>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="font-body-sm text-body-sm text-error">{error}</p>}
 
         <div className="flex gap-3">
           <button
@@ -278,12 +280,12 @@ export default function ReportForm() {
   return (
     <form onSubmit={submit} className="space-y-5">
       <div>
-        <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-6 text-center transition-colors hover:border-brand-500 hover:bg-brand-50/40">
+        <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-outline-variant bg-surface-container-low p-6 text-center transition-colors hover:border-primary hover:bg-primary/5">
           {preview ? (
             <img src={preview} alt="" className="max-h-56 rounded-lg object-contain" />
           ) : (
-            <span className="flex flex-col items-center gap-2 text-sm text-slate-500">
-              <Icon node={Camera} className="h-6 w-6 text-slate-400" />
+            <span className="flex flex-col items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">
+              <Icon node={Camera} className="h-6 w-6 text-outline" />
               Fă o poză sau alege una
             </span>
           )}
@@ -292,10 +294,10 @@ export default function ReportForm() {
         </label>
         {photo ? (
           <div className="mt-3">
-            <div className="isolate h-56 overflow-hidden rounded-xl border border-slate-200">
+            <div className="isolate h-56 overflow-hidden rounded-xl border border-outline-variant">
               <LocationPicker value={coords} category={category} focus={focus} onPick={pickOnMap} />
             </div>
-            <p className={`mt-2 text-xs ${geoError && !coords ? "text-red-600" : "text-slate-500"}`}>
+            <p className={`mt-2 font-body-sm text-body-sm ${geoError && !coords ? "text-error" : "text-on-surface-variant"}`}>
               {pickedByHand
                 ? "Ai pus pinul pe hartă. Trage-l sau atinge harta ca să-l muți."
                 : coords
@@ -323,12 +325,12 @@ export default function ReportForm() {
             )}
           </div>
         ) : (
-          <p className="mt-2 text-xs text-slate-400">După poză alegi locația pe hartă.</p>
+          <p className="mt-2 font-body-sm text-body-sm text-outline">După poză alegi locația pe hartă.</p>
         )}
       </div>
 
       <div>
-        <p className="mb-2 text-sm font-medium">Categorie</p>
+        <p className="mb-2 font-label-lg text-label-lg text-on-surface">Categorie</p>
         <div className="flex flex-wrap gap-2">
           {categories.map((c) => (
             <button
@@ -336,10 +338,10 @@ export default function ReportForm() {
               key={c}
               onClick={() => setCategory(c)}
               className={
-                "rounded-full border px-3 py-1.5 text-sm transition-colors " +
+                "rounded-full border px-3 py-1.5 font-label-lg text-label-lg transition-colors " +
                 (category === c
-                  ? "border-brand-600 bg-brand-600 text-white"
-                  : "border-slate-300 bg-white text-slate-600 hover:border-slate-400 hover:bg-slate-50")
+                  ? "border-primary bg-primary text-on-primary"
+                  : "border-outline-variant bg-surface-container-lowest text-on-surface hover:border-outline hover:bg-surface-container-low")
               }
             >
               {categoryLabels[c]}
@@ -349,7 +351,7 @@ export default function ReportForm() {
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium">Descriere</label>
+        <label className="mb-1.5 block font-label-lg text-label-lg text-on-surface">Descriere</label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -360,7 +362,7 @@ export default function ReportForm() {
         />
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="font-body-sm text-body-sm text-error">{error}</p>}
 
       <button
         type="submit"

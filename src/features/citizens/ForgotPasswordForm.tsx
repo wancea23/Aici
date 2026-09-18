@@ -1,9 +1,11 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { Clock, Mail, Send } from "lucide";
 import AltchaWidget from "@/ui/AltchaWidget";
+import Icon from "@/ui/Icon";
 import { sendJson } from "@/ui/api";
-import { inputClass, labelClass, linkClass, primaryButton } from "@/ui/styles";
+import { inputClass, labelClass, linkClass, primaryButton } from "@/ui/themed-styles";
 
 export default function ForgotPasswordForm({ minutes }: { minutes: number }) {
   const [email, setEmail] = useState("");
@@ -37,12 +39,12 @@ export default function ForgotPasswordForm({ minutes }: { minutes: number }) {
   // Worded the same whether or not the address has an account.
   if (sentTo) {
     return (
-      <div className="space-y-3 text-sm text-slate-600">
-        <p className="rounded-xl bg-brand-50 p-4 text-brand-800">
+      <div className="space-y-3 font-body-sm text-body-sm text-on-surface-variant">
+        <p className="rounded-lg bg-primary/10 p-space-md text-primary">
           Dacă <span className="break-all font-medium">{sentTo}</span> are un cont Aici, ți-am trimis un link.
         </p>
         <p>Deschide-l în {minutes} minute ca să alegi parola nouă.</p>
-        <p className="text-xs text-slate-400">
+        <p className="font-body-sm text-body-sm text-outline">
           Nu a venit? Uită-te și în Spam, sau{" "}
           <button type="button" onClick={() => setSentTo(null)} className={linkClass}>
             trimite din nou
@@ -54,34 +56,45 @@ export default function ForgotPasswordForm({ minutes }: { minutes: number }) {
   }
 
   return (
-    <form onSubmit={submit} className="space-y-4">
-      <div>
-        <label htmlFor="email" className={labelClass}>
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="username"
-          required
-          maxLength={254}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className={inputClass}
-        />
-      </div>
+    <>
+      <form onSubmit={submit} className="flex flex-col gap-space-md">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="email" className={labelClass}>
+            Email
+          </label>
+          <div className="relative flex items-center">
+            <Icon node={Mail} className="pointer-events-none absolute left-3 h-4 w-4 text-outline" />
+            <input
+              id="email"
+              type="email"
+              autoComplete="username"
+              required
+              maxLength={254}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={`${inputClass} pl-10`}
+            />
+          </div>
+        </div>
 
-      <AltchaWidget key={widgetKey} onPayload={onAltcha} />
+        <AltchaWidget key={widgetKey} onPayload={onAltcha} />
 
-      {error && (
-        <p role="alert" className="text-sm text-red-600">
-          {error}
-        </p>
-      )}
+        {error && (
+          <p role="alert" className="font-body-sm text-body-sm text-error">
+            {error}
+          </p>
+        )}
 
-      <button type="submit" disabled={busy} className={primaryButton}>
-        {busy ? "Se trimite..." : "Trimite linkul"}
-      </button>
-    </form>
+        <button type="submit" disabled={busy} className={`${primaryButton} flex items-center justify-center gap-space-xs`}>
+          <Icon node={Send} className="h-[18px] w-[18px]" />
+          <span>{busy ? "Se trimite..." : "Trimite linkul"}</span>
+        </button>
+      </form>
+
+      <p className="mt-space-md flex items-center justify-center gap-1 font-body-sm text-body-sm text-outline">
+        <Icon node={Clock} className="h-4 w-4" />
+        Linkul e valabil {minutes} minute.
+      </p>
+    </>
   );
 }
