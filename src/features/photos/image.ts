@@ -1,5 +1,6 @@
 import sharp from "sharp";
 import { blurFaces } from "@/features/photos/face-blur";
+import { blurPlates } from "@/features/photos/plate-blur";
 
 const allowed = new Set(["jpeg", "png", "webp"]);
 
@@ -19,9 +20,9 @@ export function looksLikeImage(buf: Buffer): boolean {
   return false;
 }
 
-// Re encodes the photo into a fresh webp, blurring any faces found in it along the way.
-// This also applies the orientation flag to the pixels and drops EXIF, GPS and anything
-// else hidden in the original file.
+// Re encodes the photo into a fresh webp, blurring any faces and license plates found in it
+// along the way. This also applies the orientation flag to the pixels and drops EXIF, GPS and
+// anything else hidden in the original file.
 export async function cleanPhoto(input: Buffer): Promise<Buffer> {
   const image = sharp(input, { failOn: "error" });
   const meta = await image.metadata();
@@ -35,9 +36,12 @@ export async function cleanPhoto(input: Buffer): Promise<Buffer> {
     .resize(1600, 1600, { fit: "inside", withoutEnlargement: true })
     .toBuffer();
 
-  // Blurring happens on the already-resized image: one known size to reason about, and
-  // faces get bigger, easier-to-detect regions than shrinking them down first would give.
-  const blurred = await blurFaces(resized);
+  // Blurring happens on the already-resized image: one known size to reason about, and both
+  // faces and plates get bigger, easier-to-detect regions than shrinking down first would give.
+  // Sequential, not parallel: each stage composites its own blur onto the image the other
+  // stage produced, and faces/plates are never in the exact same pixels to fight over.
+  const noFaces = await blurFaces(resized);
+  const noPlates = await blurPlates(noFaces);
 
-  return sharp(blurred).webp({ quality: 75 }).toBuffer();
+  return sharp(noPlates).webp({ quality: 75 }).toBuffer();
 }
