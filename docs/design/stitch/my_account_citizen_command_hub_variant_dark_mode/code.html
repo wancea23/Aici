@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Portalul Cetățeanului Chișinău — Cabinet Personal</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #1a2332; }
+    ::-webkit-scrollbar-thumb { background: #3e4d57; border-radius: 9999px; }
+  </style>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#0f2e2a',
+              100: '#134e4a',
+              200: '#1e766b',
+              300: '#3d9e91',
+              400: '#4fc3b4',
+              500: '#6bd8cb',
+              600: '#2b9b8f',
+              700: '#1e766b',
+              800: '#115e59',
+              900: '#0d3b36',
+            },
+            primary: "#6bd8cb",
+            "primary-container": "#2b9b8f",
+            "on-primary": "#0e1a2b",
+            "surface-dim": "#101725",
+            tertiary: "#dbb9a3",
+            "tertiary-fixed": "#b0836a",
+            "on-tertiary-fixed": "#e0e8f5",
+            secondary: "#5bc9b9",
+            "secondary-fixed": "#3db8a6",
+            "on-secondary-fixed": "#c6f0e7",
+            "error-container": "#5e2e2b",
+            "on-error-container": "#ffb4ab",
+            error: "#ff8a80"
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#0e141f] text-slate-200 min-h-screen antialiased flex flex-col dark">
+  <!-- Top Header -->
+  <header class="h-16 bg-[#19212e] border-b border-slate-700/50 px-6 flex items-center justify-between z-30 sticky top-0">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-teal-600 flex items-center justify-center text-white shadow-sm font-bold text-base">
+          <span class="material-symbols-outlined text-[20px]">account_balance</span>
+        </div>
+        <div>
+          <span class="text-xs font-semibold tracking-wider uppercase text-teal-400 block leading-tight">Primăria Municipiului Chișinău</span>
+          <h1 class="text-sm font-bold text-slate-100 tracking-tight leading-none">Portalul Cetățeanului — Cabinet Personal</h1>
+        </div>
+      </div>
+      <div class="hidden lg:flex items-center gap-2 pl-4 border-l border-slate-700/50">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/40 text-emerald-300 border border-emerald-700/50">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          Dispecerat Activ 24/7
+        </span>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="hidden md:flex items-center gap-2 bg-[#151d29] border border-slate-700/50 rounded-lg px-3 py-1.5 text-xs text-slate-400 font-mono">
+        <span class="material-symbols-outlined text-teal-400 text-[16px]">schedule</span>
+        <span>Actualizat: 15.09, 11:20</span>
+      </div>
+      <button class="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#222e40] hover:bg-[#283649] text-slate-200 text-xs font-semibold transition-colors border border-slate-700/50">
+        <span class="material-symbols-outlined text-[16px]">tune</span>
+        <span>Setări cont</span>
+      </button>
+      <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-600 hover:bg-teal-500 text-white text-xs font-semibold shadow-sm transition-all">
+        <span class="material-symbols-outlined text-[18px]">add_circle</span>
+        <span>Raportează o problemă nouă</span>
+      </button>
+    </div>
+  </header>
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-72 bg-[#19212e] border-r border-slate-700/50 flex flex-col justify-between shrink-0 select-none">
+      <div class="p-5 space-y-6">
+        <!-- Citizen Profile -->
+        <div class="bg-gradient-to-br from-teal-900/50 to-[#19212e] p-4 rounded-xl border border-teal-700/40 shadow-sm relative overflow-hidden">
+          <div class="absolute -right-3 -top-3 w-16 h-16 rounded-full bg-teal-800/30 -z-0"></div>
+          <div class="relative z-10 flex items-start gap-3.5">
+            <div class="relative">
+              <div class="w-12 h-12 rounded-full bg-teal-600 text-white font-bold text-base flex items-center justify-center shadow-sm">IP</div>
+              <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[12px] ring-2 ring-[#19212e]" title="Rezident Verificat">
+                <span class="material-symbols-outlined text-[13px]">verified</span>
+              </span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-1.5">
+                <h2 class="text-sm font-bold text-slate-100 truncate">Ion Popescu</h2>
+              </div>
+              <p class="text-[11px] font-mono text-teal-400 font-medium">ID-8821</p>
+              <div class="flex items-center gap-1 text-[11px] text-slate-400 mt-1">
+                <span class="material-symbols-outlined text-[14px] text-teal-400 shrink-0">location_on</span>
+                <span class="truncate">Sectorul Centru, Chișinău</span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-teal-700/40">
+            <div class="flex items-center justify-between text-xs mb-1.5">
+              <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Scor Civic:</span>
+              <span class="font-bold text-teal-400 font-mono text-xs">94 pct (Nivel 3)</span>
+            </div>
+            <div class="w-full h-1.5 bg-teal-900/50 rounded-full overflow-hidden">
+              <div class="h-full bg-teal-500 rounded-full" style="width: 94%;"></div>
+            </div>
+            <p class="text-[10px] text-slate-500 mt-1">Statut: Cetățean Activ &amp; Cont Validat</p>
+          </div>
+        </div>
+        <!-- Navigation -->
+        <nav class="space-y-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-3 block mb-1">Meniu Principal</span>
+          <a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-semibold bg-teal-900/40 text-teal-200 border-l-4 border-teal-500 transition-colors" href="#">
+            <div class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-teal-400 text-[18px]">assignment</span>
+              <span>Sesizările mele</span>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-teal-600 text-white">4</span>
+          </a>
+          <a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:bg-[#222e40] hover:text-slate-100 transition-colors" href="#">
+            <div class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-slate-500 text-[18px]">notifications</span>
+              <span>Notificări &amp; Alerte</span>
+            </div>
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+          </a>
+          <a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:bg-[#222e40] hover:text-slate-100 transition-colors" href="#">
+            <div class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-slate-500 text-[18px]">map</span>
+              <span>Harta sectorului Centru</span>
+            </div>
+          </a>
+          <a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:bg-[#222e40] hover:text-slate-100 transition-colors" href="#">
+            <div class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-slate-500 text-[18px]">contact_support</span>
+              <span>Asistență Primărie</span>
+            </div>
+            <span class="text-[10px] text-teal-400 font-mono">24/7</span>
+          </a>
+        </nav>
+        <!-- Registry Details -->
+        <div class="bg-[#151d29] border border-slate-700/40 rounded-xl p-3.5 text-xs text-slate-400">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-2">Date Administrative</span>
+          <div class="space-y-1.5 font-mono text-[11px]">
+            <div class="flex justify-between">
+              <span class="text-slate-500">Circumscripție:</span>
+              <span class="text-slate-300 font-medium">Chișinău #1</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Registru sesizări:</span>
+              <span class="text-slate-300 font-medium">MD-RMC-2024</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Canal notificare:</span>
+              <span class="text-teal-400 font-medium">SMS &amp; Email</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Sidebar Footer -->
+      <div class="p-4 border-t border-slate-700/50 bg-[#151d29]">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[18px]">call</span>
+          </div>
+          <div class="min-w-0">
+            <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500 block">Linia Verde Dispecerat</span>
+            <a class="text-xs font-bold font-mono text-slate-200 hover:text-teal-400 block" href="tel:022222267">022-22-22-67</a>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto bg-[#0e141f] flex flex-col">
+      <!-- KPI Banner -->
+      <section class="border-b border-slate-700/50 bg-[#19212e] px-8 py-5">
+        <div class="max-w-[1600px] mx-auto">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-[#151d29] border border-slate-700/40 rounded-xl p-4 flex flex-col justify-between">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total sesizări</span>
+                <span class="material-symbols-outlined text-slate-500 text-[20px]">inventory_2</span>
+              </div>
+              <div class="flex items-baseline gap-2">
+                <span class="text-2xl font-bold font-mono text-slate-100">4</span>
+                <span class="text-xs text-slate-500">înregistrate oficial</span>
+              </div>
+            </div>
+            <div class="bg-amber-900/20 border border-amber-700/40 rounded-xl p-4 flex flex-col justify-between">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-amber-400">În curs de execuție</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-amber-900/50 text-amber-200 border border-amber-700/40">Activ</span>
+              </div>
+              <div class="flex items-baseline gap-2">
+                <span class="text-2xl font-bold font-mono text-amber-400">1</span>
+                <span class="text-xs text-slate-500">alocată la Lumteh</span>
+              </div>
+            </div>
+            <div class="bg-teal-900/20 border border-teal-700/40 rounded-xl p-4 flex flex-col justify-between">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-teal-400">Finalizate cu succes</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-teal-900/50 text-teal-200 border border-teal-700/40">Rezolvat</span>
+              </div>
+              <div class="flex items-baseline gap-2">
+                <span class="text-2xl font-bold font-mono text-teal-400">1</span>
+                <span class="text-xs text-slate-500">proces-verbal emis</span>
+              </div>
+            </div>
+            <div class="bg-[#151d29] border border-slate-700/40 rounded-xl p-4 flex flex-col justify-between">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Coadă Dispecerat</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-slate-700 text-slate-300">Triaj</span>
+              </div>
+              <div class="flex items-baseline gap-2">
+                <span class="text-2xl font-bold font-mono text-slate-200">1</span>
+                <span class="text-xs text-slate-500">validare în derulare</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Split Screen -->
+      <section class="p-8 max-w-[1600px] w-full mx-auto flex-1">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+          <!-- Left: Incident List -->
+          <div class="xl:col-span-7 space-y-4">
+            <!-- Filter Bar -->
+            <div class="bg-[#19212e] border border-slate-700/50 rounded-xl p-4 shadow-sm space-y-3">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h3 class="text-base font-bold text-slate-100 tracking-tight">Registru sesizări municipale</h3>
+                  <p class="text-xs text-slate-500">Urmărire directă în baza unică a serviciilor comunale Chișinău</p>
+                </div>
+                <div class="flex items-center gap-1.5 self-start sm:self-auto">
+                  <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-[#151d29] text-slate-300 border border-slate-700/50">4 incidente înregistrate</span>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 pt-1">
+                <div class="sm:col-span-6 relative">
+                  <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-[18px]">search</span>
+                  <input class="w-full pl-9 pr-3 py-2 bg-[#151d29] border border-slate-700/50 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:bg-[#19212e] focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 transition-all font-sans" placeholder="Caută după cod (#LM-9022) sau adresă..." type="text" value=""/>
+                </div>
+                <div class="sm:col-span-3">
+                  <select class="w-full py-2 px-2.5 bg-[#151d29] border border-slate-700/50 rounded-lg text-xs text-slate-300 focus:bg-[#19212e] focus:outline-none focus:ring-1 focus:ring-teal-500">
+                    <option selected="">Sectorul Centru</option>
+                    <option>Toate sectoarele</option>
+                    <option>Rîșcani</option>
+                    <option>Botanica</option>
+                    <option>Buiucani</option>
+                    <option>Ciocana</option>
+                  </select>
+                </div>
+                <div class="sm:col-span-3">
+                  <select class="w-full py-2 px-2.5 bg-[#151d29] border border-slate-700/50 rounded-lg text-xs text-slate-300 focus:bg-[#19212e] focus:outline-none focus:ring-1 focus:ring-teal-500">
+                    <option selected="">Toate statusurile</option>
+                    <option>În desfășurare</option>
+                    <option>Rezolvate</option>
+                    <option>Sesizări noi</option>
+                    <option>Respinse</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- Incident 1: Active -->
+            <div class="bg-[#19212e] border-2 border-teal-500 rounded-xl p-5 shadow-sm transition-all relative overflow-hidden ring-1 ring-teal-500/20">
+              <div class="absolute top-0 right-0 bg-teal-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-bl-lg font-mono">Selectat în Inspector</div>
+              <div class="flex items-start justify-between gap-4 mb-3">
+                <div class="flex items-start gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-amber-900/40 border border-amber-700/50 text-amber-400 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[22px]">lightbulb</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <h4 class="text-sm font-bold text-slate-100">Iluminat stradal defect — corp LED nefuncțional</h4>
+                      <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-amber-900/40 text-amber-300 border border-amber-700/50 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> În lucru
+                      </span>
+                    </div>
+                    <div class="flex items-center gap-3 text-xs text-slate-500 mt-1 font-mono">
+                      <span class="text-teal-400 font-semibold">#LM-9022</span>
+                      <span>•</span>
+                      <span class="flex items-center gap-1 text-slate-400 font-sans">
+                        <span class="material-symbols-outlined text-[15px] text-teal-400">location_on</span>
+                        str. Aleksandr Pușkin 22, Chișinău
+                      </span>
+                      <span>•</span>
+                      <span class="font-sans">acum 3 zile</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed bg-[#151d29] p-3 rounded-lg border border-slate-700/40 mb-3">
+                Corp de iluminat stradal suspendat pe pilonul #4 fără alimentare de la rețeaua secundară. Risc de accidentare pe trecerea de pietoni adiacentă.
+              </p>
+              <div class="flex items-center justify-between pt-2 border-t border-slate-700/40 text-xs">
+                <div class="flex items-center gap-2 text-slate-500">
+                  <span class="material-symbols-outlined text-teal-400 text-[16px]">engineering</span>
+                  <span>Alocat către: <strong class="text-slate-200 font-semibold">Î.M. Regia «Lumteh»</strong></span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-amber-900/40 text-amber-300 text-[11px] font-semibold border border-amber-700/50">
+                    <span class="material-symbols-outlined text-[14px]">notifications_active</span>
+                    Mesaj tehnic nou primit
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- Incident 2: Resolved -->
+            <div class="bg-[#19212e] border border-slate-700/50 rounded-xl p-5 shadow-sm hover:border-slate-600 transition-all">
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-start gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-teal-900/40 border border-teal-700/50 text-teal-400 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[22px]">construction</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <h4 class="text-sm font-bold text-slate-100">Groapă carosabil adâncă banda 1</h4>
+                      <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-teal-900/40 text-teal-300 border border-teal-700/50 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span> Rezolvat
+                      </span>
+                    </div>
+                    <div class="flex items-center gap-3 text-xs text-slate-500 mt-1 font-mono">
+                      <span class="text-teal-400 font-semibold">#EX-4019</span>
+                      <span>•</span>
+                      <span class="flex items-center gap-1 text-slate-400 font-sans">
+                        <span class="material-symbols-outlined text-[15px] text-teal-400">location_on</span>
+                        bd. Ștefan cel Mare și Sfânt 105
+                      </span>
+                      <span>•</span>
+                      <span class="font-sans">acum 2 săpt.</span>
+                    </div>
+                  </div>
+                </div>
+                <button class="h-8 px-3 rounded-lg bg-[#222e40] hover:bg-[#283649] text-slate-200 text-xs font-semibold flex items-center gap-1 transition-colors shrink-0 border border-slate-700/50">
+                  <span>Fișă tehnică</span>
+                  <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                </button>
+              </div>
+              <div class="mt-3 pt-3 border-t border-slate-700/40 flex items-center justify-between text-xs text-slate-500">
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-emerald-400 text-[16px]">verified</span>
+                  <span>Proces-verbal recepție semnat de Î.M. Regia «Exdrupo»</span>
+                </div>
+                <span class="text-[11px] font-mono text-slate-500">Arhivă: 12.09.2024</span>
+              </div>
+            </div>
+            <!-- Incident 3: New -->
+            <div class="bg-[#19212e] border border-slate-700/50 rounded-xl p-5 shadow-sm hover:border-slate-600 transition-all">
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-start gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-red-900/40 border border-red-700/50 text-red-400 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[22px]">delete_sweep</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <h4 class="text-sm font-bold text-slate-100">Deșeuri neevacuate perimetru alee principală</h4>
+                      <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-red-900/40 text-red-300 border border-red-700/50 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Înregistrare nouă
+                      </span>
+                    </div>
+                    <div class="flex items-center gap-3 text-xs text-slate-500 mt-1 font-mono">
+                      <span class="text-teal-400 font-semibold">#SL-2194</span>
+                      <span>•</span>
+                      <span class="flex items-center gap-1 text-slate-400 font-sans">
+                        <span class="material-symbols-outlined text-[15px] text-teal-400">location_on</span>
+                        Parcul Valea Morilor (zona scărilor de granit)
+                      </span>
+                      <span>•</span>
+                      <span class="font-sans">acum 5 ore</span>
+                    </div>
+                  </div>
+                </div>
+                <button class="h-8 px-3 rounded-lg bg-[#222e40] hover:bg-[#283649] text-slate-200 text-xs font-semibold flex items-center gap-1 transition-colors shrink-0 border border-slate-700/50">
+                  <span>Detalii</span>
+                  <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                </button>
+              </div>
+              <div class="mt-3 pt-3 border-t border-slate-700/40 flex items-center justify-between text-xs text-slate-500">
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-slate-500 text-[16px]">pending_actions</span>
+                  <span>Așteaptă confirmarea operatorului din Sectorul Centru</span>
+                </div>
+                <span class="text-[11px] font-mono text-slate-500">Dispecerat General</span>
+              </div>
+            </div>
+            <!-- Incident 4: Rejected -->
+            <div class="bg-[#19212e] border border-slate-700/50 rounded-xl p-5 shadow-sm hover:border-slate-600 transition-all opacity-85">
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-start gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-[#222e40] border border-slate-700/50 text-slate-400 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[22px]">help_center</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <h4 class="text-sm font-bold text-slate-200">Mobilier urban deteriorat / Bancă privată</h4>
+                      <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-slate-700 text-slate-300">Respins</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-xs text-slate-500 mt-1 font-mono">
+                      <span class="text-slate-500 font-semibold">#SP-1104</span>
+                      <span>•</span>
+                      <span class="flex items-center gap-1 text-slate-400 font-sans">
+                        <span class="material-symbols-outlined text-[15px] text-slate-500">location_on</span>
+                        Grădina Publică Ștefan cel Mare (adiacent terasă privată)
+                      </span>
+                      <span>•</span>
+                      <span class="font-sans">acum 1 lună</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="px-2 py-1 rounded bg-rose-900/40 text-rose-300 text-[11px] font-semibold border border-rose-700/50">Teren privat</span>
+              </div>
+            </div>
+          </div>
+          <!-- Right: Inspector -->
+          <div class="xl:col-span-5 space-y-4">
+            <div class="bg-[#19212e] border border-slate-700/50 rounded-xl shadow-sm overflow-hidden">
+              <div class="p-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-700/50">
+                <div>
+                  <span class="text-[10px] uppercase font-bold tracking-wider text-teal-400 font-mono block">Inspector Live Urmărire</span>
+                  <h3 class="text-sm font-bold text-white tracking-tight">Fișa sesizării: Lucrări de reparație a iluminatului public</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-teal-900/50 text-teal-300 border border-teal-700/50">#LM-9022</span>
+                </div>
+              </div>
+              <div class="p-5 space-y-5">
+                <!-- SLA -->
+                <div class="bg-teal-900/20 border border-teal-700/40 rounded-xl p-4">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-teal-300">Indicator Serviciu Municipal</span>
+                    <span class="px-2 py-0.5 rounded bg-teal-900/50 text-teal-300 font-mono font-bold text-xs border border-teal-700/40">SLA: 48 ore</span>
+                  </div>
+                  <div class="w-full bg-slate-700 h-2.5 rounded-full overflow-hidden mb-2">
+                    <div class="bg-teal-500 h-full rounded-full transition-all" style="width: 65%;"></div>
+                  </div>
+                  <div class="flex justify-between items-center text-[11px] font-mono text-slate-400">
+                    <span>Inițiat: 14.09, 10:12</span>
+                    <span class="text-amber-400 font-semibold font-sans">Termen limită: Vineri, 18:00</span>
+                  </div>
+                  <div class="mt-3 pt-3 border-t border-teal-700/40 flex items-center gap-2.5 text-xs text-slate-300">
+                    <span class="material-symbols-outlined text-teal-400 text-[18px]">domain</span>
+                    <span>Departament alocat: <strong class="font-semibold text-slate-100">Î.M. Regia «Lumteh» Chișinău</strong></span>
+                  </div>
+                </div>
+                <!-- Evidence Photo -->
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Dovadă fotografică din teren</span>
+                    <span class="text-[11px] font-mono text-slate-500">IMG_PUȘKIN_22.JPG</span>
+                  </div>
+                  <div class="relative w-full h-48 rounded-xl overflow-hidden border border-slate-700/50 shadow-inner group">
+                    <img alt="Dovadă foto incident carosabil str. Pușkin" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1V7gBSpZsZb91oOhvm-dmAwWPyrTKLiZwu89m3f_ciomRy17M1e7vgDPq1_a-XILCYPxGfbOLJ6HWRxc-4O8q-0ZR5b4VgzxzRWOGP22azHG0FDN_9OkWRmyeQFZgQnCJV4dpexz3bFHuzjepAouODfCqn062XqQx0YAWhKzi5LX6RAZBryyq1rZjZvoqaCkLFLxiHq1fxJnmGAjLU7-fo730qc3k1J2YtH0pH1iLkdMoacTBYd3FM_6-TT"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80"></div>
+                    <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
+                      <span class="font-mono text-[11px] bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm">Locație: Pușkin 22</span>
+                      <span class="text-[11px] bg-teal-600 px-2 py-0.5 rounded font-medium">Validat tehnic</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Map -->
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Localizare cartografică — Sectorul Centru</span>
+                    <span class="text-[11px] font-mono text-teal-400 font-semibold">GPS: 47.0245° N, 28.8322° E</span>
+                  </div>
+                  <div class="relative w-full h-52 rounded-xl overflow-hidden border border-slate-700/50 shadow-sm bg-[#151d29]">
+                    <svg class="w-full h-full object-cover" fill="none" viewbox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+                      <rect fill="#151d29" height="220" width="400"></rect>
+                      <path d="M-10 60 H410" stroke="#2a3a50" stroke-width="10"></path>
+                      <path d="M-10 130 H410" stroke="#3e4d57" stroke-width="14"></path>
+                      <path d="M-10 190 H410" stroke="#2a3a50" stroke-width="8"></path>
+                      <path d="M80 -10 V230" stroke="#2a3a50" stroke-width="8"></path>
+                      <path d="M190 -10 V230" stroke="#3e4d57" stroke-width="12"></path>
+                      <path d="M280 -10 V230" stroke="#2a3a50" stroke-width="8"></path>
+                      <rect fill="#134e4a" height="40" rx="6" width="50" x="20" y="80"></rect>
+                      <rect fill="#115e59" height="50" rx="6" width="65" x="205" y="70"></rect>
+                    </svg>
+                    <div class="absolute top-[110px] left-[190px] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center cursor-pointer group">
+                      <div class="bg-amber-600 text-white text-[10px] font-mono font-bold px-1.5 py-0.5 rounded shadow-md mb-1 animate-bounce">#LM-9022</div>
+                      <div class="w-8 h-8 rounded-full bg-amber-600 text-white flex items-center justify-center shadow-lg ring-4 ring-amber-900/40">
+                        <span class="material-symbols-outlined text-[16px]">lightbulb</span>
+                      </div>
+                    </div>
+                    <div class="absolute top-[130px] left-[105px] -translate-x-1/2 -translate-y-1/2 cursor-pointer" title="#EX-4019 Rezolvat">
+                      <div class="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center shadow ring-2 ring-[#19212e]">
+                        <span class="material-symbols-outlined text-[13px]">check</span>
+                      </div>
+                    </div>
+                    <div class="absolute top-[170px] left-[50px] -translate-x-1/2 -translate-y-1/2 cursor-pointer" title="#SL-2194 Nou">
+                      <div class="w-6 h-6 rounded-full bg-red-600 text-white flex items-center justify-center shadow ring-2 ring-[#19212e]">
+                        <span class="material-symbols-outlined text-[13px]">delete_sweep</span>
+                      </div>
+                    </div>
+                    <div class="absolute bottom-2 left-2 bg-[#19212e]/90 backdrop-blur-sm border border-slate-700/50 px-2 py-1 rounded text-[10px] text-slate-300 font-mono shadow-sm">Perimetru: Centru • Chișinău</div>
+                  </div>
+                </div>
+                <!-- Timeline -->
+                <div>
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-3">Jurnal de intervenție &amp; Actualizări Primărie</span>
+                  <div class="relative pl-6 space-y-4 border-l-2 border-slate-700/50 ml-2">
+                    <div class="relative">
+                      <div class="absolute -left-[31px] top-0.5 w-5 h-5 rounded-full bg-teal-600 text-white flex items-center justify-center text-[12px] ring-4 ring-[#19212e]">
+                        <span class="material-symbols-outlined text-[13px]">check</span>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <span class="text-xs font-bold text-slate-100">Sesizare recepționată &amp; validată</span>
+                          <span class="text-[10px] font-mono text-slate-500">14.09, 10:12</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Înregistrată cu succes în registrul municipal de dispecerat.</p>
+                      </div>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-[31px] top-0.5 w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center text-[12px] ring-4 ring-[#19212e]">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <span class="text-xs font-bold text-amber-400">Preluat în lucru de echipa operativă</span>
+                          <span class="text-[10px] font-mono text-slate-500">15.09, 09:30</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Echipa mobilă #3 a aprobat cererea de intervenție pe teren.</p>
+                      </div>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-[31px] top-0.5 w-5 h-5 rounded-full bg-teal-700 text-white flex items-center justify-center text-[12px] ring-4 ring-[#19212e]">
+                        <span class="material-symbols-outlined text-[13px]">mark_chat_read</span>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <span class="text-xs font-bold text-teal-400">Mesaj oficial transmis de Dispecerat</span>
+                          <span class="text-[10px] font-mono text-slate-500">15.09, 09:31</span>
+                        </div>
+                        <div class="mt-2 p-3 bg-[#151d29] rounded-lg border border-slate-700/40">
+                          <div class="flex items-center gap-1.5 mb-1 text-[11px] font-semibold text-slate-300">
+                            <span class="material-symbols-outlined text-[15px] text-teal-400">account_balance</span>
+                            <span>Î.M. Regia «Lumteh» Chișinău / Sectorul Centru</span>
+                          </div>
+                          <p class="text-xs text-slate-300 italic leading-relaxed">
+                            «Echipa de intervenție mobilă a fost alocată pe adresa str. Pușkin 22. Se va înlocui corpul de iluminat LED și cablajul defect. Revenim cu raportul final până vineri.»
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Actions -->
+                <div class="pt-3 border-t border-slate-700/40 flex flex-wrap items-center gap-2.5">
+                  <button class="flex-1 min-w-[140px] h-9 px-3 rounded-lg bg-teal-600 hover:bg-teal-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]">edit_note</span>
+                    <span>Furnizează precizări</span>
+                  </button>
+                  <button class="h-9 px-3 rounded-lg bg-[#222e40] hover:bg-[#283649] text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-colors border border-slate-700/50">
+                    <span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+                    <span>Descarcă fișa PDF</span>
+                  </button>
+                  <button class="h-9 px-3 rounded-lg bg-[#222e40] hover:bg-[#283649] text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-colors border border-slate-700/50">
+                    <span class="material-symbols-outlined text-[16px]">share</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Hotline -->
+            <div class="bg-gradient-to-r from-teal-900 to-slate-900 rounded-xl p-5 text-white shadow-sm flex items-center justify-between border border-teal-700/40">
+              <div>
+                <span class="text-[10px] font-mono uppercase tracking-wider text-teal-300 font-bold block">Dispecerat Chișinău — Serviciul Operativ 24/7</span>
+                <p class="text-xs text-slate-300 mt-1 max-w-sm">Avarii urgente la rețelele de utilități sau risc iminent public.</p>
+                <div class="mt-2 flex items-center gap-2">
+                  <span class="text-lg font-bold font-mono text-white">022-22-22-67</span>
+                  <span class="text-xs text-teal-300">• Gratuit</span>
+                </div>
+              </div>
+              <a class="h-10 px-4 rounded-lg bg-teal-500 hover:bg-teal-400 text-slate-950 text-xs font-bold flex items-center gap-1.5 transition-colors shrink-0 shadow" href="tel:022222267">
+                <span class="material-symbols-outlined text-[18px]">call</span>
+                <span>Apelează</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

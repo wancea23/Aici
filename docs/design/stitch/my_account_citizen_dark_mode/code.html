@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'error-container': '#5e2e2b',
+            'on-secondary-fixed': '#c6f0e7',
+            'inverse-primary': '#00685f',
+            'surface-container-lowest': '#19212e',
+            'on-surface': '#e6edf7',
+            'outline-variant': '#3e4d57',
+            'on-tertiary-fixed-variant': '#ebd0be',
+            'tertiary-fixed-dim': '#b98d75',
+            'primary': '#6bd8cb',
+            'on-tertiary-container': '#e8d9d0',
+            'surface': '#0e141f',
+            'on-primary-container': '#d7f9f2',
+            'surface-container-highest': '#283649',
+            'tertiary': '#dbb9a3',
+            'on-secondary-fixed-variant': '#9be6d9',
+            'tertiary-fixed': '#b0836a',
+            'surface-container-high': '#222e40',
+            'surface-container': '#1a2332',
+            'inverse-surface': '#e1e8f0',
+            'on-surface-variant': '#b0c0d0',
+            'secondary-container': '#1e4d46',
+            'on-primary-fixed-variant': '#9fe0d4',
+            'on-error': '#0e1a2b',
+            'outline': '#8a9caa',
+            'on-primary': '#0e1a2b',
+            'tertiary-container': '#8b6b58',
+            'primary-container': '#2b9b8f',
+            'on-primary-fixed': '#c2f0e6',
+            'on-tertiary-fixed': '#e0e8f5',
+            'primary-fixed-dim': '#3d9e91',
+            'error': '#ff8a80',
+            'surface-dim': '#101725',
+            'surface-container-low': '#151d29',
+            'secondary-fixed-dim': '#39c7b5',
+            'on-tertiary': '#0e1a2b',
+            'secondary': '#5bc9b9',
+            'on-secondary': '#0b1f1c',
+            'on-secondary-container': '#d4f3ed',
+            'surface-variant': '#1f2a3a',
+            'surface-bright': '#1e2538',
+            'on-background': '#e6edf7',
+            'background': '#0e141f',
+            'primary-fixed': '#1e766b',
+            'surface-tint': '#3ca99c',
+            'secondary-fixed': '#3db8a6',
+            'inverse-on-surface': '#1b232e',
+            'on-error-container': '#ffb4ab'
+          },
+          borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' },
+          spacing: { 'margin-tablet': '1.5rem', 'gutter': '1rem', 'space-2xl': '3rem', 'space-lg': '1.5rem', 'space-sm': '0.5rem', 'gutter-desktop': '1.5rem', 'margin': '1rem', 'margin-desktop': '2.5rem', 'space-xl': '2rem', 'space-md': '1rem', 'space-xs': '0.25rem' },
+          fontFamily: { 'label-lg': ['Plus Jakarta Sans'], 'headline-sm': ['Plus Jakarta Sans'], 'label-md': ['Plus Jakarta Sans'], 'headline-lg': ['Plus Jakarta Sans'], 'body-sm': ['Plus Jakarta Sans'], 'body-md': ['Plus Jakarta Sans'], 'display': ['Plus Jakarta Sans'], 'headline-md': ['Plus Jakarta Sans'], 'body-lg': ['Plus Jakarta Sans'], 'headline-lg-mobile': ['Plus Jakarta Sans'], 'code-sm': ['JetBrains Mono'] },
+          fontSize: {
+            'label-lg': ['0.875rem', { 'lineHeight': '1.25rem', 'letterSpacing': '0.01em', 'fontWeight': '600' }],
+            'headline-sm': ['1.125rem', { 'lineHeight': '1.5rem', 'fontWeight': '600' }],
+            'label-md': ['0.75rem', { 'lineHeight': '1rem', 'letterSpacing': '0.02em', 'fontWeight': '600' }],
+            'headline-lg': ['1.75rem', { 'lineHeight': '2.25rem', 'letterSpacing': '-0.015em', 'fontWeight': '700' }],
+            'body-sm': ['0.875rem', { 'lineHeight': '1.25rem', 'fontWeight': '400' }],
+            'body-md': ['1rem', { 'lineHeight': '1.5rem', 'fontWeight': '400' }],
+            'display': ['2.25rem', { 'lineHeight': '2.75rem', 'letterSpacing': '-0.02em', 'fontWeight': '700' }],
+            'headline-md': ['1.25rem', { 'lineHeight': '1.75rem', 'letterSpacing': '-0.01em', 'fontWeight': '600' }],
+            'body-lg': ['1.125rem', { 'lineHeight': '1.75rem', 'fontWeight': '400' }],
+            'headline-lg-mobile': ['1.5rem', { 'lineHeight': '2rem', 'letterSpacing': '-0.01em', 'fontWeight': '700' }],
+            'code-sm': ['0.8125rem', { 'lineHeight': '1rem', 'fontWeight': '500' }]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { min-height: max(884px, 100dvh); }
+  </style>
+</head>
+<body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen dark">
+  <header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)] border-b border-outline-variant/20">
+    <div class="h-16 px-margin flex items-center justify-between">
+      <div class="flex items-center gap-space-sm">
+        <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center p-1 border border-outline-variant/20">
+          <img alt="Aici Chișinău Civic Emblem" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UmoyvWbgoXdzB75hhren5fkejeIV1C4Xo15r9rRERJ526DbS-fxr4IyYCadwoR98kC0-rzMcEY-AoDkKqClDrzbL6RWATxq2-sS-XIUzf_aqQjZl4pbA8fiJ8sTghc5qBSfEd2C05cOZW_kx9LUNydZgs50DiyAP_k2mEJozq0-glPBImgpZ0pQmxhRhyenE-_2bSZuACpGZaBxOwSzpiWPy6HBMnhAj8YooJ82EteNVeinHh1uw0KTKQ"/>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-tight">Aici</span>
+          <span class="font-label-md text-label-md text-on-surface-variant leading-none">Chișinău Civic</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-space-sm">
+        <div class="hidden xs:flex flex-col items-end mr-space-xs">
+          <span class="font-label-md text-label-md text-on-surface">My Activity</span>
+          <span class="font-code-sm text-code-sm text-outline">Portal Cetățean</span>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="flex flex-col relative w-full pt-16 pb-20 bg-surface min-h-screen">
+    <div class="flex flex-col w-full px-margin pb-space-2xl space-y-space-lg">
+      <!-- Profile Hero Banner -->
+      <div class="relative overflow-hidden rounded-xl bg-surface-container-low p-space-md shadow-sm border border-outline-variant/20">
+        <div class="flex items-center gap-space-md">
+          <div class="relative flex-shrink-0">
+            <div class="w-14 h-14 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline-sm text-headline-sm shadow-md">IP</div>
+            <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container shadow-sm">
+              <span class="material-symbols-outlined text-[14px]">verified</span>
+            </div>
+          </div>
+          <div class="flex flex-col min-w-0 flex-1">
+            <div class="flex items-center gap-space-xs">
+              <span class="font-headline-sm text-headline-sm text-on-surface truncate">Ion Popescu</span>
+              <span class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-code-sm text-code-sm">ID-8821</span>
+            </div>
+            <span class="font-body-sm text-body-sm text-on-surface-variant truncate">ion.popescu@mail.md</span>
+            <div class="flex items-center gap-space-xs mt-1 text-primary">
+              <span class="material-symbols-outlined text-[16px]">pin_drop</span>
+              <span class="font-label-md text-label-md text-primary font-semibold">Sectorul Centru, Chișinău</span>
+            </div>
+          </div>
+          <button class="w-10 h-10 rounded-full bg-surface flex items-center justify-center text-on-surface-variant shadow-sm hover:text-primary transition-colors" type="button">
+            <span class="material-symbols-outlined text-[20px]">tune</span>
+          </button>
+        </div>
+        <div class="mt-space-md pt-space-sm flex items-center justify-between bg-surface-container-lowest/80 rounded-lg p-space-sm">
+          <div class="flex items-center gap-space-xs">
+            <span class="material-symbols-outlined text-primary text-[18px]">workspace_premium</span>
+            <span class="font-label-md text-label-md text-on-surface">Scor civic: <strong>94 pct</strong> (Cetățean Activ)</span>
+          </div>
+          <span class="font-code-sm text-code-sm text-primary font-semibold">Nivel 3</span>
+        </div>
+      </div>
+      <!-- Metric Pills -->
+      <div class="grid grid-cols-3 gap-space-sm">
+        <div class="flex flex-col items-center justify-center p-space-sm rounded-xl bg-surface-container shadow-sm text-center border border-outline-variant/20">
+          <span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-bold">4</span>
+          <span class="font-label-md text-label-md text-on-surface-variant">Sesizări depuse</span>
+        </div>
+        <div class="flex flex-col items-center justify-center p-space-sm rounded-xl bg-tertiary-fixed text-on-tertiary-fixed shadow-sm text-center">
+          <div class="flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+            <span class="font-headline-lg-mobile text-headline-lg-mobile font-bold">1</span>
+          </div>
+          <span class="font-label-md text-label-md text-on-tertiary-fixed-variant">În lucru activ</span>
+        </div>
+        <div class="flex flex-col items-center justify-center p-space-sm rounded-xl bg-primary-fixed text-on-primary-fixed shadow-sm text-center">
+          <div class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px] text-primary">done_all</span>
+            <span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-primary-fixed">1</span>
+          </div>
+          <span class="font-label-md text-label-md text-on-primary-fixed-variant">Rezolvată</span>
+        </div>
+      </div>
+      <!-- Section Title -->
+      <div class="flex flex-col space-y-1">
+        <div class="flex items-center justify-between">
+          <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-bold">Sesizările mele</h2>
+          <button class="flex items-center gap-1 px-space-sm py-1 rounded-full bg-surface-container font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors">
+            <span class="material-symbols-outlined text-[16px]">filter_list</span>
+            <span>Filtrează</span>
+          </button>
+        </div>
+        <p class="font-body-sm text-body-sm text-on-surface-variant">
+          Urmărește statutul în timp real și mesajele oficiale transmise de Primăria Municipiului Chișinău.
+        </p>
+      </div>
+      <!-- Reports List -->
+      <div class="flex flex-col space-y-space-md">
+        <!-- Card 1: Pothole (Resolved) -->
+        <div class="rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-all hover:shadow-md border border-outline-variant/20">
+          <div class="flex items-start justify-between gap-space-sm">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-[20px]">warning</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-space-xs">
+                  <span class="font-headline-sm text-headline-sm text-on-surface truncate">Groapă carosabil</span>
+                  <span class="font-code-sm text-code-sm text-outline">#EX-4019</span>
+                </div>
+                <span class="font-body-sm text-body-sm text-on-surface-variant truncate">bd. Ștefan cel Mare 105</span>
+              </div>
+            </div>
+            <button class="text-outline hover:text-on-surface transition-colors p-1" type="button">
+              <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+            </button>
+          </div>
+          <div class="mt-space-md pt-space-sm flex items-center justify-between flex-wrap gap-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="inline-flex items-center gap-1.5 h-6 px-2.5 rounded-full bg-surface-container text-primary font-label-md text-label-md">
+                <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                Rezolvat
+              </span>
+              <span class="font-body-sm text-body-sm text-outline">acum 2 săpt.</span>
+            </div>
+            <span class="inline-flex items-center gap-1 h-6 px-2 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md shadow-xs">
+              <span class="material-symbols-outlined text-[14px]">chat</span>
+              Răspuns oficial
+            </span>
+          </div>
+        </div>
+        <!-- Card 2: Streetlight (In progress with Timeline) -->
+        <div class="rounded-xl bg-surface-container-lowest shadow-md overflow-hidden border border-outline-variant/20">
+          <div class="p-space-md bg-surface-container-low/40">
+            <div class="flex items-start justify-between gap-space-sm">
+              <div class="flex items-center gap-space-sm min-w-0">
+                <div class="w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant flex items-center justify-center flex-shrink-0">
+                  <span class="material-symbols-outlined text-[20px]">lightbulb</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <div class="flex items-center gap-space-xs">
+                    <span class="font-headline-sm text-headline-sm text-on-surface truncate">Iluminat stradal defect</span>
+                    <span class="font-code-sm text-code-sm text-tertiary">#LM-9022</span>
+                  </div>
+                  <span class="font-body-sm text-body-sm text-on-surface-variant truncate">str. Pușkin 22</span>
+                </div>
+              </div>
+              <button class="text-primary hover:text-on-surface transition-transform p-1" type="button">
+                <span class="material-symbols-outlined text-[20px]">expand_less</span>
+              </button>
+            </div>
+            <div class="mt-space-md flex items-center justify-between flex-wrap gap-space-xs">
+              <div class="flex items-center gap-space-xs">
+                <span class="inline-flex items-center gap-1.5 h-6 px-2.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-md text-label-md font-semibold">
+                  <span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-ping"></span>
+                  În lucru
+                </span>
+                <span class="font-body-sm text-body-sm text-outline">acum 3 zile</span>
+              </div>
+              <span class="inline-flex items-center gap-1 h-6 px-2 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md font-semibold">
+                <span class="material-symbols-outlined text-[14px]">chat</span>
+                Răspuns nou
+              </span>
+            </div>
+          </div>
+          <div class="p-space-md space-y-space-md bg-surface-container-lowest">
+            <div class="relative w-full h-36 rounded-lg overflow-hidden bg-surface-container">
+              <img class="w-full h-full object-cover" data-alt="Street lamp with broken globe at twilight on Pushkin street" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZkZAXXsPsSU0g6Qx-YyFAHL6kyPJtbMpYLILLQTX01WG6hBcjoGxqrJhp0eEKzeCeYbv20YtM2Eg9WjmeYcIe_ZIJ4_Ood6y9ksdBwDrFY82bMLzNHM9nyUxLfyNuQxDR9Tc2zYENrItDfmhJ42K2pfxeim9-msH19Fbg--ubn91mi2RzLO8117xbld1jXZxlWDliHfUrLzf40NExejuIhJ3hswhX2B-LfWJdxPrbmfZZXmxja_Fw4Q"/>
+              <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-inverse-surface/80 backdrop-blur-sm text-inverse-on-surface font-code-sm text-code-sm flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">photo_camera</span>
+                <span>Foto martor atașată</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-label-lg text-label-lg text-on-surface font-semibold flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-primary text-[18px]">history</span>
+                Evoluție sesizare
+              </span>
+              <span class="font-code-sm text-code-sm text-outline">SLA: 48 ore</span>
+            </div>
+            <div class="relative pl-6 space-y-space-lg before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-3 before:w-[2px] before:bg-surface-container-highest">
+              <div class="relative flex flex-col space-y-0.5">
+                <div class="absolute -left-6 top-0.5 w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-xs">
+                  <span class="material-symbols-outlined text-[14px]">check</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="font-label-lg text-label-lg text-on-surface font-semibold">Sesizare transmisă</span>
+                  <span class="font-code-sm text-code-sm text-outline">14.09, 10:12</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Preluată automat în registrul municipal de dispecerat.</p>
+              </div>
+              <div class="relative flex flex-col space-y-0.5">
+                <div class="absolute -left-6 top-0.5 w-6 h-6 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-xs">
+                  <span class="w-3 h-3 rounded-full bg-tertiary"></span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="font-label-lg text-label-lg text-on-surface font-semibold">Statut: Preluat în lucru</span>
+                  <span class="font-code-sm text-code-sm text-outline">15.09, 09:30</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Echipa operativă a aprobat cererea de intervenție tehnică.</p>
+              </div>
+              <div class="relative flex flex-col space-y-1.5">
+                <div class="absolute -left-6 top-0.5 w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-xs">
+                  <span class="material-symbols-outlined text-[14px]">comment</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="font-label-lg text-label-lg text-primary font-bold">Mesaj de la Primărie</span>
+                  <span class="font-code-sm text-code-sm text-outline">15.09, 09:31</span>
+                </div>
+                <div class="rounded-xl bg-surface-container p-space-md shadow-xs space-y-space-sm relative">
+                  <div class="flex items-start gap-space-sm">
+                    <div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center flex-shrink-0">
+                      <span class="material-symbols-outlined text-[18px]">apartment</span>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-label-md text-label-md text-on-surface font-bold">Î.M. Regia „Lumteh” Chișinău</span>
+                      <span class="font-code-sm text-code-sm text-on-surface-variant">Dispecerat Sectorul Centru</span>
+                    </div>
+                  </div>
+                  <p class="font-body-md text-body-md text-on-surface pl-1">
+                    "Echipa de intervenție mobilă a fost alocată pe adresa str. Pușkin 22. Se va înlocui corpul de iluminat LED și cablajul defect. Revenim cu raportul final până vineri."
+                  </p>
+                  <div class="pt-1 flex items-center justify-between text-outline font-label-md text-label-md">
+                    <span class="flex items-center gap-1 text-primary">
+                      <span class="material-symbols-outlined text-[14px]">done_all</span>
+                      Luat la control municipal
+                    </span>
+                    <button class="text-primary font-semibold hover:underline" type="button">Răspunde</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="pt-space-sm flex items-center gap-space-sm">
+              <button class="flex-1 h-11 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-1.5 transition-colors" type="button">
+                <span class="material-symbols-outlined text-[18px]">add_a_photo</span>
+                <span>Adaugă detalii</span>
+              </button>
+              <button class="h-11 px-space-md rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center shadow-xs" type="button">
+                <span class="material-symbols-outlined text-[20px]">share</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Card 3: Garbage (New) -->
+        <div class="rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-all hover:shadow-md border border-outline-variant/20">
+          <div class="flex items-start justify-between gap-space-sm">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-10 h-10 rounded-full bg-error-container text-error flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-[20px]">delete</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-space-xs">
+                  <span class="font-headline-sm text-headline-sm text-on-surface truncate">Deșeuri neevacuate</span>
+                  <span class="font-code-sm text-code-sm text-outline">#SL-2194</span>
+                </div>
+                <span class="font-body-sm text-body-sm text-on-surface-variant truncate">Parcul Valea Morilor</span>
+              </div>
+            </div>
+            <button class="text-outline hover:text-on-surface transition-colors p-1" type="button">
+              <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+            </button>
+          </div>
+          <div class="mt-space-md pt-space-sm flex items-center justify-between flex-wrap gap-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="inline-flex items-center gap-1.5 h-6 px-2.5 rounded-full bg-error-container text-error font-label-md text-label-md font-semibold">
+                <span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                Sesizare nouă
+              </span>
+              <span class="font-body-sm text-body-sm text-outline">acum 5 ore</span>
+            </div>
+            <span class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px] text-outline">schedule</span>
+              În așteptare validare
+            </span>
+          </div>
+        </div>
+        <!-- Card 4: Rejected -->
+        <div class="rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-all hover:shadow-md border border-outline-variant/20">
+          <div class="flex items-start justify-between gap-space-sm">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-10 h-10 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-[20px]">deck</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-space-xs">
+                  <span class="font-headline-sm text-headline-sm text-on-surface truncate">Altul: Bancă deteriorată</span>
+                  <span class="font-code-sm text-code-sm text-outline">#SP-1104</span>
+                </div>
+                <span class="font-body-sm text-body-sm text-on-surface-variant truncate">Grădina Publică Ștefan cel Mare</span>
+              </div>
+            </div>
+            <button class="text-outline hover:text-on-surface transition-colors p-1" type="button">
+              <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+            </button>
+          </div>
+          <div class="mt-space-md pt-space-sm flex items-center justify-between flex-wrap gap-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <span class="inline-flex items-center gap-1.5 h-6 px-2.5 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md">
+                <span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                Respins
+              </span>
+              <span class="font-body-sm text-body-sm text-outline">acum 1 lună</span>
+            </div>
+            <span class="inline-flex items-center gap-1 h-6 px-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md">
+              <span class="material-symbols-outlined text-[14px]">info</span>
+              Motiv formulat
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- Primary Docked CTA -->
+      <div class="pt-space-md sticky bottom-20 z-30">
+        <button class="w-full h-12 rounded-full bg-primary hover:bg-primary-container text-on-primary flex items-center justify-center gap-space-xs font-label-lg text-label-lg shadow-lg hover:shadow-xl transition-all active:scale-[0.99]" type="button">
+          <span class="material-symbols-outlined text-[22px]">add_circle</span>
+          <span>Raportează o problemă nouă</span>
+        </button>
+      </div>
+    </div>
+  </main>
+  <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.3)] border-t border-outline-variant/20" data-active-classes="text-primary font-label-lg">
+    <div class="flex justify-around items-center h-16 px-gutter">
+      <a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-space-xs text-on-surface-variant hover:text-on-surface transition-colors" data-path="explore-map" href="#">
+        <span class="material-symbols-outlined text-[22px]">map</span>
+        <span class="font-label-md text-label-md">Hartă</span>
+      </a>
+      <a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-space-xs text-on-surface-variant hover:text-on-surface transition-colors" data-path="citizen-feed" href="#">
+        <span class="material-symbols-outlined text-[22px]">format_list_bulleted</span>
+        <span class="font-label-md text-label-md">Sesizări</span>
+      </a>
+      <a class="flex items-center justify-center min-w-[48px] min-h-[48px] -mt-space-md bg-primary text-on-primary rounded-full shadow-[0_4px_10px_rgba(107,216,203,0.3)] hover:bg-primary-container transition-all" data-path="new-report" href="#">
+        <span class="material-symbols-outlined text-[24px]">add</span>
+      </a>
+      <a aria-current="page" class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-space-xs transition-colors text-primary font-label-lg" data-path="my-activity" href="#">
+        <span class="material-symbols-outlined text-[22px]">task_alt</span>
+        <span class="font-label-md text-label-md">Activitate</span>
+      </a>
+      <a class="flex flex-col items-center justify-center min-w-[44px] min-h-[44px] gap-space-xs text-on-surface-variant hover:text-on-surface transition-colors" data-path="citizen-profile" href="#">
+        <span class="material-symbols-outlined text-[22px]">account_circle</span>
+        <span class="font-label-md text-label-md">Profil</span>
+      </a>
+    </div>
+  </nav>
+</body>
+</html>

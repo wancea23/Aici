@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'on-surface': '#131b2e', 'surface-bright': '#faf8ff', 'on-secondary': '#ffffff', 'background': '#faf8ff', 'error': '#ba1a1a', 'secondary-fixed-dim': '#4fdbc8', 'surface-dim': '#d2d9f4', 'secondary-container': '#6df5e1', 'on-secondary-fixed-variant': '#005048', 'inverse-primary': '#6bd8cb', 'on-tertiary': '#ffffff', 'on-primary': '#ffffff', 'outline-variant': '#bcc9c6', 'surface-container-lowest': '#ffffff', 'on-tertiary-fixed': '#370e00', 'secondary-fixed': '#71f8e4', 'primary-container': '#008378', 'inverse-surface': '#283044', 'primary-fixed': '#89f5e7', 'on-error': '#ffffff', 'primary': '#00685f', 'primary-fixed-dim': '#6bd8cb', 'on-secondary-container': '#006f64', 'surface-tint': '#006a61', 'tertiary-fixed': '#ffdbce', 'on-tertiary-container': '#fffbff', 'on-primary-fixed': '#00201d', 'surface': '#faf8ff', 'surface-variant': '#dae2fd', 'secondary': '#006b5f', 'tertiary-fixed-dim': '#ffb59a', 'surface-container': '#eaedff', 'tertiary-container': '#b05e3d', 'on-surface-variant': '#3d4947', 'on-error-container': '#93000a', 'surface-container-low': '#f2f3ff', 'on-primary-container': '#f4fffc', 'error-container': '#ffdad6', 'on-primary-fixed-variant': '#005049', 'surface-container-high': '#e2e7ff', 'tertiary': '#924628', 'on-background': '#131b2e', 'on-secondary-fixed': '#00201c', 'surface-container-highest': '#dae2fd', 'inverse-on-surface': '#eef0ff', 'on-tertiary-fixed-variant': '#773215', 'outline': '#6d7a77' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'space-2xl': '3rem', 'margin-desktop': '2.5rem', 'space-xl': '2rem', 'space-md': '1rem', 'space-xs': '0.25rem', 'margin': '1rem', 'gutter': '1rem', 'space-lg': '1.5rem', 'space-sm': '0.5rem', 'gutter-desktop': '1.5rem', 'margin-tablet': '1.5rem' }, fontFamily: { 'headline-lg-mobile': ['Plus Jakarta Sans'], 'body-lg': ['Plus Jakarta Sans'], 'code-sm': ['JetBrains Mono'], 'headline-md': ['Plus Jakarta Sans'], 'display': ['Plus Jakarta Sans'], 'body-md': ['Plus Jakarta Sans'], 'body-sm': ['Plus Jakarta Sans'], 'label-lg': ['Plus Jakarta Sans'], 'headline-lg': ['Plus Jakarta Sans'], 'headline-sm': ['Plus Jakarta Sans'], 'label-md': ['Plus Jakarta Sans'] }, fontSize: { 'headline-lg-mobile': ['1.5rem', { lineHeight: '2rem', letterSpacing: '-0.01em', fontWeight: '700' }], 'body-lg': ['1.125rem', { lineHeight: '1.75rem', fontWeight: '400' }], 'code-sm': ['0.8125rem', { lineHeight: '1rem', fontWeight: '500' }], 'headline-md': ['1.25rem', { lineHeight: '1.75rem', letterSpacing: '-0.01em', fontWeight: '600' }], 'display': ['2.25rem', { lineHeight: '2.75rem', letterSpacing: '-0.02em', fontWeight: '700' }], 'body-md': ['1rem', { lineHeight: '1.5rem', fontWeight: '400' }], 'body-sm': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '400' }], 'label-lg': ['0.875rem', { lineHeight: '1.25rem', letterSpacing: '0.01em', fontWeight: '600' }], 'headline-lg': ['1.75rem', { lineHeight: '2.25rem', letterSpacing: '-0.015em', fontWeight: '700' }], 'headline-sm': ['1.125rem', { lineHeight: '1.5rem', fontWeight: '600' }], 'label-md': ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.02em', fontWeight: '600' }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between py-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col gap-space-lg px-space-md"><div class="flex items-center gap-space-sm px-space-sm"><img alt="Aici Civic Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz5gQ4fOywPPikQoZ31J36Hkp8jtAuSzxAwQaOPK_zNpc2Q_GX51m-lSXywPpleZEld-OQomw8LvQkLcPe2YxSSGEONzC6TJEKbzIBptvNGMi3VH4D7Mb_MEqBm6cEb0c7Jl8-WYE47aHy9GRYPU-x2nu33znr4pKsQfAdihXyQcIoAcSgXTWiOdj-ExZmWpwGm5jEhxyN9GW30O9x1Sk2Xps36g4wpGPP4IXl2QNnEysyAJaK_qCDPw"/><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-primary font-bold">Aici</span><span class="bg-surface-container-high text-primary font-label-md text-label-md px-space-xs rounded">City Hall</span></div><span class="font-label-md text-label-md text-on-surface-variant">Staff Operational Portal</span></div></div><nav class="flex flex-col gap-space-xs mt-space-md" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-xl"><a class="flex items-center px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="staff-dashboard" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">dashboard</span>Dashboard</a><a aria-current="page" class="flex items-center px-space-md py-space-sm transition-colors bg-primary-container text-on-primary-container font-semibold rounded-xl" data-path="staff-administration" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">admin_panel_settings</span>Administration</a><a class="flex items-center px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="staff-account" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">manage_accounts</span>My account</a><a class="flex items-center px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="staff-reports" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">summarize</span>Report</a></nav></div><div class="px-space-md flex flex-col gap-space-sm"><div class="h-[1px] bg-outline-variant/30 my-space-xs"></div><a class="flex items-center px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-error hover:bg-error-container hover:text-on-error-container transition-colors" data-path="sign-in" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">logout</span>Sign out</a></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-sm"><span class="font-label-lg text-label-lg text-on-surface-variant">City hall dashboard</span></div><div class="flex items-center gap-space-md"><button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Active Sidebar Nav Sync -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navLinks = document.querySelectorAll('aside nav a');
+      navLinks.forEach(link => {
+        if (link.getAttribute('data-path') === 'staff-administration') {
+          link.className = 'flex items-center px-space-md py-space-sm rounded-xl font-label-lg text-label-lg bg-primary-container text-on-primary-container font-semibold transition-colors shadow-sm';
+        } else {
+          link.className = 'flex items-center px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors';
+        }
+      });
+    });
+  </script>
+<!-- Administrative Page Container -->
+<div class="px-margin-desktop py-space-xl flex flex-col gap-space-xl max-w-[1440px] w-full mx-auto">
+<!-- Top Administrative Header Banner -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md pb-space-xs">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="inline-flex items-center px-space-sm py-0.5 rounded bg-primary/10 text-primary font-code-sm text-code-sm font-semibold tracking-wider uppercase">
+            Admin Tier Authorization
+          </span>
+<span class="inline-flex items-center gap-1.5 text-on-surface-variant font-label-md text-label-md">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            Chisinau Primăria Core System
+          </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Staff Administration &amp; Audit</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+          Provision credentialed accounts for municipal dispatchers, review role clearances, and inspect the tamper-resistant security audit log.
+        </p>
+</div>
+<!-- Quick Operational Metrics Summary -->
+<div class="flex items-center gap-space-sm">
+<div class="bg-surface-container-low px-space-md py-space-sm rounded-xl shadow-sm flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[22px]">verified_user</span>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface leading-none">4 Active</div>
+<div class="font-label-md text-label-md text-on-surface-variant mt-0.5">Municipal Operators</div>
+</div>
+</div>
+<div class="bg-surface-container-low px-space-md py-space-sm rounded-xl shadow-sm flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-tertiary text-[22px]">pending</span>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface leading-none">1 Pending</div>
+<div class="font-label-md text-label-md text-on-surface-variant mt-0.5">Activation Token</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION CARD 1: Invite an employee -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<div class="p-space-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Invite an employee</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Generate a single-use onboarding URL for verified municipal personnel.</p>
+</div>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant bg-surface-container px-space-sm py-1 rounded">
+            TTL: 48 hours
+          </span>
+</div>
+<!-- Inline Form -->
+<form class="grid grid-cols-1 md:grid-cols-12 gap-space-md items-end pt-space-xs" onsubmit="event.preventDefault(); document.getElementById('invitationResult').classList.remove('hidden');">
+<div class="md:col-span-6 flex flex-col gap-1.5">
+<label class="font-label-lg text-label-lg text-on-surface" for="invite-email">Official email address</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-space-md text-on-surface-variant text-[20px]">mail</span>
+<input class="w-full h-11 pl-11 pr-space-md rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary transition-all" id="invite-email" name="email" placeholder="name@chisinau.md" required="" type="email" value="ana.rusu@chisinau.md"/>
+</div>
+</div>
+<div class="md:col-span-3 flex flex-col gap-1.5">
+<label class="font-label-lg text-label-lg text-on-surface" for="invite-role">Clearance role</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-space-md text-on-surface-variant text-[20px]">badge</span>
+<select class="w-full h-11 pl-11 pr-space-lg rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary transition-all appearance-none cursor-pointer" id="invite-role" name="role">
+<option selected="" value="operator">Operator (Dispatch &amp; Status)</option>
+<option value="administrator">Administrator (Full Access)</option>
+</select>
+<span class="material-symbols-outlined absolute right-space-sm text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
+</div>
+</div>
+<div class="md:col-span-3">
+<button class="w-full h-11 rounded-full bg-primary text-on-primary font-label-lg text-label-lg hover:bg-secondary active:scale-[0.99] transition-all flex items-center justify-center gap-space-xs shadow-sm" type="submit">
+<span class="material-symbols-outlined text-[18px]">add_link</span>
+<span>Create invitation</span>
+</button>
+</div>
+</form>
+<!-- Result Box (Teal-tinted) -->
+<div class="mt-space-xs p-space-md rounded-xl bg-surface-container-low flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md" id="invitationResult">
+<div class="flex items-start gap-space-sm min-w-0">
+<span class="material-symbols-outlined text-primary text-[22px] mt-0.5">check_circle</span>
+<div class="flex flex-col min-w-0">
+<p class="font-label-lg text-label-lg text-on-surface">
+                Invitation link created for <span class="font-semibold text-primary">ana.rusu@chisinau.md</span>
+</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Send this private onboarding link directly to the staff member. It expires in 48 hours and can only be used once.
+              </p>
+<div class="mt-space-sm flex items-center">
+<input class="font-code-sm text-code-sm bg-surface-container-lowest px-space-md py-2 rounded-lg text-on-surface select-all w-full max-w-xl focus:outline-none" id="tokenUrl" readonly="" type="text" value="https://aici.chisinau.md/staff/invite?token=e8a93bc71d44f692019a8b13c2"/>
+</div>
+</div>
+</div>
+<button class="self-stretch md:self-auto h-10 px-space-lg rounded-full bg-primary text-on-primary font-label-lg text-label-lg hover:bg-secondary flex items-center justify-center gap-space-xs shadow-sm transition-all" onclick="navigator.clipboard.writeText(document.getElementById('tokenUrl').value); const btn = this; btn.querySelector('span:last-child').textContent='Copied!'; setTimeout(() =&gt; btn.querySelector('span:last-child').textContent='Copy link', 2500);" type="button">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+<span>Copy link</span>
+</button>
+</div>
+</div>
+</div>
+<!-- SECTION CARD 2: Staff Management Table -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<!-- Card Sub-header -->
+<div class="p-space-lg pb-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">groups</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Authorized Staff Accounts</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">5 municipal agents provisioned with secure portal tokens</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[18px]">search</span>
+<input class="h-9 pl-9 pr-space-md bg-surface-container-low rounded-lg text-on-surface font-body-sm text-body-sm placeholder:text-outline focus:outline-none focus:bg-surface-container-high transition-all w-64" placeholder="Filter staff by name or email..." type="text"/>
+</div>
+</div>
+</div>
+<!-- Staff Data Table -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">
+<th class="py-space-sm px-space-lg">Employee &amp; Identity</th>
+<th class="py-space-sm px-space-md">Role Clearance</th>
+<th class="py-space-sm px-space-md">Status</th>
+<th class="py-space-sm px-space-md">Last Activity</th>
+<th class="py-space-sm px-space-lg text-right">Operational Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<!-- Row 1: Admin (current session) -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md text-label-md font-bold">
+                    AD
+                  </div>
+<div>
+<div class="font-label-lg text-label-lg text-on-surface font-semibold flex items-center gap-1.5">
+                      admin@chisinau.md
+                      <span class="text-xs bg-surface-container-highest text-on-surface-variant px-1.5 py-0.5 rounded font-label-md">you</span>
+</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">ID: SEC-001-ADM</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center px-space-sm py-1 rounded-md bg-surface-container-highest text-on-surface font-label-md text-label-md font-semibold">
+                  Administrator
+                </span>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-fixed/30 text-on-secondary-fixed-variant font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Active
+                </span>
+</td>
+<td class="py-space-md px-space-md font-body-sm text-body-sm text-on-surface">
+<div class="flex items-center gap-1 text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-primary">schedule</span>
+                  Today, 09:15
+                </div>
+</td>
+<td class="py-space-md px-space-lg text-right">
+<a class="inline-flex items-center gap-1 font-label-lg text-label-lg text-primary hover:text-secondary font-semibold" data-path="staff-account" href="#">
+                  Manage from My account
+                  <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Row 2: operator.marina -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center font-label-md text-label-md font-semibold">
+                    MR
+                  </div>
+<div>
+<div class="font-label-lg text-label-lg text-on-surface font-medium">
+                      operator.marina@chisinau.md
+                    </div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">ID: DIS-084-OPR</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<select class="h-8 px-space-sm pr-6 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer border-none">
+<option selected="">Operator</option>
+<option>Administrator</option>
+</select>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-fixed/30 text-on-secondary-fixed-variant font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Active
+                </span>
+</td>
+<td class="py-space-md px-space-md font-body-sm text-body-sm text-on-surface-variant">
+                Yesterday, 16:40
+              </td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-space-xs">
+<button class="px-space-sm py-1 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-md text-label-md transition-colors" title="Copy authentication reset link" type="button">
+                    Reset link
+                  </button>
+<button class="px-space-sm py-1 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-md text-label-md transition-colors" title="Force temporary password dispatch" type="button">
+                    Request new password
+                  </button>
+<button class="px-space-sm py-1 rounded-md text-error hover:bg-error-container hover:text-on-error-container font-label-md text-label-md transition-colors" title="Revoke staff clearance" type="button">
+                    Deactivate
+                  </button>
+</div>
+</td>
+</tr>
+<!-- Row 3: ion.vrabie -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center font-label-md text-label-md font-semibold">
+                    IV
+                  </div>
+<div>
+<div class="font-label-lg text-label-lg text-on-surface font-medium">
+                      ion.vrabie@chisinau.md
+                    </div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">ID: DIS-092-OPR</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<select class="h-8 px-space-sm pr-6 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer border-none">
+<option selected="">Operator</option>
+<option>Administrator</option>
+</select>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex flex-col gap-1 items-start">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-fixed/30 text-on-secondary-fixed-variant font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                    Active
+                  </span>
+<span class="inline-flex items-center gap-1 text-[11px] font-label-md text-tertiary bg-tertiary-fixed px-1.5 py-0.5 rounded font-medium">
+<span class="material-symbols-outlined text-[13px]">lock_reset</span>
+                    new password requested
+                  </span>
+</div>
+</td>
+<td class="py-space-md px-space-md font-body-sm text-body-sm text-on-surface-variant">
+                12.09.2026
+              </td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-space-xs">
+<button class="px-space-sm py-1 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-md text-label-md transition-colors" type="button">
+                    Reset link
+                  </button>
+<button class="px-space-sm py-1 rounded-md text-error hover:bg-error-container hover:text-on-error-container font-label-md text-label-md transition-colors" type="button">
+                    Deactivate
+                  </button>
+</div>
+</td>
+</tr>
+<!-- Row 4: victor.ceban (Deactivated) -->
+<tr class="hover:bg-surface-container-low transition-colors group opacity-85">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center font-label-md text-label-md font-semibold">
+                    VC
+                  </div>
+<div>
+<div class="font-label-lg text-label-lg text-on-surface line-through decoration-outline">
+                      victor.ceban@chisinau.md
+                    </div>
+<div class="font-code-sm text-code-sm text-outline">ID: DIS-071-DSB</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<select class="h-8 px-space-sm pr-6 rounded-lg bg-surface-container-high text-outline font-label-md text-label-md cursor-not-allowed border-none" disabled="">
+<option selected="">Operator</option>
+<option>Administrator</option>
+</select>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                  Deactivated
+                </span>
+</td>
+<td class="py-space-md px-space-md font-body-sm text-body-sm text-outline">
+                28.08.2026
+              </td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end">
+<button class="px-space-md py-1 rounded-md bg-surface-container-high text-primary hover:bg-primary hover:text-on-primary font-label-md text-label-md transition-colors font-semibold" type="button">
+                    Reactivate
+                  </button>
+</div>
+</td>
+</tr>
+<!-- Row 5: ana.rusu (Pending invite) -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-space-md px-space-lg">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-label-md text-label-md font-bold border-2 border-dashed border-primary/40">
+                    AR
+                  </div>
+<div>
+<div class="font-label-lg text-label-lg text-on-surface font-medium">
+                      ana.rusu@chisinau.md
+                    </div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">ID: INV-391-PENDING</div>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<select class="h-8 px-space-sm pr-6 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer border-none">
+<option selected="">Operator</option>
+<option>Administrator</option>
+</select>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                  Pending invite
+                </span>
+</td>
+<td class="py-space-md px-space-md font-body-sm text-body-sm text-outline italic">
+                Never
+              </td>
+<td class="py-space-md px-space-lg text-right">
+<div class="flex items-center justify-end gap-space-xs">
+<button class="px-space-sm py-1 rounded-md text-primary hover:bg-primary-container hover:text-on-primary-container font-label-md text-label-md transition-colors font-medium" type="button">
+                    Resend invite
+                  </button>
+<button class="px-space-sm py-1 rounded-md text-error hover:bg-error-container hover:text-on-error-container font-label-md text-label-md transition-colors" type="button">
+                    Revoke
+                  </button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- SECTION CARD 3: Audit Log -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<!-- Audit Header -->
+<div class="p-space-lg pb-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">security</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Immutable Audit Log</h2>
+<span class="font-code-sm text-code-sm bg-surface-container px-2 py-0.5 rounded text-on-surface-variant">APPEND-ONLY</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+              The last 100 events. The database doesn't allow changing or deleting them.
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+            Export CSV
+          </button>
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">filter_alt</span>
+            Filter Actions
+          </button>
+</div>
+</div>
+<!-- High-Density Audit Table -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">
+<th class="py-space-sm px-space-lg w-44">When</th>
+<th class="py-space-sm px-space-md w-48">Who</th>
+<th class="py-space-sm px-space-md w-56">Action</th>
+<th class="py-space-sm px-space-md w-36">Target</th>
+<th class="py-space-sm px-space-md w-28">Result</th>
+<th class="py-space-sm px-space-md w-32">Client IP</th>
+<th class="py-space-sm px-space-lg">Event Details Payload</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container font-code-sm text-code-sm">
+<!-- Audit Entry 1 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-lg text-on-surface font-mono whitespace-nowrap">
+                15.09.2026, 09:30
+              </td>
+<td class="py-2.5 px-space-md text-on-surface whitespace-nowrap font-sans font-medium">
+                operator@chisinau.md
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="text-primary font-semibold bg-primary/10 px-2 py-0.5 rounded">
+                  report.status_changed
+                </span>
+</td>
+<td class="py-2.5 px-space-md font-mono text-on-surface font-semibold">
+                #R-1094
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-secondary-fixed/40 text-on-secondary-fixed-variant font-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  success
+                </span>
+</td>
+<td class="py-2.5 px-space-md text-on-surface-variant font-mono">
+                185.108.128.4
+              </td>
+<td class="py-2.5 px-space-lg text-on-surface-variant font-mono truncate max-w-xs xl:max-w-md">
+                {"from":"new","to":"in_progress","reports":4}
+              </td>
+</tr>
+<!-- Audit Entry 2 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-lg text-on-surface font-mono whitespace-nowrap">
+                15.09.2026, 09:15
+              </td>
+<td class="py-2.5 px-space-md text-on-surface whitespace-nowrap font-sans font-medium">
+                admin@chisinau.md
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="text-secondary font-semibold bg-secondary-container/40 px-2 py-0.5 rounded">
+                  staff.invitation_created
+                </span>
+</td>
+<td class="py-2.5 px-space-md font-sans text-on-surface truncate">
+                ana.rusu@chisinau.md
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-secondary-fixed/40 text-on-secondary-fixed-variant font-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  success
+                </span>
+</td>
+<td class="py-2.5 px-space-md text-on-surface-variant font-mono">
+                185.108.128.1
+              </td>
+<td class="py-2.5 px-space-lg text-on-surface-variant font-mono truncate max-w-xs xl:max-w-md">
+                {"role":"operator","expires_in":"48h"}
+              </td>
+</tr>
+<!-- Audit Entry 3 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-lg text-on-surface font-mono whitespace-nowrap">
+                15.09.2026, 08:45
+              </td>
+<td class="py-2.5 px-space-md text-on-surface whitespace-nowrap font-sans font-medium">
+                ion.vrabie@chisinau.md
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="text-on-surface-variant font-semibold bg-surface-container px-2 py-0.5 rounded">
+                  auth.login
+                </span>
+</td>
+<td class="py-2.5 px-space-md font-sans text-on-surface truncate">
+                ion.vrabie@chisinau.md
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-secondary-fixed/40 text-on-secondary-fixed-variant font-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  success
+                </span>
+</td>
+<td class="py-2.5 px-space-md text-on-surface-variant font-mono">
+                89.28.65.12
+              </td>
+<td class="py-2.5 px-space-lg text-on-surface-variant font-mono truncate max-w-xs xl:max-w-md">
+                {"device":"Firefox macOS"}
+              </td>
+</tr>
+<!-- Audit Entry 4 -->
+<tr class="hover:bg-surface-container-low transition-colors bg-error-container/20">
+<td class="py-2.5 px-space-lg text-on-surface font-mono whitespace-nowrap">
+                15.09.2026, 08:44
+              </td>
+<td class="py-2.5 px-space-md text-on-surface whitespace-nowrap font-sans font-medium">
+                ion.vrabie@chisinau.md
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="text-error font-semibold bg-error-container px-2 py-0.5 rounded">
+                  auth.login
+                </span>
+</td>
+<td class="py-2.5 px-space-md font-sans text-on-surface truncate">
+                ion.vrabie@chisinau.md
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                  failed
+                </span>
+</td>
+<td class="py-2.5 px-space-md text-on-surface-variant font-mono">
+                89.28.65.12
+              </td>
+<td class="py-2.5 px-space-lg text-error font-mono truncate max-w-xs xl:max-w-md">
+                {"reason":"invalid_password"}
+              </td>
+</tr>
+<!-- Audit Entry 5 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-lg text-on-surface font-mono whitespace-nowrap">
+                14.09.2026, 17:20
+              </td>
+<td class="py-2.5 px-space-md text-on-surface whitespace-nowrap font-sans font-medium">
+                operator@chisinau.md
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="text-primary font-semibold bg-primary/10 px-2 py-0.5 rounded">
+                  report.assigned
+                </span>
+</td>
+<td class="py-2.5 px-space-md font-mono text-on-surface font-semibold">
+                #R-1088
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-secondary-fixed/40 text-on-secondary-fixed-variant font-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  success
+                </span>
+</td>
+<td class="py-2.5 px-space-md text-on-surface-variant font-mono">
+                185.108.128.4
+              </td>
+<td class="py-2.5 px-space-lg text-on-surface-variant font-mono truncate max-w-xs xl:max-w-md">
+                {"department":"Exdrupo Road Service"}
+              </td>
+</tr>
+<!-- Audit Entry 6 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-lg text-on-surface font-mono whitespace-nowrap">
+                14.09.2026, 15:10
+              </td>
+<td class="py-2.5 px-space-md text-primary whitespace-nowrap font-mono font-semibold">
+                system
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="text-on-surface font-semibold bg-surface-container-highest px-2 py-0.5 rounded">
+                  report.auto_grouped
+                </span>
+</td>
+<td class="py-2.5 px-space-md font-mono text-on-surface font-semibold">
+                #R-1094
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-secondary-fixed/40 text-on-secondary-fixed-variant font-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  success
+                </span>
+</td>
+<td class="py-2.5 px-space-md text-outline font-mono italic">
+                internal
+              </td>
+<td class="py-2.5 px-space-lg text-on-surface-variant font-mono truncate max-w-xs xl:max-w-md">
+                {"similarity":0.94,"radius_m":45}
+              </td>
+</tr>
+<!-- Audit Entry 7 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-lg text-on-surface font-mono whitespace-nowrap">
+                14.09.2026, 11:05
+              </td>
+<td class="py-2.5 px-space-md text-on-surface whitespace-nowrap font-sans font-medium">
+                operator@chisinau.md
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="text-primary font-semibold bg-primary/10 px-2 py-0.5 rounded">
+                  report.status_changed
+                </span>
+</td>
+<td class="py-2.5 px-space-md font-mono text-on-surface font-semibold">
+                #R-1072
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-secondary-fixed/40 text-on-secondary-fixed-variant font-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  success
+                </span>
+</td>
+<td class="py-2.5 px-space-md text-on-surface-variant font-mono">
+                185.108.128.4
+              </td>
+<td class="py-2.5 px-space-lg text-on-surface-variant font-mono truncate max-w-xs xl:max-w-md">
+                {"from":"in_progress","to":"resolved"}
+              </td>
+</tr>
+<!-- Audit Entry 8 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-lg text-on-surface font-mono whitespace-nowrap">
+                14.09.2026, 09:02
+              </td>
+<td class="py-2.5 px-space-md text-on-surface whitespace-nowrap font-sans font-medium">
+                admin@chisinau.md
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="text-tertiary font-semibold bg-tertiary-fixed/60 px-2 py-0.5 rounded">
+                  staff.role_updated
+                </span>
+</td>
+<td class="py-2.5 px-space-md font-sans text-on-surface truncate">
+                operator.marina@chisinau.md
+              </td>
+<td class="py-2.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-secondary-fixed/40 text-on-secondary-fixed-variant font-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  success
+                </span>
+</td>
+<td class="py-2.5 px-space-md text-on-surface-variant font-mono">
+                185.108.128.1
+              </td>
+<td class="py-2.5 px-space-lg text-on-surface-variant font-mono truncate max-w-xs xl:max-w-md">
+                {"old_role":"guest_reviewer","new_role":"operator"}
+              </td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Audit Pagination Footer -->
+<div class="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+          Showing <span class="font-semibold text-on-surface">8</span> of <span class="font-semibold text-on-surface">100</span> cached operational entries
+        </span>
+<div class="flex items-center gap-space-xs">
+<button class="h-8 px-space-sm rounded bg-surface text-outline font-label-md text-label-md cursor-not-allowed" disabled="">Previous</button>
+<button class="h-8 px-space-sm rounded bg-surface-container-highest text-on-surface font-label-md text-label-md hover:bg-surface transition-colors">Next</button>
+</div>
+</div>
+</div>
+</div>
+</div></main></div></body></html>

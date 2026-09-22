@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-primary": "#00685f",
+            "surface-container-lowest": "#19212e",
+            "secondary": "#5bc9b9",
+            "inverse-surface": "#e1e8f0",
+            "surface-container": "#1a2332",
+            "on-error": "#0e1a2b",
+            "on-tertiary": "#0e1a2b",
+            "tertiary-fixed-dim": "#b98d75",
+            "error": "#ff8a80",
+            "surface-variant": "#1f2a3a",
+            "error-container": "#5e2e2b",
+            "surface": "#0e141f",
+            "on-primary-container": "#d7f9f2",
+            "outline-variant": "#3e4d57",
+            "inverse-on-surface": "#1b232e",
+            "secondary-fixed": "#3db8a6",
+            "surface-container-highest": "#283649",
+            "surface-dim": "#101725",
+            "background": "#0e141f",
+            "on-secondary-container": "#d4f3ed",
+            "secondary-container": "#1e4d46",
+            "on-primary-fixed-variant": "#9fe0d4",
+            "surface-bright": "#1e2538",
+            "on-secondary-fixed": "#c6f0e7",
+            "on-error-container": "#ffb4ab",
+            "primary-container": "#2b9b8f",
+            "surface-tint": "#3ca99c",
+            "surface-container-low": "#151d29",
+            "on-background": "#e6edf7",
+            "on-tertiary-container": "#e8d9d0",
+            "surface-container-high": "#222e40",
+            "primary-fixed": "#1e766b",
+            "primary-fixed-dim": "#3d9e91",
+            "secondary-fixed-dim": "#39c7b5",
+            "outline": "#8a9caa",
+            "on-secondary-fixed-variant": "#9be6d9",
+            "on-tertiary-fixed-variant": "#ebd0be",
+            "on-primary": "#0e1a2b",
+            "tertiary-container": "#8b6b58",
+            "on-primary-fixed": "#c2f0e6",
+            "on-tertiary-fixed": "#e0e8f5",
+            "tertiary-fixed": "#b0836a",
+            "tertiary": "#dbb9a3",
+            "on-secondary": "#0b1f1c",
+            "primary": "#6bd8cb",
+            "on-surface-variant": "#b0c0d0",
+            "on-surface": "#e6edf7"
+          },
+          borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+          spacing: { "space-sm": "0.5rem", "space-2xl": "3rem", "space-md": "1rem", "margin-tablet": "1.5rem", "margin-desktop": "2.5rem", "space-xl": "2rem", "margin": "1rem", "space-xs": "0.25rem", "space-lg": "1.5rem", "gutter-desktop": "1.5rem", "gutter": "1rem" },
+          fontFamily: { "label-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "display": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "code-sm": ["JetBrains Mono"], "body-sm": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"] },
+          fontSize: {
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "display": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "code-sm": ["0.8125rem", { "lineHeight": "1rem", "fontWeight": "500" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "400" }],
+            "headline-lg": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background font-body-md text-on-surface min-h-screen flex items-center justify-center dark">
+  <main class="w-full">
+    <div class="flex flex-col w-full">
+      <div class="relative w-full overflow-hidden py-12 px-6 flex justify-center items-center">
+        <!-- Ambient decorative backdrop elements -->
+        <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[760px] h-[480px] bg-gradient-to-b from-primary-fixed/30 via-surface-container/50 to-transparent rounded-full blur-3xl pointer-events-none -z-10"></div>
+        <div class="absolute bottom-4 right-12 w-80 h-80 bg-secondary-fixed/20 rounded-full blur-2xl pointer-events-none -z-10"></div>
+        <!-- Card -->
+        <div class="w-full max-w-[540px] flex flex-col gap-6">
+          <!-- Breadcrumb -->
+          <div class="flex items-center justify-between px-2">
+            <a class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors group" href="#">
+              <span class="material-symbols-outlined text-[18px] transition-transform group-hover:-translate-x-0.5">arrow_back</span>
+              <span class="font-label-lg text-label-lg">Înapoi la autentificare</span>
+            </a>
+            <div class="flex items-center gap-1.5 bg-surface-container px-2.5 py-1 rounded-full text-on-surface-variant border border-outline-variant/20">
+              <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+              <span class="font-code-sm text-code-sm">PORTAL IDENTITATE MD</span>
+            </div>
+          </div>
+          <!-- Main Card -->
+          <div class="bg-surface-container-lowest rounded-xl shadow-xl p-8 sm:p-10 flex flex-col border border-outline-variant/20">
+            <!-- Header -->
+            <div class="flex flex-col items-start gap-4">
+              <div class="w-14 h-14 rounded-full bg-primary-fixed/40 text-primary flex items-center justify-center shadow-sm">
+                <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lock_reset</span>
+              </div>
+              <div class="flex flex-col gap-1.5 w-full">
+                <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Forgot your password?</h1>
+                <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                  Enter your account email and we'll send you a link to choose a new one. Remembered it?
+                  <a class="text-primary hover:underline font-label-lg transition-colors inline-flex items-center ml-1" href="#">Sign in →</a>
+                </p>
+              </div>
+            </div>
+            <!-- Form -->
+            <form class="mt-8 flex flex-col gap-6" id="forgotPasswordForm" onsubmit="event.preventDefault(); document.getElementById('successState').classList.remove('hidden'); document.getElementById('formControls').classList.add('hidden');">
+              <div class="flex flex-col gap-6" id="formControls">
+                <!-- Email -->
+                <div class="flex flex-col gap-2">
+                  <label class="font-label-lg text-label-lg text-on-surface flex items-center justify-between" for="recovery-email">
+                    <span>Account email</span>
+                    <span class="text-error font-body-sm text-body-sm">* Obligatoriu</span>
+                  </label>
+                  <div class="relative flex items-center">
+                    <span class="material-symbols-outlined absolute left-3.5 text-outline text-[20px] pointer-events-none">mail</span>
+                    <input class="w-full h-11 bg-surface-container-lowest text-on-surface font-body-md text-body-md pl-11 pr-4 rounded-lg placeholder:text-outline/70 focus:outline-none focus:bg-surface focus:shadow-[0_0_0_2px_#6bd8cb] transition-all border border-outline-variant/20" id="recovery-email" name="email" placeholder="ion.popescu@mail.md" required="" type="email"/>
+                  </div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Introduceți adresa folosită la înregistrarea sesizărilor municipale.
+                  </p>
+                </div>
+                <!-- Verification -->
+                <div class="bg-surface-container-low p-4 rounded-lg flex items-center justify-between border border-outline-variant/20">
+                  <label class="flex items-center gap-3.5 cursor-pointer select-none">
+                    <div class="relative flex items-center">
+                      <input checked="" class="peer sr-only" id="altcha-verify" required="" type="checkbox"/>
+                      <div class="w-5 h-5 rounded bg-surface-container-lowest peer-checked:bg-primary transition-colors flex items-center justify-center border border-outline-variant/30">
+                        <span class="material-symbols-outlined text-[16px] text-on-primary font-bold">check</span>
+                      </div>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-label-lg text-label-lg text-on-surface">I'm not a robot</span>
+                      <span class="font-code-sm text-code-sm text-on-surface-variant">Protected by ALTCHA</span>
+                    </div>
+                  </label>
+                  <div class="flex items-center gap-1.5 text-primary">
+                    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                    <span class="font-label-md text-label-md tracking-wider uppercase">Securizat</span>
+                  </div>
+                </div>
+                <!-- Submit -->
+                <button class="w-full h-11 bg-primary hover:bg-secondary text-on-primary font-label-lg text-label-lg rounded-full shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group cursor-pointer active:scale-[0.99]" type="submit">
+                  <span>Send the link</span>
+                  <span class="material-symbols-outlined text-[18px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+                </button>
+              </div>
+              <!-- Success State -->
+              <div class="hidden flex-col items-center text-center p-6 bg-surface-container rounded-lg gap-3 border border-outline-variant/20" id="successState">
+                <div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[24px]">mark_email_read</span>
+                </div>
+                <h2 class="font-headline-sm text-headline-sm text-on-surface">Link expediat cu succes</h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant max-w-sm">
+                  Am expediat instrucțiunile de resetare. Verificați căsuța poștală, inclusiv dosarul Spam.
+                </p>
+                <button class="mt-2 text-primary font-label-md text-label-md hover:underline" onclick="document.getElementById('successState').classList.add('hidden'); document.getElementById('formControls').classList.remove('hidden');" type="button">
+                  Trimite din nou
+                </button>
+              </div>
+            </form>
+            <!-- Safety Guidelines -->
+            <div class="mt-8 pt-6 flex flex-col gap-3 bg-surface-container-low -mx-8 sm:-mx-10 -mb-8 sm:-mb-10 p-6 sm:p-8 rounded-b-xl border-t border-outline-variant/20">
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-outline text-[20px] shrink-0 mt-0.5">schedule</span>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Password reset links are valid for <strong class="text-on-surface font-semibold">15 minutes</strong> for your security.
+                </p>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-tertiary text-[20px] shrink-0 mt-0.5">shield</span>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  <span class="text-on-surface font-semibold">Notă de securitate:</span> Primăria Chișinău nu vă va cere niciodată parola prin telefon sau mesaje nesolicitate.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Footer -->
+          <div class="text-center py-2">
+            <p class="font-body-sm text-body-sm text-on-surface-variant">
+              Still having trouble accessing your account?
+              <a class="text-primary hover:text-secondary font-label-lg text-label-lg underline ml-1" href="#">Contact municipal civic support</a>
+            </p>
+          </div>
+          <div class="flex items-center justify-center gap-4 text-outline font-label-md text-label-md opacity-70">
+            <span>© 2025 Primăria Municipiului Chișinău</span>
+            <span>•</span>
+            <span>Centrul de Guvernanță Digitală</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
