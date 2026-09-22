@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { linkClass } from "@/ui/themed-styles";
 
-// Stub: no mockup exists for this screen. The real policy text still has to be written —
-// ask Andrei. See docs/SCREENS.md.
+// Stub: no mockup exists for this screen. The text to put here is written and ready in
+// docs/PRIVACY.md — use it as-is, don't rewrite the technical claims. A few spots in it are
+// marked [DE COMPLETAT] and are still pending a decision; leave those visible.
 export const metadata: Metadata = { title: "Confidențialitate" };
 
 export default function PrivacyPage() {

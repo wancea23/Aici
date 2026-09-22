@@ -30,7 +30,7 @@ parts of the mockups show data the app doesn't actually have).
 | `/new-password?token=` | `src/app/(citizen)/new-password/page.tsx` | restyled | *none* | The reset token is validated server-side; page gets the account's email, or renders an "expired link" state |
 | `/verify-email?token=` | `src/app/(citizen)/verify-email/page.tsx` | restyled | `confirm_email_verified` | Signup token → the email being confirmed, or an "expired link" state |
 | `/profile` | `src/app/(citizen)/profile/page.tsx` | needs restyle | `my_account_citizen` (+ 3 competing variants — see README) | `currentCitizen()` → `{ id, email }`, and `listReportsForCitizen(id)` → `{ id, category, description, status, created_at, events[] }[]`. `events[]` is the citizen-facing timeline (status changes + messages from city hall). Deadline per report: `answerDeadline()` in `features/reports/deadline.ts` |
-| `/privacy` | `src/app/(citizen)/privacy/page.tsx` | **stub** | *none* | Static page, no data. Has placeholder text summarising what the app actually does with photos and location; needs a real policy written — ask Andrei. **Not linked from anywhere yet** (there's no footer) |
+| `/privacy` | `src/app/(citizen)/privacy/page.tsx` | **stub** | *none* | Static page, no data. **The text to put here is ready in [`PRIVACY.md`](PRIVACY.md)** — use it as written; a few `[DE COMPLETAT]` spots are still pending decisions and should stay visible. **Not linked from anywhere yet** (there's no footer) |
 
 ## Staff screens
 
