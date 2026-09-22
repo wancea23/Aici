@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'on-surface': '#131b2e', 'surface-bright': '#faf8ff', 'on-secondary': '#ffffff', 'background': '#faf8ff', 'error': '#ba1a1a', 'secondary-fixed-dim': '#4fdbc8', 'surface-dim': '#d2d9f4', 'secondary-container': '#6df5e1', 'on-secondary-fixed-variant': '#005048', 'inverse-primary': '#6bd8cb', 'on-tertiary': '#ffffff', 'on-primary': '#ffffff', 'outline-variant': '#bcc9c6', 'surface-container-lowest': '#ffffff', 'on-tertiary-fixed': '#370e00', 'secondary-fixed': '#71f8e4', 'primary-container': '#008378', 'inverse-surface': '#283044', 'primary-fixed': '#89f5e7', 'on-error': '#ffffff', 'primary': '#00685f', 'primary-fixed-dim': '#6bd8cb', 'on-secondary-container': '#006f64', 'surface-tint': '#006a61', 'tertiary-fixed': '#ffdbce', 'on-tertiary-container': '#fffbff', 'on-primary-fixed': '#00201d', 'surface': '#faf8ff', 'surface-variant': '#dae2fd', 'secondary': '#006b5f', 'tertiary-fixed-dim': '#ffb59a', 'surface-container': '#eaedff', 'tertiary-container': '#b05e3d', 'on-surface-variant': '#3d4947', 'on-error-container': '#93000a', 'surface-container-low': '#f2f3ff', 'on-primary-container': '#f4fffc', 'error-container': '#ffdad6', 'on-primary-fixed-variant': '#005049', 'surface-container-high': '#e2e7ff', 'tertiary': '#924628', 'on-background': '#131b2e', 'on-secondary-fixed': '#00201c', 'surface-container-highest': '#dae2fd', 'inverse-on-surface': '#eef0ff', 'on-tertiary-fixed-variant': '#773215', 'outline': '#6d7a77' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'space-2xl': '3rem', 'margin-desktop': '2.5rem', 'space-xl': '2rem', 'space-md': '1rem', 'space-xs': '0.25rem', 'margin': '1rem', 'gutter': '1rem', 'space-lg': '1.5rem', 'space-sm': '0.5rem', 'gutter-desktop': '1.5rem', 'margin-tablet': '1.5rem' }, fontFamily: { 'headline-lg-mobile': ['Plus Jakarta Sans'], 'body-lg': ['Plus Jakarta Sans'], 'code-sm': ['JetBrains Mono'], 'headline-md': ['Plus Jakarta Sans'], 'display': ['Plus Jakarta Sans'], 'body-md': ['Plus Jakarta Sans'], 'body-sm': ['Plus Jakarta Sans'], 'label-lg': ['Plus Jakarta Sans'], 'headline-lg': ['Plus Jakarta Sans'], 'headline-sm': ['Plus Jakarta Sans'], 'label-md': ['Plus Jakarta Sans'] }, fontSize: { 'headline-lg-mobile': ['1.5rem', { lineHeight: '2rem', letterSpacing: '-0.01em', fontWeight: '700' }], 'body-lg': ['1.125rem', { lineHeight: '1.75rem', fontWeight: '400' }], 'code-sm': ['0.8125rem', { lineHeight: '1rem', fontWeight: '500' }], 'headline-md': ['1.25rem', { lineHeight: '1.75rem', letterSpacing: '-0.01em', fontWeight: '600' }], 'display': ['2.25rem', { lineHeight: '2.75rem', letterSpacing: '-0.02em', fontWeight: '700' }], 'body-md': ['1rem', { lineHeight: '1.5rem', fontWeight: '400' }], 'body-sm': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '400' }], 'label-lg': ['0.875rem', { lineHeight: '1.25rem', letterSpacing: '0.01em', fontWeight: '600' }], 'headline-lg': ['1.75rem', { lineHeight: '2.25rem', letterSpacing: '-0.015em', fontWeight: '700' }], 'headline-sm': ['1.125rem', { lineHeight: '1.5rem', fontWeight: '600' }], 'label-md': ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.02em', fontWeight: '600' }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface"><header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 max-w-7xl mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md"><a class="flex items-center gap-space-sm" data-path="map" href="#"><img alt="Aici Civic Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz5gQ4fOywPPikQoZ31J36Hkp8jtAuSzxAwQaOPK_zNpc2Q_GX51m-lSXywPpleZEld-OQomw8LvQkLcPe2YxSSGEONzC6TJEKbzIBptvNGMi3VH4D7Mb_MEqBm6cEb0c7Jl8-WYE47aHy9GRYPU-x2nu33znr4pKsQfAdihXyQcIoAcSgXTWiOdj-ExZmWpwGm5jEhxyN9GW30O9x1Sk2Xps36g4wpGPP4IXl2QNnEysyAJaK_qCDPw"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight leading-none">Aici</span><span class="font-label-md text-label-md text-on-surface-variant hidden sm:inline leading-tight">See it. Report it. Fix it.</span></div></a></div><nav class="hidden md:flex items-center gap-space-sm" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-full"><a class="px-space-md py-space-xs font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="report-problem" href="#">Report a problem</a><a aria-current="page" class="px-space-md py-space-xs transition-colors bg-primary-container text-on-primary-container font-semibold rounded-full" data-path="map" href="#">Map</a><a class="px-space-md py-space-xs font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors opacity-80" data-path="staff-dashboard" href="#">For city hall</a></nav><div class="flex items-center gap-space-md"><a class="h-10 px-space-md flex items-center justify-center font-label-lg text-label-lg text-primary border border-outline-variant hover:bg-surface-container-high hover:text-on-surface rounded-full transition-colors" data-path="sign-in" href="#">Sign in</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-140px)]"><div class="flex flex-col w-full">
+<!-- Top Operational Civic Bar -->
+<section class="w-full bg-surface-container-low shadow-sm z-30">
+<div class="max-w-7xl mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop py-space-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-space-md">
+<!-- Live Status Indicators -->
+<div class="flex flex-wrap items-center gap-space-xs sm:gap-space-sm">
+<div class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-full bg-surface-container-lowest shadow-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-[#ef4444] animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface">New</span>
+<span class="font-code-sm text-code-sm font-bold px-1.5 py-0.5 rounded-full bg-error-container text-on-error-container ml-0.5">15</span>
+</div>
+<div class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-full bg-surface-container-lowest shadow-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b]"></span>
+<span class="font-label-md text-label-md text-on-surface">In progress</span>
+<span class="font-code-sm text-code-sm font-bold px-1.5 py-0.5 rounded-full bg-[#fef3c7] text-[#92400e] ml-0.5">4</span>
+</div>
+<div class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-full bg-surface-container-lowest shadow-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-[#14b8a6]"></span>
+<span class="font-label-md text-label-md text-on-surface">Resolved</span>
+<span class="font-code-sm text-code-sm font-bold px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container ml-0.5">1</span>
+</div>
+<div class="hidden xl:flex items-center gap-1.5 pl-space-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-primary">verified</span>
+<span class="font-label-md text-label-md">Chișinău Municipal Sector 01–05 Live Feed</span>
+</div>
+</div>
+<!-- Action Controls -->
+<div class="flex items-center gap-space-sm">
+<div class="relative flex-1 sm:flex-none">
+<select class="w-full sm:w-auto appearance-none pl-space-md pr-8 py-2 h-11 bg-surface-container-lowest text-on-surface font-label-lg text-label-lg rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer" id="category-filter">
+<option value="all">All incident types (20)</option>
+<option value="pothole">Potholes &amp; Roadways</option>
+<option value="streetlight">Broken Streetlights</option>
+<option value="garbage">Sanitation &amp; Trash</option>
+<option value="green">Parks &amp; Green Spaces</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[18px]">expand_more</span>
+</div>
+<a class="h-11 px-space-lg rounded-full bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-space-xs shadow-sm hover:bg-primary-container active:scale-95 transition-all" data-path="report-problem" href="#">
+<span class="material-symbols-outlined text-[18px]">add_location_alt</span>
+<span class="whitespace-nowrap">Report a problem</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Interactive Map Canvas Container -->
+<section class="relative w-full h-[737px] min-h-[520px] max-h-[820px] overflow-hidden select-none bg-surface-container">
+<!-- Base Map Surface (Stylized Natural Vector Map Representation) -->
+<div class="absolute inset-0 w-full h-full bg-[#e8ece9] overflow-hidden" data-location="Chisinau, Republic of Moldova" style="">
+<!-- SVG Simulated Vector Cartography of Central Chisinau -->
+<svg class="w-full h-full object-cover" preserveaspectratio="xMidYMid slice" viewbox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="40" id="grid-dots" patternunits="userSpaceOnUse" width="40">
+<circle cx="2" cy="2" fill="#cad5cd" opacity="0.4" r="1.5"></circle>
+</pattern>
+</defs>
+<!-- Base terrain -->
+<rect fill="#f4f7f4" height="900" width="1400"></rect>
+<rect fill="url(#grid-dots)" height="900" width="1400"></rect>
+<!-- Parks & Green Areas (Valea Morilor, Gradina Publica Stefan cel Mare, Parcul Catedralei) -->
+<!-- Cathedral Park -->
+<path d="M 640 370 L 760 385 L 740 470 L 620 450 Z" fill="#d3e8d6"></path>
+<!-- Stefan cel Mare Central Park -->
+<path d="M 520 340 L 610 350 L 590 460 L 505 440 Z" fill="#cce5d0"></path>
+<!-- Valea Morilor Lake & Park -->
+<path d="M 280 520 C 350 500, 430 550, 460 630 C 480 690, 410 780, 310 790 C 220 800, 180 710, 190 620 C 200 550, 240 530, 280 520 Z" fill="#cae8cd"></path>
+<!-- Valea Morilor Water body -->
+<path d="M 290 560 C 340 540, 390 580, 410 640 C 430 700, 370 750, 310 750 C 250 750, 230 690, 240 630 C 250 580, 270 570, 290 560 Z" fill="#b9e2f5"></path>
+<!-- Riscani Forest Park hint -->
+<path d="M 880 80 C 1000 60, 1140 100, 1220 180 C 1180 250, 1040 260, 960 210 Z" fill="#d2ead5"></path>
+<!-- Valea Trandafirilor (Roses Valley) -->
+<path d="M 940 680 C 1040 640, 1150 700, 1180 820 C 1060 870, 960 800, 940 680 Z" fill="#d0ead4"></path>
+<!-- Secondary Road Network -->
+<g opacity="0.95" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="8">
+<line x1="100" x2="1300" y1="220" y2="380"></line>
+<line x1="80" x2="1320" y1="360" y2="520"></line>
+<line x1="120" x2="1350" y1="500" y2="660"></line>
+<line x1="420" x2="680" y1="80" y2="860"></line>
+<line x1="750" x2="940" y1="70" y2="850"></line>
+<line x1="980" x2="1200" y1="90" y2="850"></line>
+<line x1="260" x2="480" y1="120" y2="880"></line>
+</g>
+<!-- Primary Arterials (Stefan cel Mare si Sfant Blvd & Puskin / Banulescu-Bodoni) -->
+<!-- Stefan cel Mare Boulevard -->
+<path d="M 50 420 L 1380 470" stroke="#ffd166" stroke-linecap="round" stroke-width="12"></path>
+<path d="M 50 420 L 1380 470" stroke="#ffffff" stroke-linecap="round" stroke-width="8"></path>
+<!-- Str. Alexandr Puskin -->
+<path d="M 740 60 L 640 860" stroke="#ffe082" stroke-linecap="round" stroke-width="10"></path>
+<path d="M 740 60 L 640 860" stroke="#ffffff" stroke-linecap="round" stroke-width="6"></path>
+<!-- Str. Mitropolit Gavriil Banulescu-Bodoni -->
+<path d="M 610 60 L 510 860" stroke="#ffe082" stroke-linecap="round" stroke-width="10"></path>
+<path d="M 610 60 L 510 860" stroke="#ffffff" stroke-linecap="round" stroke-width="6"></path>
+<!-- Dacia Boulevard towards Botanica -->
+<path d="M 980 460 Q 1120 540 1280 820" stroke="#ffd166" stroke-linecap="round" stroke-width="12"></path>
+<path d="M 980 460 Q 1120 540 1280 820" stroke="#ffffff" stroke-linecap="round" stroke-width="8"></path>
+<!-- District and Street Typographic Labels in Map -->
+<text fill="#334155" font-family="Plus Jakarta Sans" font-size="11" font-weight="700" letter-spacing="1" x="685" y="445">BD. ȘTEFAN CEL MARE</text>
+<text fill="#475569" font-family="Plus Jakarta Sans" font-size="9" font-weight="600" transform="rotate(82 715,270)" x="715" y="270">STR. PUȘKIN</text>
+<text fill="#475569" font-family="Plus Jakarta Sans" font-size="9" font-weight="600" transform="rotate(82 585,270)" x="585" y="270">BĂNULESCU-BODONI</text>
+<text fill="#1e4620" font-family="Plus Jakarta Sans" font-size="10" font-weight="700" opacity="0.8" x="650" y="415">Grădina Catedralei</text>
+<text fill="#14526b" font-family="Plus Jakarta Sans" font-size="11" font-weight="700" opacity="0.75" x="320" y="650">Lacul Valea Morilor</text>
+<text fill="#64748b" font-family="Plus Jakarta Sans" font-size="14" font-weight="800" letter-spacing="2" opacity="0.4" x="1080" y="200">SECTORUL RÎȘCANI</text>
+<text fill="#64748b" font-family="Plus Jakarta Sans" font-size="14" font-weight="800" letter-spacing="2" opacity="0.4" x="1090" y="730">SECTORUL BOTANICA</text>
+<text fill="#64748b" font-family="Plus Jakarta Sans" font-size="14" font-weight="800" letter-spacing="2" opacity="0.4" x="210" y="340">SECTORUL BUIUCANI</text>
+<text fill="#334155" font-family="Plus Jakarta Sans" font-size="15" font-weight="800" letter-spacing="3" opacity="0.3" x="630" y="560">CENTRU</text>
+</svg>
+</div>
+<!-- Map Floating Controls (Top Left: Search & Sector filter) -->
+<div class="absolute top-4 left-4 sm:left-6 flex flex-col gap-2 z-20 max-w-xs w-full pointer-events-auto">
+<div class="bg-surface/95 backdrop-blur-md rounded-2xl shadow-md p-1.5 flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant ml-2 text-[20px]">search</span>
+<input class="w-full bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none py-1" placeholder="Search street or district..." type="text"/>
+<button class="w-7 h-7 rounded-xl bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors" title="Locate current district" type="button">
+<span class="material-symbols-outlined text-[16px]">my_location</span>
+</button>
+</div>
+</div>
+<!-- Map Floating Navigation Tools (Bottom Right) -->
+<div class="absolute bottom-6 right-4 sm:right-6 flex flex-col items-center gap-2 z-20 pointer-events-auto">
+<div class="bg-surface/95 backdrop-blur-md rounded-full shadow-md flex flex-col overflow-hidden">
+<button aria-label="Zoom in" class="w-10 h-10 flex items-center justify-center text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+<div class="w-6 h-[1px] bg-surface-container-highest mx-auto"></div>
+<button aria-label="Zoom out" class="w-10 h-10 flex items-center justify-center text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface/95 backdrop-blur-md shadow-md flex items-center justify-center text-primary hover:bg-surface-container transition-colors" title="Center map on Stefan cel Mare" type="button">
+<span class="material-symbols-outlined text-[20px]">near_me</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface/95 backdrop-blur-md shadow-md flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" title="Toggle civic layers" type="button">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</button>
+</div>
+<!-- Map Markers Layer -->
+<div class="absolute inset-0 pointer-events-none z-10">
+<!-- 1. NEW - RED PINS -->
+<!-- Pin #1: New Pothole near Riscani (Kiev st.) -->
+<div class="absolute top-[22%] left-[68%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer group">
+<div class="relative flex flex-col items-center drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)] hover:scale-110 transition-transform">
+<div class="w-9 h-11 bg-[#ef4444] rounded-t-full rounded-b-none [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1.5 ring-2 ring-white">
+<div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[13px]">traffic</span>
+</div>
+</div>
+<span class="w-2 h-1 bg-black/30 rounded-full blur-[1px] mt-0.5"></span>
+</div>
+</div>
+<!-- Pin #2: New Broken Streetlight (Buiucani, Ion Creanga) -->
+<div class="absolute top-[38%] left-[24%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer group">
+<div class="relative flex flex-col items-center drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)] hover:scale-110 transition-transform">
+<div class="w-9 h-11 bg-[#ef4444] rounded-t-full rounded-b-none [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1.5 ring-2 ring-white">
+<div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[13px]">lightbulb</span>
+</div>
+</div>
+<span class="w-2 h-1 bg-black/30 rounded-full blur-[1px] mt-0.5"></span>
+</div>
+</div>
+<!-- Pin #3: New Trash Overflow (Botanica, Decebal blvd) -->
+<div class="absolute top-[68%] left-[76%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer group">
+<div class="relative flex flex-col items-center drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)] hover:scale-110 transition-transform">
+<div class="w-9 h-11 bg-[#ef4444] rounded-t-full rounded-b-none [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1.5 ring-2 ring-white">
+<div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[13px]">delete</span>
+</div>
+</div>
+<span class="w-2 h-1 bg-black/30 rounded-full blur-[1px] mt-0.5"></span>
+</div>
+</div>
+<!-- Pin #4: New Streetlight (Ciocana, Mircea cel Batran) -->
+<div class="absolute top-[16%] left-[84%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer group">
+<div class="relative flex flex-col items-center drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)] hover:scale-110 transition-transform">
+<div class="w-9 h-11 bg-[#ef4444] rounded-t-full rounded-b-none [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1.5 ring-2 ring-white">
+<div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[13px]">lightbulb</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Pin #5: New Trash (Telecentru, Hincesti hwy) -->
+<div class="absolute top-[78%] left-[38%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer group">
+<div class="relative flex flex-col items-center drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)] hover:scale-110 transition-transform">
+<div class="w-9 h-11 bg-[#ef4444] rounded-t-full rounded-b-none [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1.5 ring-2 ring-white">
+<div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[13px]">delete</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Pin #6: New Damaged Sidewalk (Albisoara) -->
+<div class="absolute top-[32%] left-[58%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer group">
+<div class="relative flex flex-col items-center drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)] hover:scale-110 transition-transform">
+<div class="w-9 h-11 bg-[#ef4444] rounded-t-full rounded-b-none [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1.5 ring-2 ring-white">
+<div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[13px]">construction</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. IN PROGRESS - AMBER PINS -->
+<!-- Pin #7: In Progress (Valea Trandafirilor, Green space) -->
+<div class="absolute top-[72%] left-[83%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer group">
+<div class="relative flex flex-col items-center drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)] hover:scale-110 transition-transform">
+<div class="w-9 h-11 bg-[#f59e0b] rounded-t-full rounded-b-none [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1.5 ring-2 ring-white">
+<div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[13px]">park</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Pin #8: In Progress (Calea Iesilor, Road Barrier) -->
+<div class="absolute top-[28%] left-[16%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer group">
+<div class="relative flex flex-col items-center drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)] hover:scale-110 transition-transform">
+<div class="w-9 h-11 bg-[#f59e0b] rounded-t-full rounded-b-none [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1.5 ring-2 ring-white">
+<div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[13px]">construction</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Pin #9: In Progress (Valea Morilor, Tree hazard) -->
+<div class="absolute top-[59%] left-[31%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer group">
+<div class="relative flex flex-col items-center drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)] hover:scale-110 transition-transform">
+<div class="w-9 h-11 bg-[#f59e0b] rounded-t-full rounded-b-none [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1.5 ring-2 ring-white">
+<div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[13px]">park</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. RESOLVED - TEAL PIN -->
+<!-- Pin #10: Resolved (Bucuresti st.) -->
+<div class="absolute top-[54%] left-[62%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer group">
+<div class="relative flex flex-col items-center drop-shadow-[0_8px_10px_rgba(0,0,0,0.18)] hover:scale-110 transition-transform">
+<div class="w-9 h-11 bg-[#14b8a6] rounded-t-full rounded-b-none [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1.5 ring-2 ring-white">
+<div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[13px]">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Additional Distributed Context Pins for Metropolitan Density -->
+<!-- Additional New Pins -->
+<div class="absolute top-[44%] left-[42%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer">
+<div class="w-8 h-10 bg-[#ef4444] rounded-t-full [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1 ring-2 ring-white drop-shadow-md">
+<span class="material-symbols-outlined text-white text-[12px]">traffic</span>
+</div>
+</div>
+<div class="absolute top-[21%] left-[49%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer">
+<div class="w-8 h-10 bg-[#ef4444] rounded-t-full [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1 ring-2 ring-white drop-shadow-md">
+<span class="material-symbols-outlined text-white text-[12px]">delete</span>
+</div>
+</div>
+<div class="absolute top-[60%] left-[51%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer">
+<div class="w-8 h-10 bg-[#ef4444] rounded-t-full [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1 ring-2 ring-white drop-shadow-md">
+<span class="material-symbols-outlined text-white text-[12px]">lightbulb</span>
+</div>
+</div>
+<div class="absolute top-[49%] left-[78%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer">
+<div class="w-8 h-10 bg-[#ef4444] rounded-t-full [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1 ring-2 ring-white drop-shadow-md">
+<span class="material-symbols-outlined text-white text-[12px]">traffic</span>
+</div>
+</div>
+<div class="absolute top-[82%] left-[64%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer">
+<div class="w-8 h-10 bg-[#ef4444] rounded-t-full [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1 ring-2 ring-white drop-shadow-md">
+<span class="material-symbols-outlined text-white text-[12px]">construction</span>
+</div>
+</div>
+<div class="absolute top-[37%] left-[88%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer">
+<div class="w-8 h-10 bg-[#ef4444] rounded-t-full [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1 ring-2 ring-white drop-shadow-md">
+<span class="material-symbols-outlined text-white text-[12px]">delete</span>
+</div>
+</div>
+<div class="absolute top-[14%] left-[34%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer">
+<div class="w-8 h-10 bg-[#ef4444] rounded-t-full [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1 ring-2 ring-white drop-shadow-md">
+<span class="material-symbols-outlined text-white text-[12px]">lightbulb</span>
+</div>
+</div>
+<div class="absolute top-[67%] left-[18%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer">
+<div class="w-8 h-10 bg-[#ef4444] rounded-t-full [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1 ring-2 ring-white drop-shadow-md">
+<span class="material-symbols-outlined text-white text-[12px]">construction</span>
+</div>
+</div>
+<div class="absolute top-[85%] left-[24%] -translate-x-1/2 -translate-y-full pointer-events-auto cursor-pointer">
+<div class="w-8 h-10 bg-[#ef4444] rounded-t-full [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-1 ring-2 ring-white drop-shadow-md">
+<span class="material-symbols-outlined text-white text-[12px]">delete</span>
+</div>
+</div>
+<!-- 4. ACTIVE OPEN PIN & PUBLIC POPUP CARD (Stefan cel Mare & Puskin intersection) -->
+<div class="absolute top-[46%] left-[53%] -translate-x-1/2 -translate-y-full pointer-events-auto z-30">
+<!-- Authentic Public Popup Card -->
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 -translate-y-full w-72 sm:w-80 bg-surface-container-lowest rounded-2xl shadow-xl p-space-md flex flex-col gap-space-sm animate-in fade-in zoom-in-95 duration-200">
+<!-- Popup Header: Category Icon + Title + Status -->
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-[#fef3c7] text-[#b45309] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">traffic</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<h3 class="font-headline-sm text-headline-sm text-on-surface truncate">Pothole</h3>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                  Stefan cel Mare / Str. Pușkin
+                </span>
+</div>
+</div>
+<button aria-label="Close popup" class="text-on-surface-variant hover:text-on-surface p-1 -mr-1 rounded-full hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Status Pill & Verification Badges -->
+<div class="flex flex-wrap items-center gap-space-xs mt-1">
+<!-- In Progress Pill -->
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#fffbeb] text-[#b45309] font-label-md text-label-md">
+<span class="w-1.5 h-1.5 rounded-full bg-[#f59e0b]"></span>
+              In progress
+            </span>
+<!-- Group Pill Badge: Reported 3 times -->
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-inverse-surface text-inverse-on-surface font-code-sm text-code-sm">
+<span class="material-symbols-outlined text-[13px] text-secondary-fixed">group</span>
+              Reported 3 times
+            </span>
+</div>
+<!-- Time & Privacy Notice -->
+<div class="pt-2 flex flex-col gap-1 text-on-surface-variant">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="flex items-center gap-1 font-label-md text-label-md">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                2 hours ago
+              </span>
+<span class="font-code-sm text-code-sm text-on-surface-variant/80">ID: #CH-8821</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant bg-surface-container-low rounded-lg p-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary shrink-0">shield</span>
+<span>Approximate location. Media details managed by dispatchers.</span>
+</p>
+</div>
+<!-- Call to Action -->
+<div class="pt-1 flex items-center justify-between gap-space-sm">
+<button class="w-full py-2 px-3 rounded-full bg-surface-container hover:bg-surface-container-high text-primary font-label-lg text-label-lg flex items-center justify-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">thumb_up</span>
+<span>Same issue here (+1)</span>
+</button>
+</div>
+<!-- Little downward tail for popup -->
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-surface-container-lowest rotate-45 rounded-sm"></div>
+</div>
+<!-- The Target Teardrop Pin (Amber) -->
+<div class="relative flex flex-col items-center drop-shadow-[0_12px_16px_rgba(0,0,0,0.25)] scale-110">
+<div class="w-10 h-12 bg-[#f59e0b] rounded-t-full rounded-b-none [clip-path:polygon(50%_100%,0%_35%,0%_0%,100%_0%,100%_35%)] flex items-start justify-center pt-2 ring-2 ring-white">
+<div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[15px]">traffic</span>
+</div>
+</div>
+<!-- Multiple report badge attached to pin -->
+<span class="absolute -top-1 -right-1 bg-inverse-surface text-inverse-on-surface text-[10px] font-bold font-code-sm px-1.5 py-0.2 rounded-full ring-2 ring-white">3</span>
+<!-- Ripple radar effect -->
+<span class="absolute -bottom-2 w-8 h-8 rounded-full bg-[#f59e0b]/30 -z-10 animate-ping"></span>
+</div>
+</div>
+</div>
+</section>
+<!-- Footnote & Civic Transparency Notice -->
+<section class="w-full bg-surface-container-lowest py-space-md">
+<div class="max-w-7xl mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop flex flex-col sm:flex-row items-center justify-between gap-space-sm text-center sm:text-left">
+<div class="flex items-center gap-space-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-primary shrink-0">info</span>
+<p class="font-body-sm text-body-sm">
+          Locations are approximate, about 100 m. Photos and personal descriptions are only visible to city hall for citizen privacy protection.
+        </p>
+</div>
+<div class="flex items-center gap-space-md shrink-0">
+<span class="font-label-md text-label-md text-on-surface-variant/80">Municipiul Chișinău Data Portal</span>
+<span class="inline-flex items-center gap-1 font-label-md text-label-md text-primary font-semibold">
+<span class="w-2 h-2 rounded-full bg-[#14b8a6]"></span>
+          GPS Sync Active
+        </span>
+</div>
+</div>
+</section>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterSelect = document.getElementById('category-filter');
+    if (filterSelect) {
+      filterSelect.addEventListener('change', (e) => {
+        // Subtle micro-feedback simulation for filtering categories on the public map
+        const canvas = document.querySelector('[data-location]');
+        if (canvas) {
+          canvas.style.opacity = '0.75';
+          setTimeout(() => {
+            canvas.style.opacity = '1';
+          }, 180);
+        }
+      });
+    }
+  });
+</script></main><footer class="w-full bg-surface-container-low py-space-xl shadow-[0_-1px_8px_rgba(0,0,0,0.02)]"><div class="max-w-7xl mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop flex flex-col md:flex-row items-center justify-between gap-space-lg"><div class="flex flex-col items-center md:items-start gap-space-xs"><div class="font-headline-sm text-headline-sm text-on-surface font-semibold">Aici</div><p class="font-body-sm text-body-sm text-on-surface-variant">See it. Report it. Fix it.</p><span class="font-label-md text-label-md text-on-surface-variant/80 mt-space-xs">University project, Technical University of Moldova</span></div><div class="flex flex-wrap items-center justify-center gap-space-md"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="map" href="#">Map</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="report-problem" href="#">Report a problem</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="privacy" href="#">Privacy</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="staff-dashboard" href="#">For city hall</a></div></div></footer></body></html>

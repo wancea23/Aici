@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'on-surface': '#131b2e', 'surface-bright': '#faf8ff', 'on-secondary': '#ffffff', 'background': '#faf8ff', 'error': '#ba1a1a', 'secondary-fixed-dim': '#4fdbc8', 'surface-dim': '#d2d9f4', 'secondary-container': '#6df5e1', 'on-secondary-fixed-variant': '#005048', 'inverse-primary': '#6bd8cb', 'on-tertiary': '#ffffff', 'on-primary': '#ffffff', 'outline-variant': '#bcc9c6', 'surface-container-lowest': '#ffffff', 'on-tertiary-fixed': '#370e00', 'secondary-fixed': '#71f8e4', 'primary-container': '#008378', 'inverse-surface': '#283044', 'primary-fixed': '#89f5e7', 'on-error': '#ffffff', 'primary': '#00685f', 'primary-fixed-dim': '#6bd8cb', 'on-secondary-container': '#006f64', 'surface-tint': '#006a61', 'tertiary-fixed': '#ffdbce', 'on-tertiary-container': '#fffbff', 'on-primary-fixed': '#00201d', 'surface': '#faf8ff', 'surface-variant': '#dae2fd', 'secondary': '#006b5f', 'tertiary-fixed-dim': '#ffb59a', 'surface-container': '#eaedff', 'tertiary-container': '#b05e3d', 'on-surface-variant': '#3d4947', 'on-error-container': '#93000a', 'surface-container-low': '#f2f3ff', 'on-primary-container': '#f4fffc', 'error-container': '#ffdad6', 'on-primary-fixed-variant': '#005049', 'surface-container-high': '#e2e7ff', 'tertiary': '#924628', 'on-background': '#131b2e', 'on-secondary-fixed': '#00201c', 'surface-container-highest': '#dae2fd', 'inverse-on-surface': '#eef0ff', 'on-tertiary-fixed-variant': '#773215', 'outline': '#6d7a77' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'space-2xl': '3rem', 'margin-desktop': '2.5rem', 'space-xl': '2rem', 'space-md': '1rem', 'space-xs': '0.25rem', 'margin': '1rem', 'gutter': '1rem', 'space-lg': '1.5rem', 'space-sm': '0.5rem', 'gutter-desktop': '1.5rem', 'margin-tablet': '1.5rem' }, fontFamily: { 'headline-lg-mobile': ['Plus Jakarta Sans'], 'body-lg': ['Plus Jakarta Sans'], 'code-sm': ['JetBrains Mono'], 'headline-md': ['Plus Jakarta Sans'], 'display': ['Plus Jakarta Sans'], 'body-md': ['Plus Jakarta Sans'], 'body-sm': ['Plus Jakarta Sans'], 'label-lg': ['Plus Jakarta Sans'], 'headline-lg': ['Plus Jakarta Sans'], 'headline-sm': ['Plus Jakarta Sans'], 'label-md': ['Plus Jakarta Sans'] }, fontSize: { 'headline-lg-mobile': ['1.5rem', { lineHeight: '2rem', letterSpacing: '-0.01em', fontWeight: '700' }], 'body-lg': ['1.125rem', { lineHeight: '1.75rem', fontWeight: '400' }], 'code-sm': ['0.8125rem', { lineHeight: '1rem', fontWeight: '500' }], 'headline-md': ['1.25rem', { lineHeight: '1.75rem', letterSpacing: '-0.01em', fontWeight: '600' }], 'display': ['2.25rem', { lineHeight: '2.75rem', letterSpacing: '-0.02em', fontWeight: '700' }], 'body-md': ['1rem', { lineHeight: '1.5rem', fontWeight: '400' }], 'body-sm': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '400' }], 'label-lg': ['0.875rem', { lineHeight: '1.25rem', letterSpacing: '0.01em', fontWeight: '600' }], 'headline-lg': ['1.75rem', { lineHeight: '2.25rem', letterSpacing: '-0.015em', fontWeight: '700' }], 'headline-sm': ['1.125rem', { lineHeight: '1.5rem', fontWeight: '600' }], 'label-md': ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.02em', fontWeight: '600' }] } } } };</script></head><body class="bg-surface font-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between py-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col gap-space-lg px-space-md"><div class="flex items-center gap-space-sm px-space-sm"><img alt="Aici Civic Emblem" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz5gQ4fOywPPikQoZ31J36Hkp8jtAuSzxAwQaOPK_zNpc2Q_GX51m-lSXywPpleZEld-OQomw8LvQkLcPe2YxSSGEONzC6TJEKbzIBptvNGMi3VH4D7Mb_MEqBm6cEb0c7Jl8-WYE47aHy9GRYPU-x2nu33znr4pKsQfAdihXyQcIoAcSgXTWiOdj-ExZmWpwGm5jEhxyN9GW30O9x1Sk2Xps36g4wpGPP4IXl2QNnEysyAJaK_qCDPw"/><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-primary font-bold">Aici</span><span class="bg-surface-container-high text-primary font-label-md text-label-md px-space-xs rounded">City Hall</span></div><span class="font-label-md text-label-md text-on-surface-variant">Staff Operational Portal</span></div></div><nav class="flex flex-col gap-space-xs mt-space-md" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-xl"><a aria-current="page" class="flex items-center px-space-md py-space-sm transition-colors bg-primary-container text-on-primary-container font-semibold rounded-xl" data-path="staff-dashboard" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">dashboard</span>Dashboard</a><a class="flex items-center px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="staff-administration" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">admin_panel_settings</span>Administration</a><a class="flex items-center px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="staff-account" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">manage_accounts</span>My account</a><a class="flex items-center px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="staff-reports" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">summarize</span>Report</a></nav></div><div class="px-space-md flex flex-col gap-space-sm"><div class="h-[1px] bg-outline-variant/30 my-space-xs"></div><a class="flex items-center px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-error hover:bg-error-container hover:text-on-error-container transition-colors" data-path="sign-in" href="#"><span class="material-symbols-outlined mr-space-sm text-[20px]">logout</span>Sign out</a></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-sm"><span class="font-label-lg text-label-lg text-on-surface-variant">City hall dashboard</span></div><div class="flex items-center gap-space-md"><button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full h-[calc(100vh-4rem)] overflow-hidden">
+<!-- Top Operational Metrics Bar -->
+<header class="w-full bg-surface-container-lowest px-space-lg py-space-sm flex flex-wrap items-center justify-between gap-space-md shadow-sm z-30 shrink-0">
+<div class="flex items-center gap-space-md flex-wrap">
+<div class="flex items-center gap-space-xs pr-space-md border-r border-outline-variant/30">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Queue Pulse</span>
+<span class="font-code-sm text-code-sm text-primary font-bold">CHI-DISPATCH</span>
+</div>
+<!-- Metric Pills -->
+<div class="flex items-center gap-space-sm flex-wrap">
+<!-- New -->
+<div class="flex items-center gap-space-xs bg-error-container/40 px-3 py-1 rounded-full">
+<span class="w-2.5 h-2.5 rounded-full bg-error inline-block"></span>
+<span class="font-label-md text-label-md text-on-error-container font-semibold">New</span>
+<span class="font-code-sm text-code-sm font-bold text-on-error-container ml-1 bg-surface-container-lowest/80 px-1.5 py-0.5 rounded-full">13</span>
+</div>
+<!-- In progress -->
+<div class="flex items-center gap-space-xs bg-tertiary-fixed/60 px-3 py-1 rounded-full">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary inline-block"></span>
+<span class="font-label-md text-label-md text-on-tertiary-fixed-variant font-semibold">In progress</span>
+<span class="font-code-sm text-code-sm font-bold text-on-tertiary-fixed-variant ml-1 bg-surface-container-lowest/80 px-1.5 py-0.5 rounded-full">5</span>
+</div>
+<!-- Resolved -->
+<div class="flex items-center gap-space-xs bg-secondary-fixed/50 px-3 py-1 rounded-full">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary inline-block"></span>
+<span class="font-label-md text-label-md text-on-secondary-fixed-variant font-semibold">Resolved</span>
+<span class="font-code-sm text-code-sm font-bold text-on-secondary-fixed-variant ml-1 bg-surface-container-lowest/80 px-1.5 py-0.5 rounded-full">2</span>
+</div>
+<!-- Rejected -->
+<div class="flex items-center gap-space-xs bg-surface-container px-3 py-1 rounded-full">
+<span class="w-2.5 h-2.5 rounded-full bg-outline inline-block"></span>
+<span class="font-label-md text-label-md text-on-surface-variant font-semibold">Rejected</span>
+<span class="font-code-sm text-code-sm font-bold text-on-surface-variant ml-1 bg-surface-container-lowest/80 px-1.5 py-0.5 rounded-full">1</span>
+</div>
+</div>
+</div>
+<!-- Right SLA Warning badge & fast action -->
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-2 bg-error text-on-error px-3.5 py-1.5 rounded-full shadow-sm animate-pulse">
+<span class="material-symbols-outlined text-[18px]">alarm_on</span>
+<span class="font-label-md text-label-md font-bold tracking-tight">Deadline passed: 1</span>
+</div>
+<div class="hidden xl:flex items-center gap-1.5 text-on-surface-variant font-code-sm text-code-sm bg-surface-container px-3 py-1.5 rounded-lg">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+<span>SLA live sync (12s)</span>
+</div>
+</div>
+</header>
+<!-- Main Viewport Layout: 60% Map Left / 40% Feed Right -->
+<div class="flex flex-1 w-full overflow-hidden relative">
+<!-- LEFT PANEL: Dynamic Map Workspace (60%) -->
+<section class="w-full lg:w-[60%] h-full relative overflow-hidden bg-surface-container-low select-none flex flex-col">
+<!-- Full Map View Container with natural cartographic rendering -->
+<div class="w-full h-full relative flex-1" data-location="Chisinau, Stefan cel Mare Boulevard" style="">
+<!-- Embedded Stylized Cartographic SVG Layer for Map Texture -->
+<svg class="absolute inset-0 w-full h-full object-cover opacity-90 pointer-events-none" preserveaspectratio="xMidYMid slice" viewbox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="mapWater" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#bdd7ee"></stop>
+<stop offset="100%" stop-color="#9dc3e6"></stop>
+</lineargradient>
+<pattern height="40" id="grid" patternunits="userSpaceOnUse" width="40">
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e2e7ff" stroke-width="0.8"></path>
+</pattern>
+</defs>
+<rect fill="#f4f6fa" height="100%" width="100%"></rect>
+<rect fill="url(#grid)" height="100%" opacity="0.6" width="100%"></rect>
+<!-- Park green spaces: Valea Morilor & Riscani -->
+<path d="M 120 480 C 150 430, 220 460, 270 520 C 310 570, 260 670, 190 680 C 130 690, 90 620, 100 550 Z" fill="#d4edda" stroke="#bce4c6" stroke-width="1.5"></path>
+<path d="M 680 90 C 730 60, 840 80, 890 140 C 920 200, 880 270, 810 260 C 740 250, 710 190, 680 150 Z" fill="#d4edda" stroke="#bce4c6" stroke-width="1.5"></path>
+<path d="M 400 350 C 440 330, 480 340, 500 380 C 510 420, 460 450, 420 440 Z" fill="#e2f0d9" stroke="#cfe8c4" stroke-width="1"></path>
+<!-- Water Reservoir -->
+<path d="M 160 520 C 180 500, 230 510, 250 560 C 260 610, 220 640, 180 630 C 140 620, 140 550, 160 520 Z" fill="url(#mapWater)"></path>
+<!-- Primary Arteries & Boulevards -->
+<!-- Stefan cel Mare Boulevard diagonal -->
+<path d="M -50 490 L 1050 190" stroke="#ffffff" stroke-linecap="round" stroke-width="14"></path>
+<path d="M -50 490 L 1050 190" stroke="#f2ca74" stroke-linecap="round" stroke-width="8"></path>
+<!-- Banulescu-Bodoni crossing -->
+<path d="M 380 -40 L 590 850" stroke="#ffffff" stroke-linecap="round" stroke-width="12"></path>
+<path d="M 380 -40 L 590 850" stroke="#ffd980" stroke-linecap="round" stroke-width="6"></path>
+<!-- Puskin Street parallel -->
+<path d="M 470 -40 L 680 850" stroke="#ffffff" stroke-linecap="round" stroke-width="10"></path>
+<path d="M 470 -40 L 680 850" stroke="#fce4a6" stroke-linecap="round" stroke-width="5"></path>
+<!-- Calea Iesilor & Secondary Roads -->
+<path d="M 30 220 L 520 380 L 980 540" stroke="#ffffff" stroke-width="8"></path>
+<path d="M 30 220 L 520 380 L 980 540" stroke="#e5e9f2" stroke-width="5"></path>
+<path d="M 220 80 L 800 680" stroke="#ffffff" stroke-width="6"></path>
+<path d="M 220 80 L 800 680" stroke="#e5e9f2" stroke-width="3"></path>
+<path d="M 680 340 L 960 210" stroke="#ffffff" stroke-width="6"></path>
+<!-- Street Names & Civic Typography -->
+<text fill="#3d4947" font-family="Plus Jakarta Sans" font-size="11" font-weight="700" letter-spacing="0.1em" transform="rotate(-16, 560, 325)" x="560" y="325">BD. ȘTEFAN CEL MARE ȘI SFÂNT</text>
+<text fill="#6d7a77" font-family="Plus Jakarta Sans" font-size="10" font-weight="600" transform="rotate(76, 545, 470)" x="545" y="470">STR. MITROPOLIT G. BĂNULESCU-BODONI</text>
+<text fill="#00685f" font-family="Plus Jakarta Sans" font-size="10" font-weight="600" x="180" y="580">Parcul Valea Morilor</text>
+<text fill="#00685f" font-family="Plus Jakarta Sans" font-size="10" font-weight="600" x="750" y="160">Parcul Râșcani</text>
+</svg>
+<!-- Dynamic Map Pins Layer (20 status-coded municipal pins across the city) -->
+<!-- Pin 1: New - Ciocana -->
+<div class="absolute top-[28%] left-[78%] group cursor-pointer z-10 transition-transform hover:scale-110">
+<div class="relative flex flex-col items-center">
+<span class="w-8 h-8 rounded-full bg-error text-on-error flex items-center justify-center shadow-md ring-2 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</span>
+<div class="w-2 h-2 bg-error rotate-45 -mt-1 rounded-xs"></div>
+</div>
+</div>
+<!-- Pin 2: Overdue Alert - Calea Iesilor (Red with pulse) -->
+<div class="absolute top-[32%] left-[16%] group cursor-pointer z-20">
+<div class="relative flex flex-col items-center">
+<span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-error rounded-full animate-ping"></span>
+<span class="w-9 h-9 rounded-full bg-error text-on-error flex items-center justify-center shadow-lg ring-2 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</span>
+<div class="w-2.5 h-2.5 bg-error rotate-45 -mt-1 rounded-xs"></div>
+<div class="absolute top-10 whitespace-nowrap bg-inverse-surface text-inverse-on-surface font-code-sm text-code-sm px-2 py-0.5 rounded shadow">
+              3d overdue
+            </div>
+</div>
+</div>
+<!-- Pin 3: In Progress - Posta Veche -->
+<div class="absolute top-[18%] left-[46%] cursor-pointer z-10 hover:scale-110 transition-transform">
+<div class="relative flex flex-col items-center">
+<span class="w-8 h-8 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center shadow-md ring-2 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">construction</span>
+</span>
+<div class="w-2 h-2 bg-tertiary-container rotate-45 -mt-1"></div>
+</div>
+</div>
+<!-- Pin 4: Resolved - Valea Morilor -->
+<div class="absolute top-[64%] left-[24%] cursor-pointer z-10 hover:scale-110 transition-transform">
+<div class="relative flex flex-col items-center">
+<span class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md ring-2 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">forest</span>
+</span>
+<div class="w-2 h-2 bg-primary rotate-45 -mt-1"></div>
+</div>
+</div>
+<!-- Pin 5: New - Botanica -->
+<div class="absolute top-[72%] left-[72%] cursor-pointer z-10 hover:scale-110 transition-transform">
+<div class="relative flex flex-col items-center">
+<span class="w-8 h-8 rounded-full bg-error text-on-error flex items-center justify-center shadow-md ring-2 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">lightbulb</span>
+</span>
+<div class="w-2 h-2 bg-error rotate-45 -mt-1"></div>
+</div>
+</div>
+<!-- Pin 6: Rejected - Riscani -->
+<div class="absolute top-[22%] left-[84%] cursor-pointer z-10 hover:scale-110 transition-transform">
+<div class="relative flex flex-col items-center">
+<span class="w-7 h-7 rounded-full bg-outline text-surface-container-lowest flex items-center justify-center shadow ring-2 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[14px]">block</span>
+</span>
+<div class="w-1.5 h-1.5 bg-outline rotate-45 -mt-1"></div>
+</div>
+</div>
+<!-- Pin 7: Multiple Cluster - Telecentru -->
+<div class="absolute top-[82%] left-[42%] cursor-pointer z-10 hover:scale-110 transition-transform">
+<div class="relative flex flex-col items-center">
+<div class="bg-inverse-surface text-inverse-on-surface font-code-sm text-code-sm font-bold px-2 py-1 rounded-full shadow-lg flex items-center gap-1 ring-2 ring-surface-container-lowest">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+              3 reports
+            </div>
+<div class="w-2 h-2 bg-inverse-surface rotate-45 -mt-1"></div>
+</div>
+</div>
+<!-- Additional background pins for geographic density -->
+<div class="absolute top-[42%] left-[34%] w-6 h-6 rounded-full bg-error/90 text-on-error flex items-center justify-center shadow text-xs">
+<span class="material-symbols-outlined text-[13px]">traffic</span>
+</div>
+<div class="absolute top-[52%] left-[86%] w-6 h-6 rounded-full bg-tertiary/90 text-on-tertiary flex items-center justify-center shadow text-xs">
+<span class="material-symbols-outlined text-[13px]">water_drop</span>
+</div>
+<div class="absolute top-[14%] left-[62%] w-6 h-6 rounded-full bg-primary/90 text-on-primary flex items-center justify-center shadow text-xs">
+<span class="material-symbols-outlined text-[13px]">check</span>
+</div>
+<div class="absolute top-[38%] left-[68%] w-6 h-6 rounded-full bg-error/90 text-on-error flex items-center justify-center shadow text-xs">
+<span class="material-symbols-outlined text-[13px]">lightbulb</span>
+</div>
+<!-- ACTIVE SELECTED PIN: Stefan cel Mare / Banulescu-Bodoni -->
+<div class="absolute top-[43%] left-[48%] -translate-x-1/2 -translate-y-full z-30 flex flex-col items-center">
+<!-- Energetic Teal Ring Glow -->
+<div class="absolute -inset-3 rounded-full bg-secondary-container/40 animate-ping pointer-events-none"></div>
+<div class="relative flex flex-col items-center">
+<!-- Teardrop Pin Marker -->
+<div class="w-11 h-14 bg-surface-container-lowest rounded-t-full rounded-b-none p-1 shadow-2xl flex flex-col items-center ring-4 ring-primary">
+<div class="w-9 h-9 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container shadow-inner">
+<span class="material-symbols-outlined text-[20px]">traffic</span>
+</div>
+<div class="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-surface-container-lowest mt-1"></div>
+</div>
+<span class="w-3.5 h-1.5 bg-on-surface/30 rounded-full blur-[2px] mt-0.5"></span>
+</div>
+<!-- Pin Tag -->
+<div class="mt-1 bg-inverse-surface text-inverse-on-surface font-code-sm text-code-sm px-2.5 py-0.5 rounded-full shadow-md flex items-center gap-1.5 whitespace-nowrap">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+            #AIC-8492 · Pothole
+          </div>
+</div>
+<!-- MAP DETAIL POPUP OVERLAY: Positioned near selected pin -->
+<div class="absolute top-[16%] left-[22%] sm:left-[30%] md:left-[34%] w-[330px] sm:w-[360px] bg-surface-container-lowest rounded-2xl shadow-2xl overflow-hidden z-40 transition-all duration-300">
+<!-- 4:3 Photo Preview with Data Image Placeholder -->
+<div class="relative w-full aspect-[4/3] bg-surface-container-high overflow-hidden">
+<img alt="Pothole on Stefan cel Mare Boulevard" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4c-cvbBN7QddVRFksVXiZk9x5ECN5EDQG5KW51xqz8xe6FVFa3USkOumcyMzt2OX_m_5nax7DrazDfIiDFJ3b9QS1SqRAcF1W4rt5V9neD1P7FNObCicpvEU_8d7zLyMl0V1-w3qXXGN_QBqY1Ks7FyZsL9PCVeQbnPdDHkUGcj4eLY7PqEeMTiQbPGDKYZ5cZGjVmZuNt-N8L6ijygnE1PFETUbtpaRZTeXqpfeKpoJUVwVCZGcqAg"/>
+<!-- Dark Gradient Scrim -->
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-on-surface/30 to-transparent"></div>
+<!-- White status chip top-left -->
+<div class="absolute top-space-sm left-space-sm bg-surface-container-lowest/95 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-label-md text-label-md text-on-surface font-bold">In progress</span>
+</div>
+<!-- Group Badge top-right -->
+<div class="absolute top-space-sm right-space-sm bg-inverse-surface/85 backdrop-blur-sm text-inverse-on-surface font-code-sm text-code-sm px-2.5 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">stacks</span>
+<span>Reported 4 times</span>
+</div>
+<!-- Photo Bottom Content: Category & Time -->
+<div class="absolute bottom-space-md left-space-md right-space-md flex items-end justify-between text-on-primary">
+<div class="flex items-center gap-2">
+<span class="w-8 h-8 rounded-full bg-tertiary flex items-center justify-center text-on-tertiary shadow-sm">
+<span class="material-symbols-outlined text-[18px]">traffic</span>
+</span>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-surface-container-lowest font-bold leading-tight">Pothole</h3>
+<p class="font-label-md text-label-md text-surface-container-high">Stefan cel Mare / Bănulescu-Bodoni</p>
+</div>
+</div>
+<span class="font-code-sm text-code-sm text-surface-container-high bg-on-surface/40 backdrop-blur-sm px-2 py-0.5 rounded">3 hours ago</span>
+</div>
+</div>
+<!-- Popup Description Body -->
+<div class="p-space-md flex flex-col gap-space-sm">
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-3 leading-relaxed">
+              Deep asphalt depression in the second lane heading toward center, causing vehicles to swerve abruptly into adjacent traffic. Water accumulation observed at curb edge.
+            </p>
+<!-- Citizen Upload Thumbnails Strip (4 items) -->
+<div class="pt-space-xs">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-label-md text-label-md text-on-surface-variant">4 Citizen photos</span>
+<span class="font-code-sm text-code-sm text-primary font-semibold">Verification 100%</span>
+</div>
+<div class="grid grid-cols-4 gap-1.5">
+<div class="aspect-square rounded-lg overflow-hidden relative shadow-xs">
+<img alt="View 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4c-cvbBN7QddVRFksVXiZk9x5ECN5EDQG5KW51xqz8xe6FVFa3USkOumcyMzt2OX_m_5nax7DrazDfIiDFJ3b9QS1SqRAcF1W4rt5V9neD1P7FNObCicpvEU_8d7zLyMl0V1-w3qXXGN_QBqY1Ks7FyZsL9PCVeQbnPdDHkUGcj4eLY7PqEeMTiQbPGDKYZ5cZGjVmZuNt-N8L6ijygnE1PFETUbtpaRZTeXqpfeKpoJUVwVCZGcqAg"/>
+</div>
+<div class="aspect-square rounded-lg overflow-hidden relative shadow-xs">
+<img alt="View 2" class="w-full h-full object-cover brightness-95" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4c-cvbBN7QddVRFksVXiZk9x5ECN5EDQG5KW51xqz8xe6FVFa3USkOumcyMzt2OX_m_5nax7DrazDfIiDFJ3b9QS1SqRAcF1W4rt5V9neD1P7FNObCicpvEU_8d7zLyMl0V1-w3qXXGN_QBqY1Ks7FyZsL9PCVeQbnPdDHkUGcj4eLY7PqEeMTiQbPGDKYZ5cZGjVmZuNt-N8L6ijygnE1PFETUbtpaRZTeXqpfeKpoJUVwVCZGcqAg"/>
+</div>
+<div class="aspect-square rounded-lg overflow-hidden relative shadow-xs">
+<img alt="View 3" class="w-full h-full object-cover contrast-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4c-cvbBN7QddVRFksVXiZk9x5ECN5EDQG5KW51xqz8xe6FVFa3USkOumcyMzt2OX_m_5nax7DrazDfIiDFJ3b9QS1SqRAcF1W4rt5V9neD1P7FNObCicpvEU_8d7zLyMl0V1-w3qXXGN_QBqY1Ks7FyZsL9PCVeQbnPdDHkUGcj4eLY7PqEeMTiQbPGDKYZ5cZGjVmZuNt-N8L6ijygnE1PFETUbtpaRZTeXqpfeKpoJUVwVCZGcqAg"/>
+</div>
+<div class="aspect-square rounded-lg bg-surface-container-high flex flex-col items-center justify-center text-on-surface-variant font-code-sm text-code-sm">
+<span class="material-symbols-outlined text-[18px] text-primary">add_photo_alternate</span>
+<span class="text-[10px]">+1 log</span>
+</div>
+</div>
+</div>
+<!-- Popup Quick CTA -->
+<div class="pt-space-xs flex items-center justify-between">
+<div class="flex items-center gap-1 text-tertiary font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>2 days left to resolve</span>
+</div>
+<button class="text-primary font-label-lg text-label-lg hover:underline flex items-center gap-0.5" type="button">
+                Open in feed
+                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Floating Map Controls (Right Top / Bottom) -->
+<div class="absolute top-space-md right-space-md flex flex-col gap-2 z-20">
+<button class="w-10 h-10 bg-surface-container-lowest rounded-xl shadow-md flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</button>
+<button class="w-10 h-10 bg-surface-container-lowest rounded-xl shadow-md flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">my_location</span>
+</button>
+</div>
+<div class="absolute bottom-space-lg left-space-md flex items-center gap-2 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-md z-20">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span class="font-label-md text-label-md text-on-surface font-medium">Chisinau Urban Sector · Centru</span>
+</div>
+</div>
+</section>
+<!-- RIGHT PANEL: Report Feed & Staff Action Workspace (40%) -->
+<section class="w-full lg:w-[40%] h-full bg-surface-container-low flex flex-col overflow-hidden">
+<!-- Filter & Search Subheader -->
+<div class="p-space-md bg-surface-container-lowest shrink-0 shadow-xs flex flex-col gap-space-sm">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface-variant/70 pl-10 pr-space-md py-2.5 rounded-xl font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary/40" placeholder="Search incident ID, street name, citizen..." type="text" value="Stefan cel Mare"/>
+</div>
+<!-- District & Category Chips -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-3 py-1.5 rounded-full flex items-center gap-1 shrink-0" type="button">
+<span>All Sectors</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+<button class="bg-surface-container-high text-on-surface font-label-md text-label-md px-3 py-1.5 rounded-full flex items-center gap-1 shrink-0" type="button">
+<span>Centru (8)</span>
+</button>
+<button class="bg-surface-container-high text-on-surface-variant font-label-md text-label-md px-3 py-1.5 rounded-full flex items-center gap-1 shrink-0" type="button">
+<span>Râșcani (5)</span>
+</button>
+<button class="bg-surface-container-high text-on-surface-variant font-label-md text-label-md px-3 py-1.5 rounded-full flex items-center gap-1 shrink-0" type="button">
+<span>Botanica (4)</span>
+</button>
+<button class="bg-surface-container-high text-on-surface-variant font-label-md text-label-md px-3 py-1.5 rounded-full flex items-center gap-1 shrink-0" type="button">
+<span>Buiucani (3)</span>
+</button>
+</div>
+</div>
+<!-- Scrollable List of Reports -->
+<div class="flex-1 overflow-y-auto p-space-md flex flex-col gap-space-md">
+<!-- CARD 1: SELECTED INCIDENT WITH NESTED ACTION PANEL -->
+<div class="bg-primary-fixed/20 rounded-2xl shadow-md p-space-md transition-all">
+<!-- Selected Card Header & Meta -->
+<div class="flex items-start gap-space-md">
+<!-- 84px Photo Thumbnail -->
+<div class="w-[84px] h-[84px] rounded-xl overflow-hidden shrink-0 relative shadow-sm">
+<img alt="Pothole detail thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4c-cvbBN7QddVRFksVXiZk9x5ECN5EDQG5KW51xqz8xe6FVFa3USkOumcyMzt2OX_m_5nax7DrazDfIiDFJ3b9QS1SqRAcF1W4rt5V9neD1P7FNObCicpvEU_8d7zLyMl0V1-w3qXXGN_QBqY1Ks7FyZsL9PCVeQbnPdDHkUGcj4eLY7PqEeMTiQbPGDKYZ5cZGjVmZuNt-N8L6ijygnE1PFETUbtpaRZTeXqpfeKpoJUVwVCZGcqAg"/>
+<div class="absolute bottom-0 inset-x-0 bg-on-surface/60 text-surface-container-lowest text-[10px] text-center font-code-sm py-0.5">
+                4 PHOTOS
+              </div>
+</div>
+<!-- Middle Meta Info -->
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="w-6 h-6 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">traffic</span>
+</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Pothole</span>
+<span class="bg-inverse-surface text-inverse-on-surface font-code-sm text-code-sm px-2 py-0.2 rounded-full">
+                    4 reports
+                  </span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant shrink-0">3 hours ago</span>
+</div>
+<!-- Status & Deadline row -->
+<div class="flex items-center gap-2 flex-wrap mb-1.5">
+<!-- Status Pill -->
+<span class="inline-flex items-center gap-1.5 bg-tertiary-fixed text-on-tertiary-fixed-variant px-2.5 py-0.5 rounded-full font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                  In progress
+                </span>
+<!-- Deadline Badge -->
+<span class="inline-flex items-center gap-1 bg-tertiary-container/30 text-tertiary-container px-2.5 py-0.5 rounded-full font-label-md text-label-md font-bold">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                  2 days left
+                </span>
+<span class="font-code-sm text-code-sm text-on-surface-variant/80">#AIC-8492</span>
+</div>
+<!-- Description Snippet -->
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                Deep asphalt depression on Stefan cel Mare bd. near intersection with Banulescu-Bodoni. Lane 2 obstruction.
+              </p>
+</div>
+</div>
+<!-- DIRECTLY NESTED STAFF ACTION & DETAIL PANEL -->
+<div class="mt-space-md pt-space-md bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-md">
+<!-- Deadline Alert Bar -->
+<div class="flex items-center justify-between bg-surface-container px-space-md py-2 rounded-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">event_available</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Answer deadline: 15.10.2026</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant font-medium">29 days left</span>
+</div>
+<!-- History Timeline -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Audit Trail</span>
+<span class="font-code-sm text-code-sm text-primary">Live SLA log</span>
+</div>
+<!-- Timeline nodes -->
+<div class="relative pl-6 flex flex-col gap-space-md">
+<!-- Vertical connecting bar -->
+<div class="absolute left-2.5 top-2 bottom-2 w-0.5 bg-outline-variant/40"></div>
+<!-- Event 1: Initial creation -->
+<div class="relative flex flex-col gap-0.5">
+<span class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-primary text-on-primary flex items-center justify-center text-[11px]">
+<span class="material-symbols-outlined text-[12px]">done</span>
+</span>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-bold">Report sent</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">14.09.2026, 10:12</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Submitted by Citizen #1842 (Verified via Mobile ID)</span>
+</div>
+<!-- Event 2: Operator Action with message -->
+<div class="relative flex flex-col gap-1.5">
+<span class="absolute -left-6 top-1 w-5 h-5 rounded-full bg-surface-container-lowest ring-2 ring-tertiary text-tertiary flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</span>
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-bold">Status: In progress</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">15.09.2026, 09:30</span>
+</div>
+<span class="font-code-sm text-code-sm text-primary">operator@chisinau.md (Exdrupo Road Service)</span>
+<!-- Message Bubble -->
+<div class="bg-surface-container px-space-md py-2 rounded-xl text-on-surface font-body-sm text-body-sm relative">
+<span class="font-medium">“We sent the road crew to evaluate and execute temporary cold mix patching.”</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Staff Update Form -->
+<form class="flex flex-col gap-space-sm pt-2" onsubmit="event.preventDefault();">
+<div class="flex flex-col gap-1">
+<label class="font-label-lg text-label-lg text-on-surface font-semibold" for="status-select">Update Incident Status</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low text-on-surface px-space-md py-2.5 rounded-xl font-body-sm text-body-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary/40" id="status-select">
+<option selected="" value="in_progress">In progress (Exdrupo Dispatched)</option>
+<option value="new">New (Needs triage)</option>
+<option value="resolved">Resolved (Work verified complete)</option>
+<option value="rejected">Rejected (Out of municipal remit)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-lg text-label-lg text-on-surface font-semibold" for="citizen-message">Message for the citizen</label>
+<span class="font-label-md text-label-md text-on-surface-variant">Optional</span>
+</div>
+<textarea class="w-full bg-surface-container-low text-on-surface placeholder:text-on-surface-variant/60 p-space-md rounded-xl font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none" id="citizen-message" placeholder="Inform reporting citizens about planned timeline or current roadblocks..." rows="2"></textarea>
+<div class="flex items-start gap-1.5 text-on-surface-variant mt-1">
+<span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">info</span>
+<p class="font-body-sm text-[12px] leading-tight">
+                    Citizens who reported from an account get an email and read the message in their account.
+                  </p>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center justify-end gap-space-sm pt-2">
+<button class="px-space-md py-2 rounded-full font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container transition-colors" type="button">
+                  Discard
+                </button>
+<button class="px-space-lg py-2 rounded-full bg-primary/40 text-on-primary font-label-lg text-label-lg cursor-not-allowed flex items-center gap-1.5 shadow-xs" disabled="" type="submit">
+<span class="material-symbols-outlined text-[18px]">save</span>
+                  Save updates
+                </button>
+</div>
+</form>
+</div>
+</div>
+<!-- CARD 2: Broken Streetlight -->
+<article class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm hover:shadow transition-shadow flex items-start gap-space-md cursor-pointer">
+<div class="w-12 h-12 rounded-xl bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">lightbulb</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Broken streetlight</h4>
+<span class="font-code-sm text-code-sm text-on-surface-variant">1 report</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">5 hours ago</span>
+</div>
+<div class="flex items-center gap-2 mb-2 flex-wrap">
+<span class="inline-flex items-center gap-1 bg-error-container/60 text-on-error-container px-2.5 py-0.5 rounded-full font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                New
+              </span>
+<span class="inline-flex items-center gap-1 bg-surface-container text-on-surface-variant px-2.5 py-0.5 rounded-full font-label-md text-label-md">
+<span class="material-symbols-outlined text-[13px]">schedule</span>
+                12 days left
+              </span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">#AIC-8490</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+              Ștefan cel Mare 105 · Luminaire glass shattered after strong winds, wires exposed.
+            </p>
+</div>
+</article>
+<!-- CARD 3: Damaged Road (OVERDUE) -->
+<article class="bg-error-container/20 rounded-2xl p-space-md shadow-sm hover:shadow transition-shadow flex items-start gap-space-md cursor-pointer">
+<div class="w-12 h-12 rounded-xl bg-error text-on-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">construction</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Damaged road</h4>
+<span class="bg-inverse-surface text-inverse-on-surface font-code-sm text-code-sm px-2 py-0.2 rounded-full">6 reports</span>
+</div>
+<span class="font-code-sm text-code-sm text-error font-bold">CRITICAL</span>
+</div>
+<div class="flex items-center gap-2 mb-2 flex-wrap">
+<span class="inline-flex items-center gap-1 bg-error text-on-error px-2.5 py-0.5 rounded-full font-label-md text-label-md font-bold">
+<span class="material-symbols-outlined text-[13px]">warning</span>
+                3 days overdue
+              </span>
+<span class="inline-flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed-variant px-2.5 py-0.5 rounded-full font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                In progress
+              </span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">#AIC-8488</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+              Calea Ieșilor 14 · Significant subsidence across full lane, concrete sub-base cracked.
+            </p>
+</div>
+</article>
+<!-- CARD 4: Garbage overflow -->
+<article class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm hover:shadow transition-shadow flex items-start gap-space-md cursor-pointer">
+<div class="w-12 h-12 rounded-xl bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">delete</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Garbage overflow</h4>
+<span class="font-code-sm text-code-sm text-on-surface-variant">2 reports</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">6 hours ago</span>
+</div>
+<div class="flex items-center gap-2 mb-2 flex-wrap">
+<span class="inline-flex items-center gap-1 bg-error-container/60 text-on-error-container px-2.5 py-0.5 rounded-full font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                New
+              </span>
+<span class="inline-flex items-center gap-1 bg-surface-container text-on-surface-variant px-2.5 py-0.5 rounded-full font-label-md text-label-md">
+<span class="material-symbols-outlined text-[13px]">schedule</span>
+                5 days left
+              </span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">#AIC-8475</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+              Râșcani Park, Main Pavilion · Waste bins overflowing into recreational green path.
+            </p>
+</div>
+</article>
+<!-- CARD 5: Fallen tree limb -->
+<article class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm hover:shadow transition-shadow flex items-start gap-space-md opacity-85 cursor-pointer">
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed text-on-secondary-fixed-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">park</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Fallen tree limb</h4>
+<span class="font-code-sm text-code-sm text-on-surface-variant">1 report</span>
+</div>
+<span class="font-code-sm text-code-sm text-secondary font-bold">Resolved yesterday</span>
+</div>
+<div class="flex items-center gap-2 mb-2 flex-wrap">
+<span class="inline-flex items-center gap-1 bg-secondary-fixed/70 text-on-secondary-fixed-variant px-2.5 py-0.5 rounded-full font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                Resolved
+              </span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">#AIC-8460</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+              Valea Morilor lakeside run · Removed by Green Spaces Authority (Spatii Verzi).
+            </p>
+</div>
+</article>
+<!-- CARD 6: Construction barrier broken -->
+<article class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm hover:shadow transition-shadow flex items-start gap-space-md opacity-75 cursor-pointer">
+<div class="w-12 h-12 rounded-xl bg-surface-container text-on-surface-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">block</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1 mb-1">
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold truncate">Construction barrier broken</h4>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">2 days ago</span>
+</div>
+<div class="flex items-center gap-2 mb-2 flex-wrap">
+<span class="inline-flex items-center gap-1 bg-surface-container text-on-surface-variant px-2.5 py-0.5 rounded-full font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                Rejected
+              </span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">#AIC-8452</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+              Botanica, Dacia 32 · Private construction perimeter; forwarded to State Building Inspectorate.
+            </p>
+</div>
+</article>
+</div>
+</section>
+</div>
+</div></main></div></body></html>

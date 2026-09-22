@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'inverse-primary': '#00685f',
+            'surface-container-lowest': '#19212e',
+            'secondary': '#5bc9b9',
+            'inverse-surface': '#e1e8f0',
+            'surface-container': '#1a2332',
+            'on-error': '#0e1a2b',
+            'on-tertiary': '#0e1a2b',
+            'tertiary-fixed-dim': '#b98d75',
+            'error': '#ff8a80',
+            'surface-variant': '#1f2a3a',
+            'error-container': '#5e2e2b',
+            'surface': '#0e141f',
+            'on-primary-container': '#d7f9f2',
+            'outline-variant': '#3e4d57',
+            'inverse-on-surface': '#1b232e',
+            'secondary-fixed': '#3db8a6',
+            'surface-container-highest': '#283649',
+            'surface-dim': '#101725',
+            'background': '#0e141f',
+            'on-secondary-container': '#d4f3ed',
+            'secondary-container': '#1e4d46',
+            'on-primary-fixed-variant': '#9fe0d4',
+            'surface-bright': '#1e2538',
+            'on-secondary-fixed': '#c6f0e7',
+            'on-error-container': '#ffb4ab',
+            'primary-container': '#2b9b8f',
+            'surface-tint': '#3ca99c',
+            'surface-container-low': '#151d29',
+            'on-background': '#e6edf7',
+            'on-tertiary-container': '#e8d9d0',
+            'surface-container-high': '#222e40',
+            'primary-fixed': '#1e766b',
+            'primary-fixed-dim': '#3d9e91',
+            'secondary-fixed-dim': '#39c7b5',
+            'outline': '#8a9caa',
+            'on-secondary-fixed-variant': '#9be6d9',
+            'on-tertiary-fixed-variant': '#ebd0be',
+            'on-primary': '#0e1a2b',
+            'tertiary-container': '#8b6b58',
+            'on-primary-fixed': '#c2f0e6',
+            'on-tertiary-fixed': '#e0e8f5',
+            'tertiary-fixed': '#b0836a',
+            'tertiary': '#dbb9a3',
+            'on-secondary': '#0b1f1c',
+            'primary': '#6bd8cb',
+            'on-surface-variant': '#b0c0d0',
+            'on-surface': '#e6edf7'
+          },
+          borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' },
+          spacing: { 'space-sm': '0.5rem', 'space-2xl': '3rem', 'space-md': '1rem', 'margin-tablet': '1.5rem', 'margin-desktop': '2.5rem', 'space-xl': '2rem', 'margin': '1rem', 'space-xs': '0.25rem', 'space-lg': '1.5rem', 'gutter-desktop': '1.5rem', 'gutter': '1rem' },
+          fontFamily: { 'label-md': ['Plus Jakarta Sans'], 'headline-md': ['Plus Jakarta Sans'], 'body-lg': ['Plus Jakarta Sans'], 'body-md': ['Plus Jakarta Sans'], 'display': ['Plus Jakarta Sans'], 'headline-sm': ['Plus Jakarta Sans'], 'code-sm': ['JetBrains Mono'], 'body-sm': ['Plus Jakarta Sans'], 'headline-lg': ['Plus Jakarta Sans'], 'headline-lg-mobile': ['Plus Jakarta Sans'], 'label-lg': ['Plus Jakarta Sans'] },
+          fontSize: {
+            'label-md': ['0.75rem', { 'lineHeight': '1rem', 'letterSpacing': '0.02em', 'fontWeight': '600' }],
+            'headline-md': ['1.25rem', { 'lineHeight': '1.75rem', 'letterSpacing': '-0.01em', 'fontWeight': '600' }],
+            'body-lg': ['1.125rem', { 'lineHeight': '1.75rem', 'fontWeight': '400' }],
+            'body-md': ['1rem', { 'lineHeight': '1.5rem', 'fontWeight': '400' }],
+            'display': ['2.25rem', { 'lineHeight': '2.75rem', 'letterSpacing': '-0.02em', 'fontWeight': '700' }],
+            'headline-sm': ['1.125rem', { 'lineHeight': '1.5rem', 'fontWeight': '600' }],
+            'code-sm': ['0.8125rem', { 'lineHeight': '1rem', 'fontWeight': '500' }],
+            'body-sm': ['0.875rem', { 'lineHeight': '1.25rem', 'fontWeight': '400' }],
+            'headline-lg': ['1.75rem', { 'lineHeight': '2.25rem', 'letterSpacing': '-0.015em', 'fontWeight': '700' }],
+            'headline-lg-mobile': ['1.5rem', { 'lineHeight': '2rem', 'letterSpacing': '-0.01em', 'fontWeight': '700' }],
+            'label-lg': ['0.875rem', { 'lineHeight': '1.25rem', 'letterSpacing': '0.01em', 'fontWeight': '600' }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background font-body-md text-on-surface min-h-screen flex items-center justify-center dark">
+  <main class="w-full">
+    <div class="flex flex-col w-full">
+      <div class="w-full max-w-7xl mx-auto px-margin md:px-margin-tablet lg:px-margin-desktop py-space-xl">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
+          <!-- Left Column -->
+          <section class="lg:col-span-5 flex flex-col space-y-space-xl relative pr-0 lg:pr-space-md">
+            <div class="absolute -top-12 -left-12 w-64 h-64 rounded-full bg-secondary-container opacity-20 blur-3xl pointer-events-none"></div>
+            <div class="space-y-space-md relative">
+              <div class="inline-flex items-center gap-space-xs bg-surface-container px-space-md py-1 rounded-full shadow-sm border border-outline-variant/20">
+                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                <span class="font-label-md text-label-md text-primary tracking-wide uppercase">Înregistrare cetățean Chișinău</span>
+              </div>
+              <h1 class="font-display text-display text-on-surface leading-tight font-bold">Alătură-te comunității civice active din Chișinău</h1>
+              <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                Contul tău de cetățean îți permite să gestionezi toate sesizările depuse, să primești rapoarte foto de la intervențiile municipale și să contribui la transparența orașului.
+              </p>
+            </div>
+            <div class="space-y-space-md">
+              <div class="flex items-start gap-space-sm p-space-md bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20">
+                <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0 mt-0.5">
+                  <span class="material-symbols-outlined text-[18px]">verified_user</span>
+                </div>
+                <div class="space-y-0.5">
+                  <p class="font-headline-sm text-headline-sm text-on-surface">Confidențialitate garantată</p>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Datele personale sunt anonimizate și protejate conform normelor GDPR municipale.</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-space-sm p-space-md bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20">
+                <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0 mt-0.5">
+                  <span class="material-symbols-outlined text-[18px]">cleaning_services</span>
+                </div>
+                <div class="space-y-0.5">
+                  <p class="font-headline-sm text-headline-sm text-on-surface">Sanitizare metadate</p>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Coordonatele GPS brute și metadatele EXIF foto sunt curățate automat înainte de publicare.</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-space-sm p-space-md bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20">
+                <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0 mt-0.5">
+                  <span class="material-symbols-outlined text-[18px]">account_balance</span>
+                </div>
+                <div class="space-y-0.5">
+                  <p class="font-headline-sm text-headline-sm text-on-surface">Dispecerat centralizat</p>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Acces direct la tichetele transmise către preturile de sector și serviciile operative municipale.</p>
+                </div>
+              </div>
+            </div>
+            <div class="p-space-lg bg-surface-container rounded-xl shadow-sm space-y-space-sm relative overflow-hidden border border-outline-variant/20">
+              <div class="flex items-center gap-space-sm">
+                <span class="material-symbols-outlined text-primary text-[28px]">insights</span>
+                <span class="font-label-lg text-label-lg text-primary uppercase">Raport Civic 2026</span>
+              </div>
+              <p class="font-headline-md text-headline-md text-on-surface italic font-medium">
+                "Peste 14.000 de probleme urbane rezolvate în 2026 împreună cu locuitorii capitalei."
+              </p>
+              <div class="flex items-center justify-between pt-space-xs">
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Primăria Municipiului Chișinău</span>
+                <span class="font-code-sm text-code-sm text-primary font-bold">14,289 TICHETE FINALIZATE</span>
+              </div>
+            </div>
+            <div class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm flex items-center gap-space-md border border-outline-variant/20">
+              <div class="w-16 h-16 rounded-lg bg-surface-container shrink-0 flex items-center justify-center text-primary overflow-hidden">
+                <span class="material-symbols-outlined text-[32px]">map</span>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-space-xs">
+                  <span class="font-label-md text-label-md text-secondary uppercase font-semibold">Acoperire teritorială</span>
+                  <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  <span class="font-code-sm text-code-sm text-on-surface-variant">5 Sectoare</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface truncate">Centru, Botanica, Buiucani, Rîșcani, Ciocana</p>
+              </div>
+            </div>
+          </section>
+          <!-- Right Column -->
+          <section class="lg:col-span-7 flex flex-col justify-center">
+            <div class="w-full bg-surface-container-lowest rounded-xl shadow-md p-space-lg md:p-space-xl space-y-space-lg border border-outline-variant/20">
+              <div class="space-y-space-xs">
+                <h2 class="font-headline-lg text-headline-lg text-on-surface font-bold">Create account</h2>
+                <p class="font-body-md text-body-md text-on-surface-variant">
+                  We'll email you a link to confirm your address. Already have an account?
+                  <a class="font-label-lg text-label-lg text-primary hover:underline ml-1 inline-flex items-center" href="#">
+                    Sign in
+                    <span class="material-symbols-outlined text-[16px] ml-0.5">arrow_forward</span>
+                  </a>
+                </p>
+              </div>
+              <form class="space-y-space-lg" onsubmit="event.preventDefault();">
+                <!-- Email -->
+                <div class="space-y-1.5">
+                  <div class="flex justify-between items-center">
+                    <label class="font-label-lg text-label-lg text-on-surface" for="citizen-email">Email address</label>
+                    <span class="font-code-sm text-code-sm text-on-surface-variant">Public ID</span>
+                  </div>
+                  <div class="relative flex items-center">
+                    <span class="material-symbols-outlined absolute left-space-md text-on-surface-variant pointer-events-none text-[20px]">mail</span>
+                    <input class="w-full h-11 bg-surface pl-11 pr-space-md font-body-md text-body-md text-on-surface rounded-lg shadow-sm focus:outline-none focus:bg-surface-container-lowest transition-colors border border-outline-variant/20" id="citizen-email" required="" type="email" value="ion.popescu@mail.md"/>
+                  </div>
+                </div>
+                <!-- Password -->
+                <div class="space-y-1.5">
+                  <div class="flex justify-between items-center">
+                    <label class="font-label-lg text-label-lg text-on-surface" for="citizen-password">Password</label>
+                    <span class="font-label-md text-label-md px-2 py-0.5 rounded-full bg-surface-container text-primary font-semibold">Strong required</span>
+                  </div>
+                  <div class="relative flex items-center">
+                    <span class="material-symbols-outlined absolute left-space-md text-on-surface-variant pointer-events-none text-[20px]">lock</span>
+                    <input class="w-full h-11 bg-surface pl-11 pr-11 font-body-md text-body-md text-on-surface rounded-lg shadow-sm focus:outline-none focus:bg-surface-container-lowest transition-colors border border-outline-variant/20" id="citizen-password" required="" type="password" value="ChisinauCurat2026"/>
+                    <button aria-label="Toggle password visibility" class="absolute right-space-md text-on-surface-variant hover:text-on-surface focus:outline-none" id="toggle-password-btn" type="button">
+                      <span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility</span>
+                    </button>
+                  </div>
+                  <div class="flex flex-wrap gap-space-xs pt-1.5">
+                    <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-primary text-label-md font-label-md">
+                      <span class="material-symbols-outlined text-[14px]">check</span>
+                      <span>at least 8 characters</span>
+                    </div>
+                    <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-primary text-label-md font-label-md">
+                      <span class="material-symbols-outlined text-[14px]">check</span>
+                      <span>an uppercase letter</span>
+                    </div>
+                    <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-primary text-label-md font-label-md">
+                      <span class="material-symbols-outlined text-[14px]">check</span>
+                      <span>a lowercase letter</span>
+                    </div>
+                    <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface text-on-surface-variant text-label-md font-label-md border border-outline-variant/20">
+                      <span class="w-2.5 h-2.5 rounded-full bg-outline-variant inline-block"></span>
+                      <span>a special character</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-1.5 pt-1 text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[16px] text-secondary">security</span>
+                    <span class="font-body-sm text-body-sm">We also check it doesn't appear in public data leaks.</span>
+                  </div>
+                </div>
+                <!-- Repeat Password -->
+                <div class="space-y-1.5">
+                  <label class="font-label-lg text-label-lg text-on-surface" for="citizen-password-confirm">Repeat password</label>
+                  <div class="relative flex items-center">
+                    <span class="material-symbols-outlined absolute left-space-md text-on-surface-variant pointer-events-none text-[20px]">lock_reset</span>
+                    <input class="w-full h-11 bg-surface pl-11 pr-space-md font-body-md text-body-md text-on-surface rounded-lg shadow-sm focus:outline-none focus:bg-surface-container-lowest transition-colors border border-outline-variant/20" id="citizen-password-confirm" required="" type="password" value="ChisinauCurat2026"/>
+                  </div>
+                </div>
+                <!-- Bot Verification -->
+                <div class="p-space-md bg-surface rounded-lg shadow-sm flex items-center justify-between border border-outline-variant/20">
+                  <label class="flex items-center gap-space-md cursor-pointer select-none">
+                    <input checked="" class="w-5 h-5 accent-primary cursor-pointer rounded" id="altcha-verify" type="checkbox"/>
+                    <div class="flex flex-col">
+                      <span class="font-label-lg text-label-lg text-on-surface">I'm not a robot</span>
+                      <span class="font-code-sm text-code-sm text-on-surface-variant">Verified resident check</span>
+                    </div>
+                  </label>
+                  <div class="flex items-center gap-space-xs text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[20px] text-primary" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+                    <span class="font-code-sm text-code-sm tracking-wider uppercase font-semibold">ALTCHA</span>
+                  </div>
+                </div>
+                <!-- Submit -->
+                <button class="w-full h-11 bg-primary text-on-primary rounded-full font-label-lg text-label-lg flex items-center justify-center gap-space-xs shadow-md hover:bg-primary-container active:scale-[0.99] transition-all" type="submit">
+                  <span>Create account</span>
+                  <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </button>
+                <p class="font-body-sm text-body-sm text-center text-on-surface-variant px-space-md">
+                  By registering, you agree to the
+                  <a class="text-primary font-medium hover:underline" href="#">Chișinău Civic Code</a>
+                  &amp;
+                  <a class="text-primary font-medium hover:underline" href="#">Privacy Policy</a>.
+                </p>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script>
+      (function() {
+        const toggleBtn = document.getElementById('toggle-password-btn');
+        const pwdInput = document.getElementById('citizen-password');
+        const eyeIcon = document.getElementById('eye-icon');
+        if (toggleBtn && pwdInput && eyeIcon) {
+          toggleBtn.addEventListener('click', function() {
+            const isPassword = pwdInput.getAttribute('type') === 'password';
+            pwdInput.setAttribute('type', isPassword ? 'text' : 'password');
+            eyeIcon.textContent = isPassword ? 'visibility_off' : 'visibility';
+          });
+        }
+      })();
+    </script>
+  </main>
+</body>
+</html>
