@@ -63,7 +63,8 @@ export async function listPublicReports(details: boolean, limit = 500): Promise<
   }));
 }
 
-export type CitizenReport = Pick<Report, "id" | "category" | "description" | "status" | "created_at" | "events">;
+// lat/lng are the point rounded to about 100 m, same as the public map, for the profile's map.
+export type CitizenReport = Pick<Report, "id" | "category" | "description" | "status" | "lat" | "lng" | "created_at" | "events">;
 
 // A report's history as one json array, so the list stays a single query.
 function eventsOf(sql: postgres.Sql, withAuthor: boolean) {
@@ -94,7 +95,10 @@ function readEvents(events: RawEvent[], authors?: Map<string, string>): ReportEv
 // Scoped by citizen_id here and, as a second line of defense, by row-level security too.
 export async function listReportsForCitizen(citizenId: string, limit = 100): Promise<CitizenReport[]> {
   const rows = await withAccess({ citizenId }, (sql) => sql`
-    select r.id, r.category, r.description, r.status, r.created_at, ${eventsOf(sql, false)} as events
+    select r.id, r.category, r.description, r.status,
+           round(ST_Y(r.geom)::numeric, 3)::float8 as lat,
+           round(ST_X(r.geom)::numeric, 3)::float8 as lng,
+           r.created_at, ${eventsOf(sql, false)} as events
     from reports r
     where r.citizen_id = ${citizenId}
     order by r.created_at desc
@@ -105,6 +109,8 @@ export async function listReportsForCitizen(citizenId: string, limit = 100): Pro
     category: r.category,
     description: readDescription(r.id, r.description),
     status: r.status,
+    lat: r.lat,
+    lng: r.lng,
     created_at: new Date(r.created_at).toISOString(),
     events: readEvents(r.events),
   }));

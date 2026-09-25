@@ -42,8 +42,8 @@ screen, not separate screens:
   - `my_account_citizen` → `_command_hub_`, `_editorial_stream_`, `_tabular_registry_`
     (plus the unsuffixed default)
 
-  Same data, same route, different framing. **Which one to build is still an open decision** —
-  check with Andrei before picking.
+  Same data, same route, different framing. For `my_account_citizen` the team picked
+  **`_command_hub_`**, built in `src/features/citizens/profile/`. `create_account` is still open.
 
 ## Source of truth for colors, type and spacing
 
@@ -81,7 +81,10 @@ since been removed.
 Several mockups display data this app does not have and does not collect. When building a
 screen, leave these out rather than inventing a backend for them:
 
-- A "civic score" / "Nivel 3" gamification badge — no scoring rule exists anywhere
+- The civic score in the mockups uses made up numbers. The real one is in
+  `src/features/citizens/civic-score.ts`: 10 pct for an accepted report, 5 more once the city
+  hall starts work, 15 more when it is resolved, nothing for a rejected one, plus 5 levels and
+  6 badges. It is worked out from the citizen's own reports on every load and never stored
 - A citizen ID like `ID-8821` — citizens have an internal UUID, never shown to them
 - Ticket codes like `#AIC-8492`, `#LM-9022` — reports are identified by a real UUID, shown
   truncated (e.g. `a4f9c21b`)

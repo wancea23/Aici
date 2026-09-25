@@ -106,6 +106,10 @@
   --color-tertiary-fixed-dim: 185 141 117;
 }
 
+body:has([data-inline-theme-toggle]) .global-theme-toggle {
+  display: none;
+}
+
 .maplibregl-map {
   font-family: inherit;
 }
