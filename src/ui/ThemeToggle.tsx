@@ -10,7 +10,9 @@ const STORAGE_KEY = "aici-theme";
 // layout.tsx already sets the right class before paint, this only ever flips it, and which
 // icon shows is decided by CSS (dark:) reacting to that class — not a render-time guess at
 // what the DOM already says, which is what tripped the set-state-in-effect lint rule earlier.
-export default function ThemeToggle() {
+// inline: drawn inside a page's own header instead. A page that does this hides the fixed one
+// (see .global-theme-toggle in globals.css), so the two never show together.
+export default function ThemeToggle({ inline = false, className }: { inline?: boolean; className?: string }) {
   return (
     <button
       type="button"
@@ -23,10 +25,15 @@ export default function ThemeToggle() {
         }
       }}
       aria-label="Comută între modul luminos și cel întunecat"
-      className="fixed left-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-outline-variant bg-surface-container-lowest text-on-surface shadow-sm transition-colors hover:bg-surface-container-low"
+      data-inline-theme-toggle={inline || undefined}
+      className={
+        inline
+          ? className
+          : "global-theme-toggle fixed left-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-outline-variant bg-surface-container-lowest text-on-surface shadow-sm transition-colors hover:bg-surface-container-low"
+      }
     >
-      <Icon node={Moon} className="h-5 w-5 dark:hidden" />
-      <Icon node={Sun} className="hidden h-5 w-5 dark:block" />
+      <Icon node={Moon} className={`${inline ? "h-4 w-4" : "h-5 w-5"} dark:hidden`} />
+      <Icon node={Sun} className={`hidden ${inline ? "h-4 w-4" : "h-5 w-5"} dark:block`} />
     </button>
   );
 }

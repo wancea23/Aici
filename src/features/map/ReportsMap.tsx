@@ -32,13 +32,15 @@ type Props = {
   onPick: (id: string) => void;
   // off on the public map, photos are for staff only
   photos?: boolean;
+  // off where the map is too small for a popup, like the profile's report sheet
+  popups?: boolean;
 };
 
 const svgNS = "http://www.w3.org/2000/svg";
 // a big group would otherwise fill the popup and load every photo at once
 const maxThumbs = 8;
 
-export default function ReportsMap({ reports, selection, onPick, photos = true }: Props) {
+export default function ReportsMap({ reports, selection, onPick, photos = true, popups = true }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const markers = useRef(new Map<string, maplibregl.Marker>());
@@ -76,10 +78,9 @@ export default function ReportsMap({ reports, selection, onPick, photos = true }
       const el = pin(r);
       el.addEventListener("click", () => onPick(r.id));
 
-      const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
-        .setLngLat([r.lng, r.lat])
-        .setPopup(reportPopup(r, photos))
-        .addTo(m);
+      const marker = new maplibregl.Marker({ element: el, anchor: "bottom" }).setLngLat([r.lng, r.lat]);
+      if (popups) marker.setPopup(reportPopup(r, photos));
+      marker.addTo(m);
       markers.current.set(r.id, marker);
       added.push(marker);
     }
@@ -97,7 +98,7 @@ export default function ReportsMap({ reports, selection, onPick, photos = true }
     return () => {
       for (const marker of added) marker.remove();
     };
-  }, [reports, onPick, photos]);
+  }, [reports, onPick, photos, popups]);
 
   // The picked report stays raised on the map, wherever it was picked.
   useEffect(() => {
@@ -117,7 +118,8 @@ export default function ReportsMap({ reports, selection, onPick, photos = true }
     }
     m.flyTo({ center: marker.getLngLat(), zoom: Math.max(m.getZoom(), 15), duration: 600 });
     m.once("moveend", () => {
-      if (!marker.getPopup()?.isOpen()) marker.togglePopup();
+      const popup = marker.getPopup();
+      if (popup && !popup.isOpen()) marker.togglePopup();
     });
   }, [selection]);
 
