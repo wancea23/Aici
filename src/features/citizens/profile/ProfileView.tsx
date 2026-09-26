@@ -175,7 +175,7 @@ export default function ProfileView({ email, reports, now }: { email: string; re
           </section>
 
           <section className="mx-auto w-full max-w-[1600px] flex-1 space-y-6 p-3 sm:space-y-8 sm:p-6 lg:p-8">
-            <ProfileHub reports={reports} score={score} now={now} />
+            <ProfileHub reports={reports} score={score} now={now} unreadNotes={unreadNotes} />
 
             <div id="setari" className={`scroll-mt-20 rounded-xl border p-4 shadow-sm sm:p-5 xl:w-[calc((100%-2rem)*7/12)] ${panel}`}>
               <div className="flex flex-wrap items-start justify-between gap-3">
@@ -193,7 +193,7 @@ export default function ProfileView({ email, reports, now }: { email: string; re
               </div>
               <AccountData />
               {/* the sidebar with these links is hidden below 1024px */}
-              <nav className={`mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t border-slate-100 pt-4 text-xs font-semibold dark:border-slate-700/50 lg:hidden`}>
+              <nav aria-label="Alte pagini" className={`mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t border-slate-100 pt-4 text-xs font-semibold dark:border-slate-700/50 lg:hidden`}>
                 <Link href="/map" className="text-teal-700 hover:underline dark:text-teal-400">
                   Harta sesizărilor
                 </Link>
