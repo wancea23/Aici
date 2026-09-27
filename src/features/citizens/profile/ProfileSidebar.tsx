@@ -35,15 +35,14 @@ function initials(email: string) {
   return (letters.slice(0, 2) || "?").toUpperCase();
 }
 
-// Avatar, level and the bar towards the next one. Also drawn at the top of the page on phones,
-// where the sidebar is hidden.
-export function ProfileCard({ email, score }: { email: string; score: CivicScore }) {
+// Avatar, level and the bar towards the next one: the only place the score is shown.
+// compact: the phone version at the top of the page, without the email line.
+export function ProfileCard({ email, score, compact = false }: { email: string; score: CivicScore; compact?: boolean }) {
   return (
-    <div className="relative overflow-hidden rounded-xl border border-teal-100 bg-gradient-to-br from-teal-50 to-white p-4 shadow-sm dark:border-teal-700/40 dark:from-[#0f2e2a] dark:to-[#19212e]">
-      <div className="absolute -right-3 -top-3 h-16 w-16 rounded-full bg-teal-100/50 dark:bg-teal-900/40" />
-      <div className="relative z-10 flex items-start gap-3.5">
-        <div className="relative">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-teal-600 text-base font-bold text-white shadow-sm">
+    <div className={`rounded-xl border border-teal-100 bg-gradient-to-br from-teal-50 to-white shadow-sm dark:border-teal-700/40 dark:from-[#0f2e2a] dark:to-[#19212e] ${compact ? "p-3.5" : "p-4"}`}>
+      <div className="flex items-center gap-3">
+        <div className="relative shrink-0">
+          <div className={`flex items-center justify-center rounded-full bg-teal-600 font-bold text-white ${compact ? "h-10 w-10 text-sm" : "h-12 w-12 text-base"}`}>
             {initials(email)}
           </div>
           <span
@@ -55,74 +54,86 @@ export function ProfileCard({ email, score }: { email: string; score: CivicScore
         </div>
         <div className="min-w-0 flex-1">
           <h2 className={`truncate text-sm font-bold ${strong}`}>{displayName(email)}</h2>
-          <p className="font-mono text-[11px] font-medium text-teal-800 dark:text-teal-300">
-            Nivel {score.level.level} · {score.level.title}
-          </p>
-          <div className={`mt-1 flex items-center gap-1 text-[11px] ${muted}`}>
-            <Icon node={Mail} className="h-3.5 w-3.5 shrink-0 text-teal-600 dark:text-teal-400" />
-            <span className="truncate">{email}</span>
-          </div>
+          {!compact && (
+            <div className={`mt-0.5 flex items-center gap-1 text-[11px] ${muted}`}>
+              <Icon node={Mail} className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">{email}</span>
+            </div>
+          )}
+          {compact && <ScoreLine score={score} />}
         </div>
       </div>
 
-      <div className="mt-4 border-t border-teal-100/80 pt-3 dark:border-teal-700/40">
-        <div className="mb-1.5 flex items-center justify-between text-xs">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
-            Scor civic:
-          </span>
-          <span className="font-mono text-xs font-bold text-teal-700 dark:text-teal-400">
-            {score.points} pct (Nivel {score.level.level})
-          </span>
+      {compact ? (
+        <ScoreBar score={score} className="mt-3" />
+      ) : (
+        <div className="mt-4 border-t border-teal-100/80 pt-3 dark:border-teal-700/40">
+          <ScoreLine score={score} />
+          <ScoreBar score={score} className="mt-1.5" />
         </div>
-        <div
-          className="h-1.5 w-full overflow-hidden rounded-full bg-teal-100 dark:bg-slate-700"
-          role="progressbar"
-          aria-label="Progres spre nivelul următor"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={Math.round(score.progress * 100)}
-        >
-          <div className="h-full rounded-full bg-teal-600 dark:bg-teal-400" style={{ width: `${score.progress * 100}%` }} />
-        </div>
-        <p className={`mt-1 text-[10px] ${muted}`}>
-          {score.next
-            ? `Încă ${score.toNext} pct până la ${score.next.title}`
-            : "Nivel maxim atins. Mulțumim!"}
-        </p>
-      </div>
+      )}
     </div>
   );
 }
 
+function ScoreLine({ score }: { score: CivicScore }) {
+  return (
+    <div className="flex items-baseline justify-between gap-2 text-xs">
+      <span className="truncate font-semibold text-teal-800 dark:text-teal-300">
+        Nivel {score.level.level} · {score.level.title}
+      </span>
+      <span className="shrink-0 font-mono text-[11px] font-bold text-teal-700 dark:text-teal-400">{score.points} pct</span>
+    </div>
+  );
+}
+
+function ScoreBar({ score, className }: { score: CivicScore; className?: string }) {
+  return (
+    <div className={className}>
+      <div
+        className="h-1.5 w-full overflow-hidden rounded-full bg-teal-100 dark:bg-slate-700"
+        role="progressbar"
+        aria-label="Progres spre nivelul următor"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(score.progress * 100)}
+      >
+        <div className="h-full rounded-full bg-teal-600 dark:bg-teal-400" style={{ width: `${score.progress * 100}%` }} />
+      </div>
+      <p className={`mt-1 text-[11px] ${muted}`}>
+        {score.next ? `Încă ${score.toNext} pct până la ${score.next.title}` : "Nivel maxim atins. Mulțumim!"}
+      </p>
+    </div>
+  );
+}
+
+// Earned badges in color, locked ones faded. The hint says how to earn each one.
 export function BadgeShelf({ score }: { score: CivicScore }) {
   const earned = score.badges.filter((b) => b.earned).length;
   return (
-    <div className="rounded-xl border border-slate-200/80 bg-slate-50 p-3.5 text-xs dark:border-slate-700/40 dark:bg-[#151d29]">
-      <div className="mb-2.5 flex items-center justify-between">
-        <span className={`text-[10px] font-bold uppercase tracking-wider ${faint}`}>Insignele tale</span>
+    <div className="rounded-xl border border-slate-200/80 bg-white p-3.5 text-xs dark:border-slate-700/40 dark:bg-[#19212e]">
+      <div className="mb-3 flex items-center justify-between">
+        <span className={`text-[11px] font-bold uppercase tracking-wider ${faint}`}>Insigne</span>
         <span className={`font-mono text-[11px] font-medium ${accent}`}>
           {earned}/{score.badges.length}
         </span>
       </div>
-      <ul className="grid grid-cols-3 gap-2">
+      <ul className="grid grid-cols-3 gap-x-2 gap-y-3 sm:grid-cols-6 lg:grid-cols-3">
         {score.badges.map((b) => (
           <li
             key={b.id}
             title={`${b.title}: ${b.hint}${b.earned ? "" : " (încă blocată)"}`}
-            className={`flex flex-col items-center gap-1 rounded-lg border px-1 py-2 text-center ${
-              b.earned
-                ? "border-teal-200 bg-white text-teal-700 dark:border-teal-700/50 dark:bg-teal-900/40 dark:text-teal-300"
-                : "border-dashed border-slate-200 text-slate-400 dark:border-slate-700/50 dark:text-slate-500"
-            }`}
+            className={`flex flex-col items-center gap-1 text-center ${b.earned ? "text-teal-800 dark:text-teal-300" : "text-slate-400 dark:text-slate-500"}`}
           >
             <span
-              className={`flex h-7 w-7 items-center justify-center rounded-full ${
-                b.earned ? "bg-teal-600 text-white dark:bg-teal-500 dark:text-[#0e1a2b]" : "bg-slate-200/70 dark:bg-slate-700/60"
+              className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                b.earned ? "bg-teal-600 text-white dark:bg-teal-500 dark:text-[#0e1a2b]" : "bg-slate-100 dark:bg-slate-700/60"
               }`}
             >
-              <Icon node={b.earned ? badgeIcons[b.id] : Lock} className="h-3.5 w-3.5" />
+              <Icon node={b.earned ? badgeIcons[b.id] : Lock} className="h-4 w-4" />
             </span>
             <span className="text-[10px] font-semibold leading-tight">{b.title}</span>
+            <span className="sr-only">{b.earned ? "câștigată" : `blocată, ${b.hint}`}</span>
           </li>
         ))}
       </ul>
