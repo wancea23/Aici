@@ -34,15 +34,23 @@ type Props = {
   photos?: boolean;
   // off where the map is too small for a popup, like the profile's report sheet
   popups?: boolean;
+  // the public map: frame only the reports inside this box (west, south, east, north), once,
+  // so filtering pins does not move the view; controls bottom right with a locate me button
+  area?: [number, number, number, number];
 };
 
 const svgNS = "http://www.w3.org/2000/svg";
 // a big group would otherwise fill the popup and load every photo at once
 const maxThumbs = 8;
 
-export default function ReportsMap({ reports, selection, onPick, photos = true, popups = true }: Props) {
+export default function ReportsMap({ reports, selection, onPick, photos = true, popups = true, area }: Props) {
   const box = useRef<HTMLDivElement>(null);
+  const framed = useRef(false);
+  // the controls are placed once, when the map is made
+  const publicTools = useRef(Boolean(area));
   const map = useRef<maplibregl.Map | null>(null);
+  // true after the map's first load event; m.loaded() goes false again while tiles load
+  const ready = useRef(false);
   const markers = useRef(new Map<string, maplibregl.Marker>());
 
   useEffect(() => {
@@ -57,13 +65,21 @@ export default function ReportsMap({ reports, selection, onPick, photos = true, 
     });
     m.touchZoomRotate.disableRotation();
     m.keyboard.disableRotation();
-    m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-left");
-    m.on("load", () => romanianLabels(m));
+    const corner = publicTools.current ? "bottom-right" : "top-left";
+    m.addControl(new maplibregl.NavigationControl({ showCompass: false }), corner);
+    if (publicTools.current) m.addControl(new maplibregl.GeolocateControl({ fitBoundsOptions: { maxZoom: 15 } }), corner);
+    m.on("load", () => {
+      ready.current = true;
+      romanianLabels(m);
+      // the credits start folded into the (i) button, open they cover half of a small map
+      box.current?.querySelector(".maplibregl-ctrl-attrib")?.classList.remove("maplibregl-compact-show");
+    });
     map.current = m;
 
     return () => {
       m.remove();
       map.current = null;
+      ready.current = false;
     };
   }, []);
 
@@ -85,20 +101,31 @@ export default function ReportsMap({ reports, selection, onPick, photos = true, 
       added.push(marker);
     }
 
-    if (reports.length > 0) {
+    const inside = area
+      ? reports.filter((r) => r.lng >= area[0] && r.lat >= area[1] && r.lng <= area[2] && r.lat <= area[3])
+      : reports;
+    if (inside.length > 0 && !(area && framed.current)) {
+      framed.current = true;
       const bounds = new maplibregl.LngLatBounds();
-      for (const r of reports) bounds.extend([r.lng, r.lat]);
-      m.fitBounds(bounds, {
-        padding: { top: 70, bottom: 30, left: 40, right: 40 },
-        maxZoom: 15,
-        animate: false,
-      });
+      for (const r of inside) bounds.extend([r.lng, r.lat]);
+      // the box can still be growing when the map is made (its css comes in a moment later),
+      // so frame the pins once it has loaded, at its real size
+      const frame = () => {
+        m.resize();
+        m.fitBounds(bounds, {
+          padding: { top: 70, bottom: 30, left: 40, right: 40 },
+          maxZoom: 15,
+          animate: false,
+        });
+      };
+      if (ready.current) frame();
+      else m.once("load", frame);
     }
 
     return () => {
       for (const marker of added) marker.remove();
     };
-  }, [reports, onPick, photos, popups]);
+  }, [reports, onPick, photos, popups, area]);
 
   // The picked report stays raised on the map, wherever it was picked.
   useEffect(() => {
@@ -116,11 +143,16 @@ export default function ReportsMap({ reports, selection, onPick, photos = true, 
     for (const other of markers.current.values()) {
       if (other !== marker && other.getPopup()?.isOpen()) other.togglePopup();
     }
-    m.flyTo({ center: marker.getLngLat(), zoom: Math.max(m.getZoom(), 15), duration: 600 });
-    m.once("moveend", () => {
-      const popup = marker.getPopup();
-      if (popup && !popup.isOpen()) marker.togglePopup();
-    });
+    const fly = () => {
+      m.flyTo({ center: marker.getLngLat(), zoom: Math.max(m.getZoom(), 15), duration: 600 });
+      m.once("moveend", () => {
+        const popup = marker.getPopup();
+        if (popup && !popup.isOpen()) marker.togglePopup();
+      });
+    };
+    // before load, wait so the first framing of the pins does not undo the flight
+    if (ready.current) fly();
+    else m.once("load", fly);
   }, [selection]);
 
   return <div ref={box} className="h-full w-full" />;
@@ -212,19 +244,38 @@ function popup(r: MapReport) {
 // The public card: what, how far along, and when. No photo and no description.
 function publicPopup(r: MapReport) {
   const el = document.createElement("div");
-  el.className = "w-56 space-y-2 p-3";
+  el.className = "w-64 space-y-3 p-3.5";
 
-  const title = line(
-    "flex items-center gap-1.5 text-[15px] font-semibold text-slate-900",
-    categoryLabels[r.category as Category] ?? r.category
+  const head = document.createElement("div");
+  head.className = "flex items-center gap-3";
+  const badge = document.createElement("div");
+  badge.className = "grid h-10 w-10 flex-none place-items-center rounded-full";
+  const color = statusColors[r.status as Status] ?? "#64748b";
+  badge.style.backgroundColor = `${color}1f`;
+  badge.style.color = color;
+  badge.append(icon(r.category, { class: "h-5 w-5" }));
+  const text = document.createElement("div");
+  text.className = "min-w-0";
+  text.append(
+    line("text-[15px] font-semibold leading-tight text-slate-900", categoryLabels[r.category as Category] ?? r.category),
+    line("mt-0.5 text-xs text-slate-500", "Locație aproximativă, cam 100 m")
   );
-  title.prepend(icon(r.category, { class: "h-4 w-4 flex-none text-slate-500" }));
-  const when = line("text-xs text-slate-500", `${timeAgo(r.created_at)}, locație aproximativă`);
+  head.append(badge, text);
+
+  const chips = document.createElement("div");
+  chips.className = "flex flex-wrap items-center gap-1.5";
+  chips.append(statusChip(r.status, "border border-slate-200"));
+  const total = r.count ?? 1;
+  if (total > 1) {
+    chips.append(
+      line("rounded-full bg-slate-900 px-2 py-0.5 text-xs font-medium text-white", `Raportată de ${howMany(total, "ori")}`)
+    );
+  }
+
+  const when = line("border-t border-slate-100 pt-2.5 text-xs text-slate-500", timeAgo(r.created_at));
   when.title = formatDate(r.created_at);
 
-  el.append(title, statusChip(r.status, "w-fit border border-slate-200"), when);
-  const group = groupNote(r, "");
-  if (group) el.append(group);
+  el.append(head, chips, when);
   return el;
 }
 

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Info } from "lucide";
+import Icon from "@/ui/Icon";
+import SiteFooter from "@/ui/SiteFooter";
+import SiteHeader from "@/ui/SiteHeader";
 import PublicMap from "@/features/map/PublicMap";
 import { listPublicReports } from "@/features/reports/queries";
 import { publicDetails } from "@/server/env";
@@ -13,29 +16,20 @@ export default async function MapPage() {
   const reports = await listPublicReports(details);
 
   return (
-    <main className="mx-auto max-w-6xl px-5 py-10">
-      <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <Link href="/" className="text-2xl font-semibold tracking-tight text-brand-700 transition-colors hover:text-brand-800">
-            Aici
-          </Link>
-          <p className="text-sm text-slate-500">Harta sesizărilor</p>
+    <div className="flex min-h-screen flex-col bg-surface">
+      <SiteHeader />
+      <main className="flex flex-1 flex-col">
+        <h1 className="sr-only">Harta sesizărilor</h1>
+        <PublicMap reports={reports} details={details} />
+        <div className="mx-auto flex w-full max-w-7xl items-start gap-2 px-4 py-4 sm:px-6">
+          <Icon node={Info} className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+          <p className="font-body-sm text-body-sm text-on-surface-variant">
+            Locațiile sunt aproximative, cam 100 m.
+            {details ? "" : " Pozele și descrierile le vede doar primăria, ca să nu se afle cine a raportat."}
+          </p>
         </div>
-        <Link
-          href="/"
-          className="rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-700 active:bg-brand-800"
-        >
-          Raportează o problemă
-        </Link>
-      </header>
-
-      <PublicMap reports={reports} details={details} />
-
-      <p className="mt-3 text-xs text-slate-400">
-        {reports.length === 0 ? "Nicio sesizare încă. " : ""}
-        Locațiile sunt aproximative, cam 100 m.
-        {details ? "" : " Pozele și descrierile le vede doar primăria."}
-      </p>
-    </main>
+      </main>
+      <SiteFooter />
+    </div>
   );
 }

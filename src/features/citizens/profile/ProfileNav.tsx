@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Bell, ClipboardList, Map, ShieldCheck, type IconNode } from "lucide";
+import { Bell, ClipboardList, SlidersHorizontal, type IconNode } from "lucide";
 import Icon from "@/ui/Icon";
-import { faint } from "@/features/citizens/profile/tones";
 import useSection from "@/features/citizens/profile/useHash";
 
 function NavLink({
@@ -46,8 +45,7 @@ export default function ProfileNav({ total, unreadNotes }: { total: number; unre
   const section = useSection();
   return (
     <nav className="space-y-1" aria-label="Meniu principal">
-      <span className={`mb-1 block px-3 text-[10px] font-bold uppercase tracking-wider ${faint}`}>Meniu principal</span>
-      <NavLink href="#sesizari" icon={ClipboardList} label="Sesizările mele" active={section === "reports"}>
+            <NavLink href="#sesizari" icon={ClipboardList} label="Sesizările mele" active={section === "reports"}>
         <span className="rounded-full bg-teal-600 px-2 py-0.5 font-mono text-[10px] font-bold text-white dark:bg-teal-500 dark:text-[#0e1a2b]">
           {total}
         </span>
@@ -59,8 +57,7 @@ export default function ProfileNav({ total, unreadNotes }: { total: number; unre
           </span>
         )}
       </NavLink>
-      <NavLink href="/map" icon={Map} label="Harta sesizărilor" />
-      <NavLink href="/privacy" icon={ShieldCheck} label="Confidențialitate" />
+      <NavLink href="#setari" icon={SlidersHorizontal} label="Setări cont" />
     </nav>
   );
 }

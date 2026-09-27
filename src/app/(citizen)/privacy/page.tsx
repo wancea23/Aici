@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SiteFooter from "@/ui/SiteFooter";
+import SiteHeader from "@/ui/SiteHeader";
 import { linkClass } from "@/ui/themed-styles";
 
 // Stub: no mockup exists for this screen. The text to put here is written and ready in
@@ -9,15 +11,9 @@ export const metadata: Metadata = { title: "Confidențialitate" };
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen w-full bg-surface">
-      <div className="mx-auto flex w-full max-w-xl flex-col px-5 py-10">
-        <header className="mb-space-lg">
-          <Link href="/" className="font-headline-lg text-headline-lg tracking-tight text-primary">
-            Aici
-          </Link>
-          <p className="mt-1 font-body-md text-body-md text-on-surface-variant">Confidențialitate</p>
-        </header>
-
+    <div className="flex min-h-screen flex-col bg-surface">
+      <SiteHeader />
+      <main className="mx-auto flex w-full max-w-xl flex-1 flex-col px-5 py-10">
         <section className="rounded-xl border border-outline-variant bg-surface-container-lowest p-space-lg">
           <h1 className="font-headline-md text-headline-md text-on-surface">Politica de confidențialitate</h1>
           <p className="mt-space-sm font-body-sm text-body-sm text-on-surface-variant">
@@ -35,7 +31,8 @@ export default function PrivacyPage() {
             .
           </p>
         </section>
-      </div>
-    </main>
+      </main>
+      <SiteFooter />
+    </div>
   );
 }
