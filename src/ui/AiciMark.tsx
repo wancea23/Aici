@@ -1,21 +1,11 @@
-// The Aici emblem from the Stitch mockup (aici_civic_emblem): a map pin with a check inside,
-// drawn as SVG so it stays sharp and takes the text color in both themes.
+// The Aici logo: a round "a" whose middle is the marked spot. The letter takes the text color,
+// so it follows the theme; the dot stays amber. Same drawing as src/app/icon.svg.
 export default function AiciMark({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" className={className}>
-      <path
-        d="M16 29.5 6.6 19.4A11 11 0 1 1 25.4 19.4Z"
-        stroke="currentColor"
-        strokeWidth="2.6"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M11.2 16.2 14.8 19.6 21.4 11.8"
-        stroke="currentColor"
-        strokeWidth="2.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg viewBox="10 17.5 38 38" fill="none" aria-hidden="true" className={className}>
+      <circle cx="29" cy="36" r="14" stroke="currentColor" strokeWidth="7" />
+      <path d="M43 22v29" stroke="currentColor" strokeWidth="7" strokeLinecap="round" />
+      <circle cx="29" cy="36" r="4.5" fill="#f59e0b" />
     </svg>
   );
 }
