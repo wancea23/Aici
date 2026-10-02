@@ -3,6 +3,7 @@ import Link from "next/link";
 import AuthCard from "@/ui/AuthCard";
 import PasswordForm from "@/features/staff/PasswordForm";
 import LogoutButton from "@/ui/LogoutButton";
+import { linkClass } from "@/ui/themed-styles";
 import { requireStaffPage } from "@/features/staff/dal";
 
 export const metadata: Metadata = { title: "Schimbă parola" };
@@ -20,11 +21,11 @@ export default async function PasswordPage() {
       }
     >
       <PasswordForm mode="change" email={user.email} />
-      <div className="mt-5 flex justify-between border-t border-slate-100 pt-4 text-sm">
+      <div className="mt-5 flex justify-between border-t border-outline-variant/60 pt-4 font-body-sm text-body-sm">
         {user.forcePasswordReset ? (
           <span />
         ) : (
-          <Link href="/account" className="text-brand-700 hover:underline">
+          <Link href="/account" className={linkClass}>
             Înapoi la cont
           </Link>
         )}

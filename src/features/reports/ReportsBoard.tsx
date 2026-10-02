@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Inbox } from "lucide";
+import { AlarmClock, Inbox } from "lucide";
 import Icon from "@/ui/Icon";
 import ReportDetails, { DeadlinePill } from "@/features/reports/ReportDetails";
 import type { Report } from "@/features/reports/queries";
@@ -11,7 +11,6 @@ import {
   categoryIcons,
   categoryLabels,
   statusColors,
-  statusInk,
   statusLabels,
   statuses,
   type Category,
@@ -23,7 +22,7 @@ import { answerDeadline } from "@/features/reports/deadline";
 // The map needs the browser, so it only renders on the client.
 const ReportsMap = dynamic(() => import("@/features/map/ReportsMap"), {
   ssr: false,
-  loading: () => <div className="h-full w-full animate-pulse bg-slate-100" />,
+  loading: () => <div className="h-full w-full animate-pulse bg-surface-container" />,
 });
 
 export default function ReportsBoard({ reports }: { reports: Report[] }) {
@@ -35,7 +34,9 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
   function pickFromList(id: string) {
     setSelection({ id, from: "list" });
     const el = mapBox.current;
-    if (el && el.getBoundingClientRect().top < 0) {
+    // the top bar is sticky (taller on phones, with the menu), so under it counts as hidden
+    const bar = document.querySelector("header")?.getBoundingClientRect().bottom ?? 0;
+    if (el && el.getBoundingClientRect().top < bar) {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
@@ -55,33 +56,37 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
 
   return (
     <>
-      <div className="mb-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">
+      <div className="mb-4 flex flex-wrap items-center gap-2">
         {statuses.map((s) => (
-          <span key={s} className="inline-flex items-center gap-2">
+          <span
+            key={s}
+            className="inline-flex h-8 items-center gap-2 rounded-full border border-outline-variant/60 bg-surface-container-lowest px-3 font-label-lg text-label-lg text-on-surface"
+          >
             <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: statusColors[s] }} />
             {statusLabels[s]}
-            <span className="text-slate-400">{counts[s] ?? 0}</span>
+            <span className="font-mono text-on-surface-variant">{counts[s] ?? 0}</span>
           </span>
         ))}
         {overdue > 0 && (
-          <span className="font-medium text-red-700">
-            Termen depășit <span className="text-red-400">{overdue}</span>
+          <span className="inline-flex h-8 items-center gap-2 rounded-full bg-error px-3 font-label-lg text-label-lg text-on-error">
+            <Icon node={AlarmClock} className="h-4 w-4" />
+            Termen depășit: {overdue}
           </span>
         )}
       </div>
 
-      <div className="grid gap-6 lg:h-[calc(100vh-12.5rem)] lg:min-h-[28rem] lg:grid-cols-5">
+      <div className="grid gap-6 lg:h-[calc(100vh-10.5rem)] lg:min-h-[28rem] lg:grid-cols-5">
         <div
           ref={mapBox}
-          className="isolate h-80 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm lg:col-span-3 lg:h-full"
+          className="isolate h-80 scroll-mt-32 overflow-hidden lg:scroll-mt-20 rounded-xl border border-outline-variant/60 bg-surface-container-lowest shadow-sm lg:col-span-3 lg:h-full"
         >
           <ReportsMap reports={reports} selection={selection} onPick={pickFromMap} />
         </div>
 
         {reports.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 py-12 text-center text-slate-400 lg:col-span-2">
+          <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-outline-variant py-12 text-center text-outline lg:col-span-2">
             <Icon node={Inbox} className="h-8 w-8" />
-            <p className="text-sm text-slate-500">Nicio sesizare încă.</p>
+            <p className="font-body-sm text-body-sm text-on-surface-variant">Nicio sesizare încă.</p>
           </div>
         ) : (
           <ul className="space-y-3 lg:col-span-2 lg:overflow-y-auto lg:p-1">
@@ -90,22 +95,23 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
                 <button
                   type="button"
                   onClick={() => pickFromList(r.id)}
+                  aria-expanded={selection?.id === r.id}
                   className={
-                    "flex w-full gap-3 rounded-2xl border bg-white p-2.5 text-left transition-[border-color,box-shadow] duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40 " +
+                    "flex w-full gap-3 rounded-xl border bg-surface-container-lowest p-2.5 text-left transition-[border-color,box-shadow] duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 " +
                     (selection?.id === r.id
-                      ? "border-brand-500 shadow-md ring-2 ring-brand-500/15"
-                      : "border-slate-200 shadow-sm hover:border-slate-300 hover:shadow-md")
+                      ? "border-primary shadow-md ring-2 ring-primary/15"
+                      : "border-outline-variant/60 shadow-sm hover:border-outline hover:shadow-md")
                   }
                 >
                   <img
                     src={`/api/media/${r.id}`}
                     alt=""
                     loading="lazy"
-                    className="h-[84px] w-[84px] flex-none rounded-xl bg-slate-100 object-cover"
+                    className="h-[84px] w-[84px] flex-none rounded-lg bg-surface-container object-cover"
                   />
-                  <div className="min-w-0 flex-1 py-0.5 pr-1">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="flex min-w-0 items-center gap-2 font-semibold text-slate-900">
+                  <span className="block min-w-0 flex-1 py-0.5 pr-1">
+                    <span className="flex items-center justify-between gap-2">
+                      <span className="flex min-w-0 items-center gap-2 font-label-lg text-label-lg text-on-surface">
                         <CategoryBadge category={r.category} status={r.status} />
                         <span className="truncate">
                           {categoryLabels[r.category as Category] ?? r.category}
@@ -115,24 +121,26 @@ export default function ReportsBoard({ reports }: { reports: Report[] }) {
                         dateTime={r.created_at}
                         title={formatDate(r.created_at)}
                         suppressHydrationWarning
-                        className="flex-none text-xs text-slate-400"
+                        className="flex-none text-xs text-on-surface-variant"
                       >
                         {timeAgo(r.created_at)}
                       </time>
-                    </div>
-                    <p className="mt-1.5 line-clamp-2 text-sm leading-snug text-slate-500">
-                      <span className="font-medium" style={{ color: statusInk[r.status as Status] ?? "#475569" }}>
-                        {statusLabels[r.status as Status] ?? r.status}
-                      </span>{" "}
+                    </span>
+                    <span className="mt-1.5 flex flex-wrap gap-1">
+                      <StatusPill status={r.status} />
                       <DeadlinePill createdAt={r.created_at} status={r.status} />
                       {r.members.length > 0 && (
-                        <span className="mr-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
+                        <span className="rounded-full bg-inverse-surface px-2 py-0.5 text-xs font-medium text-inverse-on-surface">
                           {howMany(r.members.length + 1, "sesizări")}
                         </span>
                       )}
-                      {r.description}
-                    </p>
-                  </div>
+                    </span>
+                    {r.description && (
+                      <span className="mt-1 line-clamp-1 font-body-sm text-body-sm leading-snug text-on-surface-variant">
+                        {r.description}
+                      </span>
+                    )}
+                  </span>
                 </button>
                 {selection?.id === r.id && <ReportDetails report={r} />}
               </li>
@@ -153,6 +161,16 @@ function CategoryBadge({ category, status }: { category: string; status: string 
       style={{ backgroundColor: statusColors[status as Status] ?? "#64748b" }}
     >
       <Icon node={node} className="h-4 w-4" />
+    </span>
+  );
+}
+
+// The status with its map color as a dot, readable in both themes.
+function StatusPill({ status }: { status: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-container px-2 py-0.5 text-xs font-medium text-on-surface">
+      <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: statusColors[status as Status] ?? "#64748b" }} />
+      {statusLabels[status as Status] ?? status}
     </span>
   );
 }
