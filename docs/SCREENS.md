@@ -30,7 +30,7 @@ parts of the mockups show data the app doesn't actually have).
 | `/new-password?token=` | `src/app/(citizen)/new-password/page.tsx` | restyled | *none* | The reset token is validated server-side; page gets the account's email, or renders an "expired link" state |
 | `/verify-email?token=` | `src/app/(citizen)/verify-email/page.tsx` | restyled | `confirm_email_verified` | Signup token → the email being confirmed, or an "expired link" state |
 | `/profile` | `src/app/(citizen)/profile/page.tsx` | restyled | `my_account_citizen_command_hub_variant`, simplified on purpose: stat cards, the progress card and repeated level/buttons were cut (view in `features/citizens/profile/`, score in `features/citizens/civic-score.ts`) | `currentCitizen()` → `{ id, email }`, and `listReportsForCitizen(id)` → `{ id, category, description, status, lat, lng, created_at, events[] }[]` (lat/lng rounded to ~100 m). `events[]` is the citizen-facing timeline (status changes + messages from city hall). Deadline per report: `answerDeadline()` in `features/reports/deadline.ts` |
-| `/privacy` | `src/app/(citizen)/privacy/page.tsx` | **stub** | *none* | Static page, no data. **The text to put here is ready in [`PRIVACY.md`](PRIVACY.md)** — use it as written; a few `[DE COMPLETAT]` spots are still pending decisions and should stay visible. Linked from the shared footer |
+| `/privacy` | `src/app/(citizen)/privacy/page.tsx` | restyled | *none* | Static page, no data. The full text of [`PRIVACY.md`](PRIVACY.md) as written, without the team annex; the `[DE COMPLETAT]` spots stay visible until decided. Linked from the shared footer |
 
 Home, map, privacy and profile share the top bar and footer in `src/ui/SiteHeader.tsx` and `src/ui/SiteFooter.tsx`.
 
@@ -40,15 +40,18 @@ All staff routes are gated by `requireStaffPage()`, which re-checks the session 
 database on every request. `/admin` additionally requires `{ role: "admin" }` — an operator
 hitting it gets a 404, not a redirect.
 
+Signed in staff pages share the sidebar and top bar in `src/features/staff/StaffShell.tsx`
+(menu in `StaffNav.tsx`). Login, invite and reset use `src/ui/AuthCard.tsx`.
+
 | Route | File | Status | Mockup folder | Data it already has |
 | --- | --- | --- | --- | --- |
-| `/login` | `src/app/(staff)/login/page.tsx` | needs restyle | *none* | No server data. Posts to `/api/auth/login`. Reuses the same `LoginForm` as citizens, pointed at the staff endpoint |
-| `/dashboard` | `src/app/(staff)/dashboard/page.tsx` | needs restyle | `staff_dashboard` | `listReports()` → full reports including exact `lat`/`lng`, `members[]` (ids of duplicates grouped under it) and `events[]` with staff author names. The map + feed + status form are all in `features/reports/ReportsBoard.tsx` / `ReportDetails.tsx` |
-| `/admin` | `src/app/(staff)/admin/page.tsx` | needs restyle | `staff_administration_audit_log` | `listStaff()` → `{ id, email, role, isActive, forceReset, createdAt, lastLogin }[]`, and `listAudit(100)` → `{ id, createdAt, actor, action, target, status, ip, details }[]`. Invite form + per-row actions are in `features/staff/StaffAdmin.tsx` |
-| `/account` | `src/app/(staff)/account/page.tsx` | needs restyle | *none* | The signed-in staff user: `{ email, role }` |
-| `/account/password` | `src/app/(staff)/account/password/page.tsx` | needs restyle | *none* | The signed-in staff user; also serves the forced-reset flow |
-| `/invite?token=` | `src/app/(staff)/invite/page.tsx` | needs restyle | *none* | Invite token → invited email + role, or an "expired invitation" state |
-| `/reset-password?token=` | `src/app/(staff)/reset-password/page.tsx` | needs restyle | *none* | Reset token → the account's email, or an "expired link" state |
+| `/login` | `src/app/(staff)/login/page.tsx` | restyled | *none* | No server data. Posts to `/api/auth/login`. Reuses the same `LoginForm` as citizens, pointed at the staff endpoint |
+| `/dashboard` | `src/app/(staff)/dashboard/page.tsx` | restyled | `staff_dashboard` | `listReports()` → full reports including exact `lat`/`lng`, `members[]` (ids of duplicates grouped under it) and `events[]` with staff author names. The map + feed + status form are all in `features/reports/ReportsBoard.tsx` / `ReportDetails.tsx` |
+| `/admin` | `src/app/(staff)/admin/page.tsx` | restyled | `staff_administration_audit_log` | `listStaff()` → `{ id, email, role, isActive, forceReset, createdAt, lastLogin }[]`, and `listAudit(100)` → `{ id, createdAt, actor, action, target, status, ip, details }[]`. Invite form + per-row actions are in `features/staff/StaffAdmin.tsx` |
+| `/account` | `src/app/(staff)/account/page.tsx` | restyled | *none* | The signed-in staff user: `{ email, role }` |
+| `/account/password` | `src/app/(staff)/account/password/page.tsx` | restyled | *none* | The signed-in staff user; also serves the forced-reset flow |
+| `/invite?token=` | `src/app/(staff)/invite/page.tsx` | restyled | *none* | Invite token → invited email + role, or an "expired invitation" state |
+| `/reset-password?token=` | `src/app/(staff)/reset-password/page.tsx` | restyled | *none* | Reset token → the account's email, or an "expired link" state |
 | `/reports` | `src/app/(staff)/reports/page.tsx` | **stub** | *none* | Staff-gated but empty. Intended as exports/statistics — nothing is defined yet, ask Andrei. **Deliberately not added to the staff nav** until there's something on it |
 
 ## Mockups with no matching route

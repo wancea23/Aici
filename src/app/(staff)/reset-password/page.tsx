@@ -17,7 +17,7 @@ export default async function ResetPage({
   if (!token || !user || !user.is_active) {
     return (
       <AuthCard title="Link expirat">
-        <p className="text-sm text-slate-600">
+        <p className="font-body-sm text-body-sm text-on-surface-variant">
           Linkul de resetare nu mai este valabil. Expiră după 15 minute și merge o singură dată.
           Cere unul nou administratorului.
         </p>

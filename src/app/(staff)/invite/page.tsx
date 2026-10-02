@@ -16,7 +16,7 @@ export default async function InvitePage({
   if (!token || !invite || !invite.role) {
     return (
       <AuthCard title="Invitație expirată">
-        <p className="text-sm text-slate-600">
+        <p className="font-body-sm text-body-sm text-on-surface-variant">
           Linkul nu mai este valabil sau a fost deja folosit. Cere o invitație nouă administratorului.
         </p>
       </AuthCard>

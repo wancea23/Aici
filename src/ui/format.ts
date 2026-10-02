@@ -31,6 +31,12 @@ export function howMany(n: number, noun: string) {
   return n >= 20 && (rest === 0 || rest >= 20) ? `${n} de ${noun}` : `${n} ${noun}`;
 }
 
+// Two letters for an avatar, from the part of the email before the @.
+export function initials(email: string) {
+  const letters = email.split("@")[0].replace(/[^\p{L}\p{N}]/gu, "");
+  return (letters.slice(0, 2) || "?").toUpperCase();
+}
+
 // Short relative time for lists, and the full date once it is older than a week.
 export function timeAgo(iso: string) {
   const minutes = Math.round((new Date(iso).getTime() - Date.now()) / 60000);

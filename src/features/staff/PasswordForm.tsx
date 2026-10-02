@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { sendJson } from "@/ui/api";
-import { inputClass, labelClass, primaryButton } from "@/ui/styles";
+import { inputClass, labelClass, primaryButton } from "@/ui/themed-styles";
 
 type Props = { email: string } & ({ mode: "change" } | { mode: "invite" | "reset"; token: string });
 
@@ -79,7 +79,7 @@ export default function PasswordForm(props: Props) {
           onChange={(e) => setPassword(e.target.value)}
           className={inputClass}
         />
-        <p className="mt-1 text-xs text-slate-400">
+        <p className="mt-1.5 font-body-sm text-body-sm text-on-surface-variant">
           Cel puțin {MIN} caractere ({length} acum). O frază din câteva cuvinte e ușor de ținut
           minte. Verificăm să nu apară în scurgeri de date publice.
         </p>
@@ -101,7 +101,7 @@ export default function PasswordForm(props: Props) {
       </div>
 
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="font-body-sm text-body-sm text-error">
           {error}
         </p>
       )}

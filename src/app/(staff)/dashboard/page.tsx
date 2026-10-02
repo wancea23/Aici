@@ -1,5 +1,5 @@
 import ReportsBoard from "@/features/reports/ReportsBoard";
-import StaffHeader from "@/features/staff/StaffHeader";
+import StaffShell from "@/features/staff/StaffShell";
 import { listReports } from "@/features/reports/queries";
 import { requireStaffPage } from "@/features/staff/dal";
 
@@ -10,9 +10,8 @@ export default async function Panou() {
   const reports = await listReports();
 
   return (
-    <main className="mx-auto max-w-6xl px-5 py-10">
-      <StaffHeader user={user} subtitle="Panou primărie" />
+    <StaffShell user={user} title="Panou primărie">
       <ReportsBoard reports={reports} />
-    </main>
+    </StaffShell>
   );
 }
