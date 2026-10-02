@@ -39,7 +39,7 @@ export default async function RegisterPage() {
         <div className="hidden flex-col justify-center gap-space-lg bg-surface-container-low p-space-xl lg:flex">
           <div>
             <span className="inline-flex items-center rounded-full bg-secondary-container px-2.5 py-1 font-label-md text-label-md text-on-secondary-fixed">
-              Primăria Municipiului Chișinău
+              Aici · Sesizări civice Chișinău
             </span>
             <h1 className="mt-space-md font-headline-lg text-headline-lg text-on-surface">
               Vocea ta schimbă Chișinăul.
@@ -67,7 +67,7 @@ export default async function RegisterPage() {
         {/* Form panel */}
         <div className="flex flex-col p-space-lg lg:p-space-xl">
           <div className="mb-space-lg flex items-center justify-between gap-space-sm">
-            <h2 className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Create account</h2>
+            <h2 className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Creează cont</h2>
           </div>
           <p className="-mt-space-md mb-space-lg font-body-sm text-body-sm text-on-surface-variant">
             Îți trimitem un link pe email ca să confirmi adresa. Ai deja cont?{" "}

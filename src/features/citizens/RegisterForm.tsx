@@ -69,7 +69,7 @@ export default function RegisterForm() {
     <form onSubmit={submit} className="flex flex-col gap-space-md">
       <div className="flex flex-col gap-1.5">
         <label htmlFor="email" className={labelClass}>
-          Email address
+          Adresa de email
         </label>
         <div className="relative flex items-center">
           <Icon node={Mail} className="pointer-events-none absolute left-3 h-4 w-4 text-outline" />
@@ -89,9 +89,9 @@ export default function RegisterForm() {
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between">
           <label htmlFor="new-password" className={labelClass}>
-            Password
+            Parola
           </label>
-          <span className="font-label-md text-label-md text-primary">Strong required</span>
+          <span className="font-label-md text-label-md text-primary">Parolă puternică</span>
         </div>
         <div className="relative flex items-center">
           <Icon node={Lock} className="pointer-events-none absolute left-3 h-4 w-4 text-outline" />
@@ -119,7 +119,7 @@ export default function RegisterForm() {
 
       <div className="flex flex-col gap-1.5">
         <label htmlFor="confirm-password" className={labelClass}>
-          Repeat password
+          Repetă parola
         </label>
         <input
           id="confirm-password"
@@ -141,7 +141,7 @@ export default function RegisterForm() {
       )}
 
       <button type="submit" disabled={busy} className={`${primaryButton} flex items-center justify-center gap-space-xs`}>
-        <span>{busy ? "Se trimite..." : "Create account"}</span>
+        <span>{busy ? "Se trimite..." : "Creează cont"}</span>
         {!busy && <Icon node={ArrowRight} className="h-[18px] w-[18px]" />}
       </button>
     </form>
