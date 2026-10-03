@@ -7,6 +7,13 @@ garbage) with a photo and a location, and lets a city hall see and handle those 
 
 University project for the course Development of Secure Applications.
 
+## Video
+
+A 72 second tour of the app: reporting a problem, grouping duplicates, keeping the reporter's
+data private, the city hall dashboard and the citizen profile. Turn the sound on.
+
+https://github.com/user-attachments/assets/2431f0ec-a464-440a-950f-7d4c0c04a788
+
 ## Stack
 
 - Next.js 16 with React 19 and TypeScript for the app
