@@ -15,6 +15,7 @@ import {
 } from "@/features/reports/validation";
 import { formatDate, howMany, timeAgo } from "@/ui/format";
 import { chisinau, mapStyle, pinShape, romanianLabels } from "@/features/map/setup";
+import { spreadPins } from "@/features/map/spread";
 
 export type Selection = { id: string; from: "map" | "list" } | null;
 
@@ -89,13 +90,16 @@ export default function ReportsMap({ reports, selection, onPick, photos = true, 
 
     const added: maplibregl.Marker[] = [];
     markers.current.clear();
+    // reports on the same rounded point would hide each other, see spread.ts
+    const shifts = spreadPins(reports);
 
     for (const r of reports) {
       const el = pin(r);
       el.addEventListener("click", () => onPick(r.id));
 
-      const marker = new maplibregl.Marker({ element: el, anchor: "bottom" }).setLngLat([r.lng, r.lat]);
-      if (popups) marker.setPopup(reportPopup(r, photos));
+      const shift = shifts.get(r.id) ?? [0, 0];
+      const marker = new maplibregl.Marker({ element: el, anchor: "bottom", offset: shift }).setLngLat([r.lng, r.lat]);
+      if (popups) marker.setPopup(reportPopup(r, photos, shift));
       marker.addTo(m);
       markers.current.set(r.id, marker);
       added.push(marker);
@@ -182,22 +186,23 @@ function pin(r: MapReport) {
   return el;
 }
 
-// Filled on first open, so the photos only load when someone looks.
-function reportPopup(r: MapReport, photos: boolean) {
+// Filled on first open, so the photos only load when someone looks. shift: how far the pin was
+// moved off a shared point, so the card opens over that pin.
+function reportPopup(r: MapReport, photos: boolean, [dx, dy]: [number, number]) {
   const card = new maplibregl.Popup({
     maxWidth: "none",
     closeButton: false,
     // The pin's tip is on the point and the open pin is scaled up, so a popup above has to clear it.
     offset: {
-      center: [0, -25],
-      top: [0, 4],
-      "top-left": [0, 4],
-      "top-right": [0, 4],
-      bottom: [0, -54],
-      "bottom-left": [0, -54],
-      "bottom-right": [0, -54],
-      left: [22, -25],
-      right: [-22, -25],
+      center: [dx, dy - 25],
+      top: [dx, dy + 4],
+      "top-left": [dx, dy + 4],
+      "top-right": [dx, dy + 4],
+      bottom: [dx, dy - 54],
+      "bottom-left": [dx, dy - 54],
+      "bottom-right": [dx, dy - 54],
+      left: [dx + 22, dy - 25],
+      right: [dx - 22, dy - 25],
     },
   });
   card.once("open", () => card.setDOMContent(photos ? popup(r) : publicPopup(r)));
