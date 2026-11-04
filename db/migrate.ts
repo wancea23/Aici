@@ -43,6 +43,11 @@ async function main() {
     )
   `;
   await sql`create index if not exists citizen_sessions_user_idx on citizen_sessions (user_id)`;
+  // Sessions opened before the one hour idle limit still carry a week. Cut them down.
+  await sql`
+    update citizen_sessions
+    set idle_expires_at = least(idle_expires_at, last_active_at + interval '1 hour')
+  `;
   await sql`
     create table if not exists citizen_password_resets (
       id uuid primary key default gen_random_uuid(),

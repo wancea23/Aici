@@ -5,13 +5,9 @@ import sql from "@/server/db/owner";
 import { CITIZEN_COOKIE } from "@/server/security/cookie";
 import { newToken, sha256 } from "@/server/security/tokens";
 import { decryptText } from "@/server/security/crypto";
+import { ABSOLUTE_SEC, IDLE_SEC, REFRESH_SEC } from "@/features/citizens/session-policy";
 
 export type Citizen = { id: string; email: string };
-
-// A citizen can do much less than staff, so the session lasts longer:
-// a week without activity or 30 days in total.
-const IDLE_SEC = 7 * 24 * 60 * 60;
-const ABSOLUTE_SEC = 30 * 24 * 60 * 60;
 
 const tokenShape = /^[A-Za-z0-9_-]{43}$/;
 
@@ -54,14 +50,15 @@ export const currentCitizen = cache(async (): Promise<Citizen | null> => {
   if (!token || !tokenShape.test(token)) return null;
 
   const [row] = await sql`
-    select s.id, s.last_active_at < now() - interval '1 hour' as stale, u.id as user_id, u.email
+    select s.id, s.last_active_at < now() - ${REFRESH_SEC}::int * interval '1 second' as stale,
+           u.id as user_id, u.email
     from citizen_sessions s
     join citizen_users u on u.id = s.user_id
     where s.token_hash = ${sha256(token)} and s.expires_at > now() and s.idle_expires_at > now()
   `;
   if (!row) return null;
 
-  // The idle timer slides, but the row is written at most once an hour.
+  // The idle timer slides, but the row is written at most every 5 minutes.
   if (row.stale) {
     await sql`
       update citizen_sessions
