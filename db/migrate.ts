@@ -98,6 +98,20 @@ async function main() {
   await sql`grant usage on schema public to app_data`;
   await sql`grant select, insert, update on reports to app_data`;
   await sql`grant select, insert on report_photos to app_data`;
+  await sql`
+    do $$
+    begin
+      if not exists (select 1 from pg_roles where rolname = 'app_public') then
+        create role app_public nologin;
+      end if;
+    end $$
+  `;
+  await sql`grant app_public to app_data`;
+  await sql`grant usage on schema public to app_public`;
+  await sql`
+    grant select (id, category, description, status, geom, duplicate_of, created_at)
+    on reports to app_public
+  `;
   await sql`alter table reports enable row level security`;
   await sql`alter table report_photos enable row level security`;
   await sql`
@@ -122,8 +136,12 @@ async function main() {
       if not exists (select 1 from pg_policies where tablename = 'reports' and policyname = 'reports_insert') then
         create policy reports_insert on reports for insert
           with check (
-            citizen_id is null
-            or citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid
+            status = 'nou'
+            and duplicate_of is null
+            and (
+              citizen_id is null
+              or citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid
+            )
           );
       end if;
       if not exists (select 1 from pg_policies where tablename = 'report_photos' and policyname = 'report_photos_select') then
@@ -151,6 +169,18 @@ async function main() {
           );
       end if;
     end $$
+  `;
+  // Databases made before the insert rule pinned the status and the group get it here.
+  await sql`
+    alter policy reports_insert on reports
+      with check (
+        status = 'nou'
+        and duplicate_of is null
+        and (
+          citizen_id is null
+          or citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid
+        )
+      )
   `;
 
   // The history of each report, the same as in init.sql.

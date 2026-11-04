@@ -44,6 +44,21 @@ grant usage on schema public to app_data;
 grant select, insert, update on reports to app_data;
 grant select, insert on report_photos to app_data;
 
+-- app_public is what app_data switches to for anonymous reads (the public map and the
+-- duplicate check, see publicOnly in src/server/db/access.ts). It can only read the columns
+-- those pages show, so a query that asks for the reporter or the exact location fails with
+-- "permission denied" instead of quietly returning them.
+do $$
+begin
+  if not exists (select 1 from pg_roles where rolname = 'app_public') then
+    create role app_public nologin;
+  end if;
+end $$;
+
+grant app_public to app_data;
+grant usage on schema public to app_public;
+grant select (id, category, description, status, geom, duplicate_of, created_at) on reports to app_public;
+
 alter table reports enable row level security;
 alter table report_photos enable row level security;
 
@@ -78,12 +93,17 @@ begin
   end if;
 
   -- Anyone can create a report. A signed-in citizen can only claim their own id as the
-  -- reporter; an anonymous submission must leave it null, never someone else's.
+  -- reporter; an anonymous submission must leave it null, never someone else's. A new
+  -- report always starts as 'nou' and in no group, only staff move it from there.
   if not exists (select 1 from pg_policies where tablename = 'reports' and policyname = 'reports_insert') then
     create policy reports_insert on reports for insert
       with check (
-        citizen_id is null
-        or citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid
+        status = 'nou'
+        and duplicate_of is null
+        and (
+          citizen_id is null
+          or citizen_id = nullif(current_setting('app.citizen_id', true), '')::uuid
+        )
       );
   end if;
 

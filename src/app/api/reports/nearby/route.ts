@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
   const { category, lat, lng } = parsed.data;
 
   // Matched on the public map points only, so the answer tells nothing the map doesn't.
-  const groups = await withAccess({}, (tx) => openGroupsNear(tx, category, lat, lng));
+  const groups = await withAccess({ publicOnly: true }, (tx) => openGroupsNear(tx, category, lat, lng));
   const details = publicDetails();
   return NextResponse.json(
     groups.slice(0, 5).map((g) => ({
