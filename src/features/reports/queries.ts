@@ -27,6 +27,8 @@ export type Report = {
   members: string[];
   // oldest first
   events: ReportEvent[];
+  // staff only: when the server got the photo and its SHA-256 (null for older photos)
+  photo?: { sha256: string | null; receivedAt: string } | null;
 };
 
 export type PublicReport = Pick<Report, "id" | "category" | "status" | "lat" | "lng" | "created_at"> & {
@@ -137,11 +139,13 @@ export async function listReports(limit = 100): Promise<Report[]> {
   const rows = await withAccess({ staff: true }, (sql) => sql`
     select r.id, r.category, r.description, r.location, r.status,
            ST_Y(r.geom) as lat, ST_X(r.geom) as lng, r.created_at,
+           p.sha256 as photo_sha256, p.created_at as photo_at,
            array(
              select m.id::text from reports m where m.duplicate_of = r.id order by m.created_at
            ) as members,
            ${eventsOf(sql, true)} as events
     from reports r
+    left join report_photos p on p.report_id = r.id
     where r.duplicate_of is null
     order by r.created_at desc
     limit ${limit}
@@ -176,6 +180,7 @@ export async function listReports(limit = 100): Promise<Report[]> {
       created_at: new Date(r.created_at).toISOString(),
       members: r.members,
       events: readEvents(r.events, authors),
+      photo: r.photo_at ? { sha256: r.photo_sha256, receivedAt: new Date(r.photo_at).toISOString() } : null,
     };
   });
 }

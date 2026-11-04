@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { withAccess } from "@/server/db/access";
 import { outsideArea, reportInput } from "@/features/reports/validation";
 import { cleanPhoto, looksLikeImage } from "@/features/photos/image";
+import { photoFingerprint } from "@/features/photos/fingerprint";
 import { MAX_REQUEST_BYTES, MAX_UPLOAD_BYTES } from "@/features/photos/upload-limits";
 import { listReports } from "@/features/reports/queries";
 import { encryptBytes, encryptText } from "@/server/security/crypto";
@@ -82,8 +83,8 @@ export async function POST(req: NextRequest) {
       )
     `;
     await tx`
-      insert into report_photos (report_id, data)
-      values (${id}, ${encryptBytes(clean, `report:${id}:photo`)})
+      insert into report_photos (report_id, data, sha256)
+      values (${id}, ${encryptBytes(clean, `report:${id}:photo`)}, ${photoFingerprint(clean)})
     `;
   });
 

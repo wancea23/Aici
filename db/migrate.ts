@@ -2,7 +2,8 @@
 //   npm run db:migrate
 // Run it once everyone is on this version: older code can't read encrypted reports.
 import sql from "@/server/db/owner";
-import { encryptBytes, encryptText, isEncryptedBytes, isEncryptedText } from "@/server/security/crypto";
+import { decryptBytes, encryptBytes, encryptText, isEncryptedBytes, isEncryptedText } from "@/server/security/crypto";
+import { photoFingerprint } from "@/features/photos/fingerprint";
 
 const coarse = (x: number) => Math.round(x * 1000) / 1000;
 
@@ -285,6 +286,22 @@ async function main() {
 
   await sql`alter table reports alter column location set not null`;
   console.log(`${reports.length} reports checked, ${changed} encrypted now.`);
+
+  // Fingerprints for photos saved before they existed. A photo that can't be decrypted with
+  // this .env's key is left without one instead of stopping the whole migration.
+  await sql`alter table report_photos add column if not exists sha256 text`;
+  const unhashed = await sql`select report_id, data from report_photos where sha256 is null`;
+  let hashed = 0;
+  for (const p of unhashed) {
+    try {
+      const plain = decryptBytes(p.data, `report:${p.report_id}:photo`);
+      await sql`update report_photos set sha256 = ${photoFingerprint(plain)} where report_id = ${p.report_id}`;
+      hashed++;
+    } catch {
+      console.log(`photo of ${p.report_id} could not be decrypted, left without a fingerprint.`);
+    }
+  }
+  console.log(`${unhashed.length} photos without a fingerprint, ${hashed} done now.`);
 }
 
 main()

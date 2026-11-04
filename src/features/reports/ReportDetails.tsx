@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CalendarClock, Info } from "lucide";
+import { CalendarClock, Fingerprint, Info } from "lucide";
 import Icon from "@/ui/Icon";
 import type { Report } from "@/features/reports/queries";
 import ReportTimeline from "@/features/reports/ReportTimeline";
 import { inputClass, labelClass, primaryButton } from "@/ui/themed-styles";
 import { statusLabels, statuses } from "@/features/reports/validation";
 import { answerDeadline, deadlineText } from "@/features/reports/deadline";
-import { formatDay } from "@/ui/format";
+import { formatDate, formatDay } from "@/ui/format";
 
 // inputClass has a fixed height, a textarea needs its own
 const textareaClass =
@@ -37,12 +37,32 @@ export default function ReportDetails({ report }: { report: Report }) {
           </div>
         </div>
       )}
+      {report.photo && <PhotoProof photo={report.photo} />}
       <div>
         <p className="mb-2 font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Istoric</p>
         <ReportTimeline createdAt={report.created_at} events={report.events} audience="staff" />
       </div>
       {/* a fresh form once the saved change comes back from the server */}
       <StatusForm key={`${report.status}:${report.events.length}`} report={report} />
+    </div>
+  );
+}
+
+// When the photo reached the server and its fingerprint, to quote if the photo is ever disputed.
+function PhotoProof({ photo }: { photo: NonNullable<Report["photo"]> }) {
+  return (
+    <div className="flex items-start gap-3 rounded-lg bg-surface-container-low px-3 py-2.5 font-body-sm text-body-sm text-on-surface">
+      <Icon node={Fingerprint} className="mt-0.5 h-5 w-5 shrink-0" />
+      <div className="min-w-0">
+        <p suppressHydrationWarning>
+          Poza primită de server <span className="font-semibold">{formatDate(photo.receivedAt)}</span>
+        </p>
+        {photo.sha256 ? (
+          <p className="mt-0.5 break-all font-mono text-xs text-on-surface-variant">SHA-256 {photo.sha256}</p>
+        ) : (
+          <p className="mt-0.5 text-xs text-on-surface-variant">Poză mai veche, fără amprentă SHA-256.</p>
+        )}
+      </div>
     </div>
   );
 }
