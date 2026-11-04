@@ -4,6 +4,7 @@ import { isUuid } from "@/features/reports/validation";
 import { requireStaffApi } from "@/features/staff/dal";
 import { currentCitizen } from "@/features/citizens/session";
 import { decryptBytes } from "@/server/security/crypto";
+import { matchesFingerprint, reprDigest } from "@/features/photos/fingerprint";
 import { publicDetails } from "@/server/env";
 
 export const runtime = "nodejs";
@@ -24,7 +25,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   const [photo] = await withAccess(
     { staff: auth.ok, citizenId: citizen?.id, publicDetails: publicDetails() },
-    (tx) => tx`select data from report_photos where report_id = ${id}`
+    (tx) => tx`select data, sha256 from report_photos where report_id = ${id}`
   );
   if (!photo) {
     return new NextResponse("not found", { status: 404 });
@@ -38,11 +39,18 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     return new NextResponse("photo unavailable", { status: 500 });
   }
 
+  // A photo that no longer matches the fingerprint taken on arrival is never served.
+  if (!matchesFingerprint(data, photo.sha256)) {
+    console.error("photo fingerprint mismatch", id);
+    return new NextResponse("photo unavailable", { status: 500 });
+  }
+
   return new NextResponse(new Uint8Array(data), {
     headers: {
       "Content-Type": "image/webp",
       "Cache-Control": "private, max-age=3600",
       "X-Content-Type-Options": "nosniff",
+      ...(photo.sha256 ? { "Repr-Digest": reprDigest(photo.sha256) } : {}),
     },
   });
 }

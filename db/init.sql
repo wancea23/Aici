@@ -23,9 +23,12 @@ create index if not exists reports_duplicate_idx on reports (duplicate_of);
 create index if not exists reports_citizen_idx on reports (citizen_id);
 
 -- The cleaned webp of each report, encrypted. In the database for now, object storage later.
+-- sha256 is the fingerprint of the cleaned photo before encryption, created_at the server
+-- time it arrived. Together they are the evidence trail (see features/photos/fingerprint.ts).
 create table if not exists report_photos (
   report_id uuid primary key references reports (id) on delete cascade,
   data bytea not null,
+  sha256 text,
   created_at timestamptz not null default now()
 );
 
