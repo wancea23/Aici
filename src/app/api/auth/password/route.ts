@@ -8,6 +8,7 @@ import { hashPassword, normalizePassword, validateNewPassword, verifyPassword } 
 import { changePassword, findStaffById } from "@/features/staff/accounts";
 import { replaceAllSessions } from "@/features/staff/session";
 import { audit } from "@/server/security/audit";
+import { safeRoute } from "@/server/http/safe-route";
 
 export const runtime = "nodejs";
 
@@ -16,7 +17,7 @@ const input = z.object({
   password: z.string().min(1).max(1024),
 });
 
-export async function POST(req: Request) {
+async function handlePost(req: Request) {
   if (!sameOrigin(req)) return fail(403, "Cerere respinsă.");
 
   const auth = await requireStaffApi({ allowPasswordReset: true });
@@ -51,3 +52,5 @@ export async function POST(req: Request) {
 
   return json({ next: "/dashboard" });
 }
+
+export const POST = safeRoute(handlePost);

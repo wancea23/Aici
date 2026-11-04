@@ -4,6 +4,7 @@ import { clientInfo } from "@/server/http/request";
 import { fail, json, tooMany } from "@/server/http/responses";
 import { peek, recordFailure, rules } from "@/server/security/rate-limit";
 import { auditCitizen, completeSignup, findSignup } from "@/features/citizens/accounts";
+import { safeRoute } from "@/server/http/safe-route";
 
 export const runtime = "nodejs";
 
@@ -13,7 +14,7 @@ const EXPIRED = "Linkul nu mai este valabil sau a fost deja folosit.";
 
 // Opening the link from the email is enough. The account keeps the password chosen at
 // sign up, and the person signs in with it afterwards.
-export async function POST(req: Request) {
+async function handlePost(req: Request) {
   if (!sameOrigin(req)) return fail(403, "Cerere respinsă.");
 
   const parsed = input.safeParse(await req.json().catch(() => null));
@@ -36,3 +37,5 @@ export async function POST(req: Request) {
   await auditCitizen("citizen.email_verified", "success", result.id);
   return json({ verified: true });
 }
+
+export const POST = safeRoute(handlePost);
