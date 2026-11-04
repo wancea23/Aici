@@ -38,9 +38,10 @@ export type PublicReport = Pick<Report, "id" | "category" | "status" | "lat" | "
 // What the public map shows: the point rounded to about 100 m even for old rows, no
 // rejected reports, and one pin per group. The description only comes along while
 // PUBLIC_DETAILS is on. No identity is set, so row-level security's public policy is what
-// actually keeps rejected reports out, same as the explicit where clause below.
+// actually keeps rejected reports out, same as the explicit where clause below. It runs as
+// app_public, so the reporter and the exact location can't be read here even by mistake.
 export async function listPublicReports(details: boolean, limit = 500): Promise<PublicReport[]> {
-  const rows = await withAccess({}, (sql) => sql`
+  const rows = await withAccess({ publicOnly: true }, (sql) => sql`
     select r.id, r.category, r.status, r.description,
            round(ST_Y(r.geom)::numeric, 3)::float8 as lat,
            round(ST_X(r.geom)::numeric, 3)::float8 as lng,

@@ -6,6 +6,8 @@ export type AccessContext = {
   citizenId?: string;
   staff?: boolean;
   publicDetails?: boolean;
+  // Anonymous reads only. Runs as app_public, which can't read the reporter or the exact location.
+  publicOnly?: boolean;
 };
 
 // Runs fn on the restricted app_data connection (see server/db/app.ts), with the caller's
@@ -22,6 +24,7 @@ export async function withAccess<T>(
     if (ctx.citizenId) await tx`select set_config('app.citizen_id', ${ctx.citizenId}, true)`;
     if (ctx.staff) await tx`select set_config('app.is_staff', 'true', true)`;
     if (ctx.publicDetails) await tx`select set_config('app.public_details', 'true', true)`;
+    if (ctx.publicOnly) await tx`set local role app_public`;
     return fn(tx);
   }) as Promise<T>;
 }
