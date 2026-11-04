@@ -9,6 +9,7 @@ import { auditCitizen, findCitizenByEmail, findPendingSignup, rehashCitizenPassw
 import { startCitizenSession } from "@/features/citizens/session";
 import { safeNext } from "@/server/http/redirect";
 import { emailIndex } from "@/server/security/crypto";
+import { safeRoute } from "@/server/http/safe-route";
 
 export const runtime = "nodejs";
 
@@ -20,7 +21,7 @@ const input = z.object({
 });
 
 // Same rules as the staff login, with counters of its own.
-export async function POST(req: Request) {
+async function handlePost(req: Request) {
   if (!sameOrigin(req)) return fail(403, "Cerere respinsă.");
 
   const parsed = input.safeParse(await req.json().catch(() => null));
@@ -72,3 +73,5 @@ export async function POST(req: Request) {
   await auditCitizen("citizen.login", "success", user.id);
   return json({ next: safeNext(parsed.data.next, "/") });
 }
+
+export const POST = safeRoute(handlePost);

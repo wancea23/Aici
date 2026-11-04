@@ -11,6 +11,7 @@ import { startSession } from "@/features/staff/session";
 import { audit } from "@/server/security/audit";
 import { sha256 } from "@/server/security/tokens";
 import { safeNext } from "@/server/http/redirect";
+import { safeRoute } from "@/server/http/safe-route";
 
 export const runtime = "nodejs";
 
@@ -21,7 +22,7 @@ const input = z.object({
   next: z.string().max(512).optional(),
 });
 
-export async function POST(req: Request) {
+async function handlePost(req: Request) {
   if (!sameOrigin(req)) return fail(403, "Cerere respinsă.");
 
   const parsed = input.safeParse(await req.json().catch(() => null));
@@ -86,3 +87,5 @@ export async function POST(req: Request) {
 
   return json({ next: user.force_password_reset ? "/account/password" : safeNext(parsed.data.next) });
 }
+
+export const POST = safeRoute(handlePost);

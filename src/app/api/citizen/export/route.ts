@@ -3,13 +3,14 @@ import { exportCitizenData } from "@/features/citizens/personal-data";
 import { currentCitizen } from "@/features/citizens/session";
 import { fail, tooMany } from "@/server/http/responses";
 import { countAttempt, peek, rules } from "@/server/security/rate-limit";
+import { safeRoute } from "@/server/http/safe-route";
 
 export const runtime = "nodejs";
 
 // A plain link, so it works without JavaScript. Another site could send someone here, but
 // the answer is a download it can never read, and the file only ever holds the data of the
 // account whose session cookie came with the request.
-export async function GET() {
+async function handleGet() {
   const citizen = await currentCitizen();
   if (!citizen) return fail(401, "Autentifică-te ca să descarci datele.");
 
@@ -29,3 +30,5 @@ export async function GET() {
     },
   });
 }
+
+export const GET = safeRoute(handleGet);

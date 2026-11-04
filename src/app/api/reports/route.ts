@@ -12,13 +12,14 @@ import { requireStaffApi } from "@/features/staff/dal";
 import { clientInfo } from "@/server/http/request";
 import { countAttempt, peek, rules } from "@/server/security/rate-limit";
 import { tooMany } from "@/server/http/responses";
+import { safeRoute } from "@/server/http/safe-route";
 
 export const runtime = "nodejs";
 
 // The database keeps the location rounded to about 100 m. The exact point is encrypted.
 const coarse = (x: number) => Math.round(x * 1000) / 1000;
 
-export async function POST(req: NextRequest) {
+async function handlePost(req: NextRequest) {
   // Checked from the header, before the body is read into memory. The proxy rejects the
   // same oversized requests earlier still, before they even reach this function.
   const length = Number(req.headers.get("content-length") ?? 0);
@@ -92,8 +93,11 @@ export async function POST(req: NextRequest) {
 }
 
 // Submitting stays open to citizens, reading the list is for staff.
-export async function GET() {
+async function handleGet() {
   const auth = await requireStaffApi();
   if (!auth.ok) return auth.response;
   return NextResponse.json(await listReports(), { headers: { "Cache-Control": "no-store" } });
 }
+
+export const POST = safeRoute(handlePost);
+export const GET = safeRoute(handleGet);

@@ -12,10 +12,11 @@ import { fail, json } from "@/server/http/responses";
 import { audit } from "@/server/security/audit";
 import { citizenEmails } from "@/features/citizens/accounts";
 import { countAttempt, rules } from "@/server/security/rate-limit";
+import { safeRoute } from "@/server/http/safe-route";
 
 type GroupRow = { id: string; category: string; status: string; citizen_id: string | null; created_at: Date };
 
-export async function PATCH(
+async function handlePatch(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -138,3 +139,5 @@ export async function PATCH(
 
   return json({ ok: true });
 }
+
+export const PATCH = safeRoute(handlePatch);

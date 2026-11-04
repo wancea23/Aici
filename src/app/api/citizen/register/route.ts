@@ -9,6 +9,7 @@ import { hashPassword, validateNewPassword } from "@/server/security/password";
 import { auditCitizen, createSignup, findCitizenByEmail } from "@/features/citizens/accounts";
 import { emailIndex } from "@/server/security/crypto";
 import { appUrl, canSendMail, existingAccountMail, sendMail, signupMail } from "@/server/mail";
+import { safeRoute } from "@/server/http/safe-route";
 
 export const runtime = "nodejs";
 
@@ -18,7 +19,7 @@ const input = z.object({
   altcha: z.string().max(4096).optional(),
 });
 
-export async function POST(req: Request) {
+async function handlePost(req: Request) {
   if (!sameOrigin(req)) return fail(403, "Cerere respinsă.");
 
   const parsed = input.safeParse(await req.json().catch(() => null));
@@ -69,3 +70,5 @@ export async function POST(req: Request) {
 
   return json({ sent: true });
 }
+
+export const POST = safeRoute(handlePost);

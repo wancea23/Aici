@@ -7,6 +7,7 @@ import { fail, json, tooMany } from "@/server/http/responses";
 import { sameOrigin } from "@/server/security/csrf";
 import { verifyPassword } from "@/server/security/password";
 import { peek, recordFailure, rules } from "@/server/security/rate-limit";
+import { safeRoute } from "@/server/http/safe-route";
 
 export const runtime = "nodejs";
 
@@ -17,7 +18,7 @@ const input = z.object({
 
 // Deleting is permanent, so it asks for the password again even though the session is
 // already valid: a borrowed browser or a stolen cookie is not enough on its own.
-export async function POST(req: Request) {
+async function handlePost(req: Request) {
   if (!sameOrigin(req)) return fail(403, "Cerere respinsă.");
 
   const citizen = await currentCitizen();
@@ -44,3 +45,5 @@ export async function POST(req: Request) {
 
   return json({ done: true });
 }
+
+export const POST = safeRoute(handlePost);

@@ -7,6 +7,7 @@ import { peek, recordFailure, rules } from "@/server/security/rate-limit";
 import { hashPassword, validateNewPassword } from "@/server/security/password";
 import { auditCitizen, findPasswordReset, redeemPasswordReset } from "@/features/citizens/accounts";
 import { appUrl, canSendMail, passwordChangedMail, sendMail } from "@/server/mail";
+import { safeRoute } from "@/server/http/safe-route";
 
 export const runtime = "nodejs";
 
@@ -17,7 +18,7 @@ const input = z.object({
 
 const EXPIRED = "Linkul nu mai este valabil sau a fost deja folosit. Cere unul nou.";
 
-export async function POST(req: Request) {
+async function handlePost(req: Request) {
   if (!sameOrigin(req)) return fail(403, "Cerere respinsă.");
 
   const parsed = input.safeParse(await req.json().catch(() => null));
@@ -54,3 +55,5 @@ export async function POST(req: Request) {
 
   return json({ done: true });
 }
+
+export const POST = safeRoute(handlePost);

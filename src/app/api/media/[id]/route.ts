@@ -6,6 +6,7 @@ import { currentCitizen } from "@/features/citizens/session";
 import { decryptBytes } from "@/server/security/crypto";
 import { matchesFingerprint, reprDigest } from "@/features/photos/fingerprint";
 import { publicDetails } from "@/server/env";
+import { safeRoute } from "@/server/http/safe-route";
 
 export const runtime = "nodejs";
 
@@ -14,7 +15,7 @@ export const runtime = "nodejs";
 // only for a report that's on the public map. Row-level security (see db/init.sql) is what
 // actually enforces this now: the select below simply returns nothing for anyone it doesn't
 // apply to, instead of the route working that out by hand.
-export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+async function handleGet(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!isUuid(id)) {
     return new NextResponse("not found", { status: 404 });
@@ -54,3 +55,5 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     },
   });
 }
+
+export const GET = safeRoute(handleGet);

@@ -6,6 +6,7 @@ import { peek, recordFailure, rules } from "@/server/security/rate-limit";
 import { hashPassword, validateNewPassword } from "@/server/security/password";
 import { findStaffById, findToken, redeemReset } from "@/features/staff/accounts";
 import { audit } from "@/server/security/audit";
+import { safeRoute } from "@/server/http/safe-route";
 
 export const runtime = "nodejs";
 
@@ -16,7 +17,7 @@ const input = z.object({
 
 const EXPIRED = "Linkul nu mai este valabil. Cere unul nou administratorului.";
 
-export async function POST(req: Request) {
+async function handlePost(req: Request) {
   if (!sameOrigin(req)) return fail(403, "Cerere respinsă.");
 
   const parsed = input.safeParse(await req.json().catch(() => null));
@@ -51,3 +52,5 @@ export async function POST(req: Request) {
   });
   return json({ next: "/login" });
 }
+
+export const POST = safeRoute(handlePost);

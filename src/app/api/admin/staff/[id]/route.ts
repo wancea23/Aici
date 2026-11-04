@@ -6,6 +6,7 @@ import { requireStaffApi } from "@/features/staff/dal";
 import { applyStaffAction, createResetLink, findStaffById, linkFor } from "@/features/staff/accounts";
 import { audit } from "@/server/security/audit";
 import { isUuid } from "@/features/reports/validation";
+import { safeRoute } from "@/server/http/safe-route";
 
 const input = z.discriminatedUnion("action", [
   z.object({ action: z.literal("deactivate") }),
@@ -23,7 +24,7 @@ const logAction = {
   reset_link: "staff.reset_link",
 } as const;
 
-export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
+async function handlePost(req: Request, { params }: { params: Promise<{ id: string }> }) {
   if (!sameOrigin(req)) return fail(403, "Cerere respinsă.");
 
   const auth = await requireStaffApi({ role: "admin" });
@@ -61,3 +62,5 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   });
   return json(result);
 }
+
+export const POST = safeRoute(handlePost);

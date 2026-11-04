@@ -7,8 +7,9 @@ import { publicDetails } from "@/server/env";
 import { clientInfo } from "@/server/http/request";
 import { countAttempt, peek, rules } from "@/server/security/rate-limit";
 import { tooMany } from "@/server/http/responses";
+import { safeRoute } from "@/server/http/safe-route";
 
-export async function GET(req: NextRequest) {
+async function handleGet(req: NextRequest) {
   const ipKey = clientInfo(req).ip ?? "unknown";
   const limit = await peek(rules.nearbyIp, ipKey);
   if (limit.blocked) return tooMany(limit.retryAfter);
@@ -39,3 +40,5 @@ export async function GET(req: NextRequest) {
     { headers: { "Cache-Control": "no-store" } }
   );
 }
+
+export const GET = safeRoute(handleGet);

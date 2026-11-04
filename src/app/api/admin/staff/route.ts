@@ -5,6 +5,7 @@ import { fail, json } from "@/server/http/responses";
 import { requireStaffApi } from "@/features/staff/dal";
 import { createInvite, findStaffByEmail, linkFor } from "@/features/staff/accounts";
 import { audit } from "@/server/security/audit";
+import { safeRoute } from "@/server/http/safe-route";
 
 const input = z.object({
   email: z.string().trim().toLowerCase().email().max(254),
@@ -12,7 +13,7 @@ const input = z.object({
 });
 
 // There is no email service yet, so the admin gets the link and passes it on.
-export async function POST(req: Request) {
+async function handlePost(req: Request) {
   if (!sameOrigin(req)) return fail(403, "Cerere respinsă.");
 
   const auth = await requireStaffApi({ role: "admin" });
@@ -35,3 +36,5 @@ export async function POST(req: Request) {
   });
   return json({ link: linkFor(req, "/invite", token) });
 }
+
+export const POST = safeRoute(handlePost);
