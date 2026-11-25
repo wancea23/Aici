@@ -11,8 +11,9 @@ import { currentCitizen } from "@/features/citizens/session";
 import { requireStaffApi } from "@/features/staff/dal";
 import { clientInfo } from "@/server/http/request";
 import { countAttempt, peek, rules } from "@/server/security/rate-limit";
-import { tooMany } from "@/server/http/responses";
+import { fail, tooMany } from "@/server/http/responses";
 import { safeRoute } from "@/server/http/safe-route";
+import { sameOrigin } from "@/server/security/csrf";
 
 export const runtime = "nodejs";
 
@@ -20,6 +21,11 @@ export const runtime = "nodejs";
 const coarse = (x: number) => Math.round(x * 1000) / 1000;
 
 async function handlePost(req: NextRequest) {
+  // Only from our own report form, like every other route that changes data. Found by the ZAP
+  // scan: without it, any site could have its visitors' browsers file reports, each from its
+  // own IP, past the per IP limit below.
+  if (!sameOrigin(req)) return fail(403, "Cerere respinsă.");
+
   // Checked from the header, before the body is read into memory. The proxy rejects the
   // same oversized requests earlier still, before they even reach this function.
   const length = Number(req.headers.get("content-length") ?? 0);

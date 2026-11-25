@@ -49,7 +49,7 @@ The full text of each requirement, with how we check it, is in the part it belon
 | SR-04 | Input is validated at the boundary and never becomes code | A05 | Andrei | Done |
 | SR-05 | Every upload is treated as hostile | A06 | Rodion | Done |
 | SR-06 | A photo can be proven unchanged since it arrived | A08 | Rodion | Done |
-| SR-07 | Production runs with a hardened configuration and no secrets in the code | A02 | Nicolae | Partly, CSP planned |
+| SR-07 | Production runs with a hardened configuration and no secrets in the code | A02 | Nicolae | Done, CSP live after the next deploy |
 | SR-08 | Dependencies are pinned, audited on every push and kept current | A03 | Nicolae | Done |
 | SR-09 | Security events are logged and the log can't be edited | A09 | Sergiu | Partly, alerts planned |
 | SR-10 | Failures stay closed and tell the user nothing internal | A10 | Sergiu | Done |
