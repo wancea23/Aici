@@ -287,13 +287,3 @@ the same cycle.
 - **Continuous testing.** Next step: `zap-baseline` (passive) on every push and `zap-full-scan`
   (active) weekly in CI, so a regression like `'unsafe-inline'` is caught before it reaches
   production.
-
-## 10. Team contributions
-
-| Member | What they did |
-| --- | --- |
-| Bulimar Rodion | [to fill in] |
-| Moroșanu Ion | [to fill in] |
-| Eftode Andrei | [to fill in] |
-| Țurcanu Nicolae | [to fill in] |
-| Cătănoi Sergiu | [to fill in] |
