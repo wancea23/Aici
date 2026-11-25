@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import ThemeToggle from "@/ui/ThemeToggle";
 import "./globals.css";
@@ -35,11 +36,14 @@ const themeInitScript = `
 })();
 `;
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Set by src/proxy.ts. Without it the Content-Security-Policy blocks this inline script.
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   return (
     <html lang="ro" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       {/*
         Deliberately NOT bg-background/text-on-background here. Every page not yet migrated

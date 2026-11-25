@@ -29,6 +29,8 @@ const oldPaths = [
 // by literally removing everything else from node_modules and re-running real detection
 // against it. These patterns exclude the other ~120MB that was proven unreachable.
 const nextConfig = {
+  // No "X-Powered-By: Next.js" on every response, it only tells an attacker what to look up.
+  poweredByHeader: false,
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

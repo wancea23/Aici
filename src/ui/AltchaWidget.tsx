@@ -2,6 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import type {} from "altcha/types/react";
+// The external build ships its styles as a file instead of adding a <style> tag at runtime, which
+// the Content-Security-Policy (src/server/security/csp.ts) would refuse.
+import "altcha/altcha.css";
 
 // Proof of work solved in the browser. Sign up always shows it, login only after repeated failures.
 export default function AltchaWidget({ onPayload }: { onPayload: (payload: string | null) => void }) {
@@ -9,7 +12,16 @@ export default function AltchaWidget({ onPayload }: { onPayload: (payload: strin
 
   useEffect(() => {
     // the widget registers a custom element, so it only loads in the browser
-    import("altcha").then(() => import("altcha/i18n/ro")).catch(() => {});
+    import("altcha/external")
+      .then(() => {
+        // The external build has no workers of its own. The server's challenges use PBKDF2
+        // (server/security/altcha.ts), solved by the worker served from src/app/altcha.
+        for (const algorithm of ["PBKDF2/SHA-256", "PBKDF2/SHA-384", "PBKDF2/SHA-512"]) {
+          globalThis.$altcha.algorithms.set(algorithm, () => new Worker("/altcha/pbkdf2.js"));
+        }
+        return import("altcha/i18n/ro");
+      })
+      .catch(() => {});
 
     const el = ref.current;
     if (!el) return;
@@ -35,6 +47,16 @@ export default function AltchaWidget({ onPayload }: { onPayload: (payload: strin
     "--altcha-color-error": "rgb(var(--color-error))",
     "--altcha-color-error-content": "rgb(var(--color-on-error))",
     "--altcha-border-color": "rgb(var(--color-outline-variant))",
+    // The stylesheet defines these on :root from light-dark() colours, which the CSS build can't
+    // resolve there, so they come out empty (no checkbox border, a see-through checkbox) unless
+    // they're set again here from the tokens above.
+    "--altcha-checkbox-border-color": "rgb(var(--color-outline))",
+    "--altcha-input-background-color": "rgb(var(--color-surface-container-lowest))",
+    "--altcha-input-color": "rgb(var(--color-on-surface))",
+    "--altcha-popover-color": "rgb(var(--color-outline-variant))",
+    "--altcha-spinner-color": "rgb(var(--color-on-surface))",
+    "--altcha-switch-background-color": "rgb(var(--color-surface-container-low))",
+    "--altcha-switch-toggle-color": "rgb(var(--color-on-surface-variant))",
     "--altcha-border-radius": "0.5rem",
   } as React.CSSProperties;
 

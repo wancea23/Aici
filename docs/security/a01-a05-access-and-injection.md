@@ -92,4 +92,5 @@ use, all SQL is parameterized, and user text is always rendered as text.
 Checked by: `tests/reports/location.test.ts` (coordinates outside Moldova refused), a description
 with an HTML payload shown as text on the map, and a code search showing no SQL built from
 strings.
-Status: done. CSP planned.
+Status: done. The Content-Security-Policy that backs this up in the browser came with the ZAP
+scan, see [task3-zap-scan.md](task3-zap-scan.md).

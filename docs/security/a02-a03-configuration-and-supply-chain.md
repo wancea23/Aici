@@ -79,7 +79,8 @@ exist only in the secrets manager and the hosting environment, the app connects 
 privileged database role that works, and production shows no debug output.
 Checked by: `curl -I https://aici-seven.vercel.app` shows the headers, a search of the repository
 and its history finds no keys, and an error page in production shows no stack trace.
-Status: partly done. CSP planned.
+Status: done. The Content-Security-Policy came with the ZAP scan (see
+[task3-zap-scan.md](task3-zap-scan.md)); the beta gets it with the next deploy.
 
 **SR-08. Dependencies are pinned, audited on every push and kept current.**
 Protects against known vulnerabilities in code we did not write. Versions are exact and locked,
